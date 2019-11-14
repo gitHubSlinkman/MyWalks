@@ -1,0 +1,148 @@
+---
+title: "Last seven day's activities"
+author: "by Craig W. Slinkman"
+date: "May 13, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r load_libraries}
+#
+source('~/R-Projects/MyWalks4/functions/load_libraries_v002.R')
+#
+```
+
+```{r load_functions}
+#
+source('functions/compute_dates_v003.R')              # To compute needed dates ...
+source( "functions/get_walks_v004.R" )                # To get walks and compute
+                                                      # derived walk data ...
+source( "functions/compute_totals_means_stds_v004.R") #  Computes totals, means,
+#                                                     # and standard deviations
+```
+
+```{r compute_dates}
+dates <- compute_dates()
+date_current   <- dates$date_000_days_ago          # Acess curent date ,..
+date_partition <- dates$date_007_days_ago          # Access date 7 days ago ...
+#
+```
+
+### Last seven days walk activity
+#### For the period `r date_partition` through `r date_current`
+
+
+```{r get_walks}
+#
+file_path <-
+    file.path( getwd(), "data/walks.csv")
+
+walks <- get_walks( file_path )
+#
+```
+
+```{r list_last_007_days_walks,results='asis'}
+
+#
+character_partition_date <- as.character.Date( date_partition )
+
+
+last_007_days_walks <-
+    walks %>%
+        filter( as.character.Date( date ) >  character_partition_date ) %>% 
+        select( id, 
+                date,
+                wday,
+                walked,
+                missed_reason,
+                route,
+                miles,
+                ksteps,
+                hours,
+                mph,
+                pace,
+                kcal ) %>% 
+    arrange( desc( id ))
+
+```
+
+```{r plot_dotplot}
+
+x_major <- seq( from=1, to=7, by=0.25 )
+x_labels <- sprintf("%.2f",x_major)
+
+ggplot( last_007_days_walks, 
+        aes(x=miles,
+            bin=20 )) +
+    geom_dotplot() +
+    scale_x_continuous( breaks=x_major, labels=x_labels ) +
+    coord_cartesian( ylim = c(0, 7 )) +
+    xlab("Miles walked") +
+    ylab( "Frequency") +
+    ggtitle( "Miles walked during last 7 days") +
+    theme_cowplot()
+```
+
+
+
+```{r build_flextable}
+
+####################################################################################
+# Create flexttable to display walk activity of last 7 days.
+####################################################################################
+
+int_cols <- c( "id",                                   # Specifiy integer columns
+               "kcal")
+
+num_0_cols <- "walked"                                 # Specify columns with 0
+                                                       # decimal digits
+
+num_2_cols <- c( "miles",                              # Specify columns with 2
+                 "hours",                              #
+                 "mph"  )
+
+last_007_days_walks %>%                                # Create flextable to display
+    regulartable() %>%                                 # results
+    colformat_int( col_keys = int_cols, 
+                  big.mark = ",",
+                  na_str = "") %>% 
+     colformat_num( col_keys = num_0_cols,
+                   digits=0,
+                   big.mark=",",
+                   na_str="") %>% 
+     colformat_num( col_keys = num_2_cols,
+                    digits=2,
+                    big.mark=",",
+                    na_str="") %>% 
+    set_header_labels( "id"            = "Id",
+                       "date"          = "Date",
+                       "wday"          = "Day",
+                       "walked"        = "Walked",
+                       "missed_reason" = "Missed walk\nreason",
+                       "route"         = "Route",
+                       "miles"         = "Miles",
+                       "ksteps"        = "KSteps",
+                       "hours"         = "Hours",
+                       "mph"           = "MPH",
+                       "pace"          = "Pace",
+                       "kcal"          = "KCal") %>% 
+    align( i=1, j=2:5, align="left", part="header") %>% 
+    theme_zebra() %>% 
+    fontsize(  size = 13, part = "body") %>% 
+    autofit()
+#        
+```
+
+### Summary report
+
+```{r report_totals_meqns_and_std}
+#
+compute_totals_means_stds( last_007_days_walks)
+#
+```
+
+#### End of report
