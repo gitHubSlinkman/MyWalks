@@ -1,0 +1,170 @@
+---
+title: "Walks by Routes"
+author: "by Craig W. Slinkman"
+date: "May 14, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE )
+
+```
+
+```{r load libraries}
+#
+source( "functions/load_libraries_v002.R" )      # L0ad libraries ...
+#
+```
+
+
+```{r load_functions}
+#
+source( 'functions/load_libraries_v002.R' )      # To load libraries ...
+source( "functions/compute_dates_v003.R" )       # To compute dates 
+source( "functions/get_walks_v004.R")            # Used to read walks.xlsx file ...
+#       
+```
+
+```{r get_dates}
+#
+dates <- compute_dates()                         # Compute dates used ...
+date_current <- dates$date_000_days_ago          # Get current date ...
+date_partition <- dates$date_180_days_ago        # Get date 180 days ago ...
+chharater_date_partion <- 
+    as.character( date_partition )
+#
+
+```
+
+
+```{r get_all_walks}
+#
+file_path <- file.path( getwd(), "data/Walks.csv" )  # Make path to file ...
+
+walks <- get_walks( file_path )                       # Get all walks ....
+#
+```
+
+```{r Keep_only_walks_less than_180_days_old}
+#
+###############################################################################
+# Keep only days that are less than 180 days old and a walked took place.
+###############################################################################
+#
+character_date_partition <- as.character.Date( date_partition )
+
+last_6_months_walks <- 
+    walks %>%
+        filter( as.character.Date( date ) >  character_date_partition ) %>% 
+        filter( walked == 1 )
+```
+
+```{r summarise_walks_by_route}
+#
+summary_by_route <- 
+    last_6_months_walks %>% 
+        group_by( route ) %>% 
+        summarise( walks = n(),
+                   tl_miles  = round( sum( miles,  na.rm = TRUE ), 2 ),
+                   tl_hours  = round( sum( hours,  na.rm = TRUE ), 2 ),
+                   mn_miles  = round( mean( miles, na.rm = TRUE ), 2 ),
+                   mn_hours  = round( mean( hours, na.rm = TRUE ), 2 ),
+                   mn_mph    = round( mean( mph,   na.rm = TRUE ), 2 ),
+                   tl_gain   = round( sum( gain,   na.rm = TRUE ), 0 ),
+                   mn_gain   = round( mean( gain,  na.rm = TRUE ), 0 ),
+                   tl_kcal   = round( sum( kcal,   na.rm = TRUE ), 0 ),
+                   mn_kcal   = round( mean( kcal,  na.rm = TRUE ), 0 ),
+                   tl_ksteps = round( sum( ksteps, na.rm = TRUE ), 3 ),
+                   mn_ksteps = round( mean( ksteps,na.rm = TRUE),  3 )) %>%
+    select( route,
+           walks,
+           tl_miles,
+           tl_ksteps,
+           tl_gain,
+           tl_hours,
+           tl_kcal,
+           mn_miles,
+           mn_ksteps,
+           mn_hours,
+           mn_gain,
+           mn_mph,
+           mn_kcal )
+#
+summary_line <- 
+     last_6_months_walks %>% 
+        summarise( route = "All routes",
+                   walks = n(),
+                   tl_miles  = round( sum( miles,  na.rm = TRUE ), 2 ),
+                   tl_hours  = round( sum( hours,  na.rm = TRUE ), 2 ),
+                   mn_miles  = round( mean( miles, na.rm = TRUE ), 2 ),
+                   mn_hours  = round( mean( hours, na.rm = TRUE ), 2 ),
+                   mn_mph    = round( mean( mph,   na.rm = TRUE ), 2 ),
+                   tl_gain   = round( sum( gain,   na.rm = TRUE ), 0 ),
+                   mn_gain   = round( mean( gain,  na.rm = TRUE ), 0 ),
+                   tl_kcal   = round( sum( kcal,   na.rm = TRUE ), 0 ),
+                   mn_kcal   = round( mean( kcal,  na.rm = TRUE ), 0 ),
+                   tl_ksteps = round( sum( ksteps, na.rm = TRUE ), 3 ),
+                   mn_ksteps = round( mean( ksteps, na.rm = TRUE), 3 )) %>%
+    select( route,
+           walks,
+           tl_miles,
+           tl_ksteps,
+           tl_gain,
+           tl_hours,
+           tl_kcal,
+           mn_miles,
+           mn_ksteps,
+           mn_hours,
+           mn_gain,
+           mn_mph,
+           mn_kcal )
+
+summary_by_route <- bind_rows( summary_by_route,
+                               summary_line )
+last_row <- dim( summary_by_route )[1]
+                  
+```  
+
+### Summary of walks by route
+
+```{r display_summary_by_route}
+#
+summary_by_route %>% 
+    regulartable() %>% 
+    width( j = 1, 3.00 ) %>% 
+    colformat_num( col_keys = c( "tl_miles", "mn_miles",
+                                 "tl_ksteps", "mn_ksteps",
+                                 "tl_hours", "mn_hours", 
+                                 "mn_mph" ),
+                   big.mark = ",",
+                   digits   = 2,
+                   na_str = "" ) %>% 
+    colformat_num( col_keys = c( "tl_gain",
+                                 "mn_gain", "tl_kcal", 
+                                 "mn_kcal" ),
+                    big.mark=",",
+                    digits = 0,
+                    na_str = "" ) %>% 
+    set_header_labels( "route"     = "Route",
+                       "walks"     = "Walks", 
+                       "tl_miles"  = "Total  \nmiles",
+                       "tl_hours"  = "Total\nhours",
+                       "mn_miles"  = "Mean\nmiles",
+                       "mn_hours"  = "Mean\nhours",
+                       "mn_mph"    = "Mean\nMPH",
+                       "tl_gain"   = "Total\ngain ",
+                       "mn_gain"   = "Mean\ngain ",
+                       "tl_kcal"   = "Total\nKCal",
+                       "mn_kcal"   = "Mean\nKCal",
+                       "tl_ksteps" = "Total   \nKSteps",
+                       "mn_ksteps" = "Mean\nKSteps" ) %>% 
+    align( j=1:13, align="left", part="header" ) %>% 
+    bold( i=last_row, bold=TRUE, part="body" ) %>% 
+    theme_zebra() %>% 
+    fontsize( size = 12, part = "all") %>% 
+    autofit()
+#
+
+```
+
+#### End of report
