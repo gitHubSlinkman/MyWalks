@@ -1,0 +1,81 @@
+---
+title: "Test Empirical Cummaltive Distribrbution Functiom"
+author: "by Craig W. Slinkman"
+date: "10/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+```{r set_up}
+library( tidyverse )
+library( lubridate )
+library( cowplot )
+
+source( "functions/compute_ecdf_v01.R" )
+
+wd <- getwd()
+FP <- file.path( wd, 'functions/get_walks_v03.R' )
+
+source( FP )
+walks <- get_walks( "data/walks.xlsx" )
+
+parks_mall_inside <- 
+    walks %>% 
+        filter( route == "Parks Mall - Inside" ) %>% 
+        filter( walked == 1 )
+
+miles <- parks_mall_inside$miles
+
+cdf <- compute_ecdf( miles )
+cdf
+
+ggplot( cdf,aes(x = x, y=ecdf)) +
+    geom_step() +
+    theme_cowplot()
+#
+```
+
+### Adding confidence bounds to the cdf
+
+To compute the confidene interval for the empirical cumulative distribution function we use Rui Castrols's Lecture found in the documentation folder for this project.
+
+We start by computing a constant $\epsilon$ as follows:
+
+$$ \epsilon =  \left(  \frac{}{} \frac{1}{2n} \cdot  \log \frac{2}{\alpha} \right) ^{\frac{1}{2}}$$
+
+```{r compute_epsilon}
+#
+n     <- dim(cdf)[1]
+alpha <- 0.05
+epsilon <-  sqrt( 1/ (2 * n) * log( 2/ alpha) )
+#
+
+```
+
+The value of $\epsilon$ is equal to `r round( epsilon,3).
+
+Ww then do the followuing computation to equally spaced confidence bounds on the emprical cummilative distribution function.
+
+$$L(x) = max \left( \hat{F}_n - \epsilon, 0 \right)$$
+
+$$U(x) = min \(left( \hat{F}_n - \epsilon, 1\right)$$
+
+```{r compute_ecdfbounds}
+
+cdf
+
+
+```
+
+```{r compute confidnece_bands}
+
+e
+
+
+```
+

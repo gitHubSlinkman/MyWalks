@@ -1,0 +1,44 @@
+---
+title: "Test bed for plot_ecdf"
+author: "by Craig W. Slinkman"
+date: "10/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Test bed for plot_ecdf
+
+```{r load_libraries}
+source('~/R-Projects/MyWalks4/functions/load_libraries_v001.R')
+source('~/R-Projects/MyWalks4/functions/plot_ecdf_v001.R')
+```
+
+
+```{r build sample data vector}
+#
+set.seed( 11142539 )                             # For reproducability ...
+n <- 75                                          # sample size ....
+exam <- rnorm( 75, mean=77, sd=10 )              # Generate exam scores
+exam[exam<0]   <- 0                              # Ensure akk exan score are between
+exam[exam>100] <- 100                            # 0 and 100 ...
+exam <- round( exam )                            # Round exam scores to zero decimal
+                                                 # places
+#
+exam
+#
+```
+
+#### Testbed 
+```{r test_function}
+#
+plot_ecdf( exam,
+           vname = "Student exam scores")
+
+ 
+
+
+```
+
