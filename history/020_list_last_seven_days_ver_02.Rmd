@@ -1,0 +1,107 @@
+---
+title: "Last seven day's activities"
+author: "by Craig W. Slinkman"
+date: "May 13, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r load_libraries}
+#
+suppressMessages( library(tidyverse) )
+suppressMessages( library(lubridate) )
+suppressMessages( library( flextable ))
+#
+```
+
+```{r get_walks}
+#
+source("functions/get_walks_ver_02.R")
+
+all_walks <- get_walks()
+#
+```
+
+## Last seven days Walks
+
+#### (in reverse chronoligical order)
+
+```{r list_all_walks that are older then 7 days,results='asis'}
+#
+filter_date <- today() - 7
+#
+#
+last_7_days <- 
+     all_walks %>% 
+        filter( date > filter_date ) %>% 
+        mutate( w_text = ifelse( walked == 1, "Yes", "No" ),
+                reason = ifelse( walked == 0, missed_reason, "")) %>% 
+            select( date,
+                    w_text,
+                    walked,
+                    missed_reason,
+                    day, 
+                    route,
+                    miles,
+                    ksteps,
+                    gain,
+                    hours,
+                    mph,
+                    pace,
+                    ksteps,
+                    kcal ) %>% 
+    arrange( desc( date ))
+                           
+#
+digits_0 <-  c( "ksteps",
+                "kcal",
+                "gain" )
+#
+digits_2 <- c( "miles",
+               "hours",
+               "mph",
+               "pace" )
+#
+last_7_days %>% 
+    select( -walked ) %>% 
+    flextable() %>% 
+        width( j = 1, width = 1.00 ) %>% 
+        width( j = 4, width = 2.00 ) %>% 
+        colformat_num( col_keys = digits_0,
+                       digits = 0 ) %>% 
+        colformat_num( col_keys = digits_2,
+                       digits = 2 ) %>% 
+        set_formatter( fmt_date     = "%Y-%m-%d",
+                       fmt_datetime = "%Y-%m-%d",
+                       na_str       =  "") %>% 
+    set_header_labels( "date"          =  "Date",
+                       "w_text"        = "Walked",
+                       "missed_reason" ="Reason for missing",
+                       "day"           = "Day",
+                       "route"         = "Route",
+                       "miles"         = "Miles",
+                       "ksteps"        = "KSteps",
+                       "gain"          = "Gain",
+                       "hours"         = "Hours",
+                       "mph"           = "MPH",
+                       "pace"          = "Pace",
+                       "kcal"          = "KCal" ) %>% 
+    theme_zebra() %>% 
+    autofit() 
+#
+```
+
+### Totals, means and standard deviations
+```{r display_statistics, results="asis"}
+#
+source("functions/compute_totals_means_stds.R")
+compute_totals_means_stds( last_7_days )
+#
+```
+
+###### End of report
+
