@@ -1,5 +1,5 @@
 ---
-title: "050_Global Variable Analysis: ksteps$
+title: "050_Global Variable Analysis: ksteps"
 author: "by Craig W. Slinkman"
 date: "7/27/2019"
 output: html_document
@@ -138,7 +138,7 @@ values <- values[!is.na(values)]
 
 ```{r draw_variable_histogram}
 
-plot_distribution( values, "ksteps", "Density Histogram and plot" )
+plot_distribution( values, "ksteps", "Density histogram and plot" )
 
 ```
 
@@ -328,6 +328,9 @@ G. E. P Box once recommended that one should give more one confidence interval t
 
 probability <-  c( 0.50, 0.75, 0.90,              # Define probabilities for
                    0.95, 0.98, 0.99 )             # prediction intervals.
+#
+mean_value <- round( mean( values), 2)            # Get mean value and round to 2
+                                                  # digits 
 
 z  <- abs( qnorm(  ( 1 - probability )/ 2,        # Compute normal quantiles 
                     lower.tail = TRUE ) )         # for prediction intervals.
