@@ -8,7 +8,7 @@
         suppressMessages( library( lubridate ) )
         suppressMessages( library(readr) )
         suppressMessages( library(readxl) ) 
-        suppressMessages( library(readxl) ) 
+        suppressMessages( library( Hmisc ) )
         suppressMessages( library( flextable ) )
         suppressMessages( library( officer ) )
         suppressMessages( library( latex2exp ) )

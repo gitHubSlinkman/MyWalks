@@ -209,6 +209,8 @@ The start hour is the hour that a walk started.  Because some of my walks are in
 
 ```{r plot_start_times}
 
+x_axis <- as.character( seq( from=7, to=20, by=1) )
+
 younger_walks %>% 
     filter( !is.na( start_hour )) %>% 
         ggplot( aes( x=start_hour)) +
