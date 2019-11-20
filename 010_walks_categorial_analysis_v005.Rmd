@@ -12,12 +12,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r load_packages, echo=FALSE}
 #
-suppressMessages( library( tidyverse ) )
-suppressMessages( library( cowplot ) )
-suppressMessages( library( lubridate ) )
-suppressMessages( library( flextable ) )
-suppressMessages( library( officer ) )
-suppressMessages( library( cowplot ) )
+source( "functions/load_libraries_v003.R" )
 #
 ```
 
@@ -203,13 +198,39 @@ younger_walks <-
     coord_flip()
 ```
 
+### Walks by walking environment
+
+```{r plot_walking_environment}
+#
+
+y_axis <- seq(from=0, to=100, by=5 )
+y_labels <- as.character( y_axis )
+
+younger_walks %>% 
+    filter( !is.na(environment) ) %>% 
+        ggplot( aes( x= environment ) ) +
+            geom_bar( color="black",
+                            fill="yellow" ) +
+            
+            scale_y_continuous( name="Frequency",
+                                breaks = y_axis,
+                                labels = y_labels ) +
+            xlab( "Walking environment" )
+
+#
+```
+
+Note that the environment of both includes a walk that is mainlu inside but contains a route that is partially outside.
+
 ### Walks start times
 
 The start hour is the hour that a walk started.  Because some of my walks are inside the Parks Mall in Arlington Texas congestion can slow me down.  This leads to seasonality in some of the data.  The day o the walk and the start_time effect speed and any of the variables that are functions of speed.  
 
 ```{r plot_start_times}
 
-x_axis <- as.character( seq( from=7, to=20, by=1) )
+x_labels <- c( " 9", "10", "11", "12",
+               "13", "14", "15", "16",
+               "17", "18", "19", "20" )
 
 younger_walks %>% 
     filter( !is.na( start_hour )) %>% 
@@ -219,7 +240,7 @@ younger_walks %>%
             xlab( "Rounded start hour" ) +
             ylab( "Frequency" ) +
             theme_cowplot()
-
+#
 ```
 
 

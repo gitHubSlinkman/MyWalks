@@ -10,7 +10,13 @@ get_walks <- function( file_path )
 
     walks <- read_csv( file_path )               # read walks data from csv
                                                  # files
+    #
+    file_path <- file.path( "data",              # Construct file path to routes ...
+                            "routes.csv")    
+    routes <- read_csv( file_path )              # Get routes.csv file ...
     
+    walks <- left_join( walks,                   # Left join walks and routes ...
+                        routes )
     
     walks$date <- ymd( walks$chr_date,           # Convert character to
                        tz=NULL )                 # Date object ...
@@ -25,6 +31,8 @@ get_walks <- function( file_path )
                          abbr = TRUE )
     
     walks$ksteps <- walks$steps / 1000          # Convert steps to 1000 steps ...
+    
+    
  
  pass_back <-                                   # Pass wanted variables back to
     walks %>%                                   # calling entity ...                              
@@ -37,6 +45,7 @@ get_walks <- function( file_path )
                 missed_reason,
                 start_hour,
                 route,
+                environment,
                 miles,
                 ksteps,
                 hours,

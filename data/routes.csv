@@ -1,0 +1,34 @@
+route,state,city,time_zone,environment,active,type
+Bowman Springs Park,TX,Arlington,America/Chicago,Outside,0,Loop
+Brown Trail,TX,Arlington,America/Chicago,Outside,0,Loop
+Corey Triangle,TX,Arlin gton,America/Chicago,Outside,1,Loop
+Cravens Park,TX,Arlington,America/Chicago,Outside,1,Loop
+Crystal Canyon,TX,Arlington,America/Chicago,Outside,0,Loop
+Enchanted Lakes,TX,Arlington,America/Chicago,Outside,1,Loop
+Fish Creek Linear Park,TX,Arlington,America/Chicago,Outside,1,Loop
+Kahaluu Beach Park,HI,Kailua-Kona,America/Honolulu,Outside,1,Linear
+Lako Road,HI,Kailua-Kona,America/Honolulu,Outside,1,Linear
+Little Road,TX,Arlington,America/Chicago,Outside,1,Loop
+Magic Sands Beach Park,HI,Kailua-Kona,America/Honolulu,Outside,1,Linear
+Old Airport Garden Loop,HI,Kailua-Kona,America/Honolulu,Outside,0,Loop
+Palani Road,HI,Kailua-Kona,America/Honolulu,Outside,1,Linear
+Parks Mall - Main corridor,TX,Arlington,America/Chicago,Inside,0,Loop
+Parks Mall - Mostly inside,TX,Arlington,America/Chicago,Both,1,Loop
+Parks Mall,TX,Arlington,America/Chicago,Inside,0,Loop
+Parks Mall 1,TX,Arlington,America/Chicago,Inside,0,Loop
+Parks Mall 2,TX,Arlington,America/Chicago,Inside,0,Loop
+Parks Mall 3,TX,Arlington,America/Chicago,Inside,0,Loop
+Parks Mall 4,TX,Arlington,America/Chicago,Inside,0,Loop
+Parks Mall 5,TX,Arlington,America/Chicago,Inside,0,Loop
+Perkins Road,TX,Arlington,America/Chicago,Outside,0,Loop
+Perkins Road 1,TX,Arlington,America/Chicago,Outside,0,Loop
+Perkins Road 2,TX,Arlington,America/Chicago,Outside,0,Loop
+River Legacy Park East,TX,Arlington,America/Chicago,Outside,1,Loop
+River Legacy Park West,TX,Arlington,America/Chicago,Outside,1,Loop
+Shorewood Drive,TX,Arlington,America/Chicago,Outside,0,Linear
+Stovall Park,TX,Arlington,America/Chicago,Outside,1,Loop
+Vandergriff Park,TX,Arlington,America/Chicago,Outside,1,Loop
+Veterans Park,TX,Arlington,America/Chicago,Outside,1,Loop
+Villiage Creek,TX,Arlington,America/Chicago,Outside,1,Linear
+Viridian 1,TX,Arlington,America/Chicago,Outside,0,Linear
+Viridian Lake Loop,TX,Arlington,America/Chicago,Outside,1,Linear
