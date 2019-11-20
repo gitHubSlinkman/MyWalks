@@ -203,7 +203,7 @@ younger_walks <-
 ```{r plot_walking_environment}
 #
 
-y_axis <- seq(from=0, to=100, by=5 )
+y_axis <- seq(from=0, to=100, by=10 )
 y_labels <- as.character( y_axis )
 
 younger_walks %>% 
@@ -211,7 +211,9 @@ younger_walks %>%
         ggplot( aes( x= environment ) ) +
             geom_bar( color="black",
                             fill="yellow" ) +
-            
+            geom_text(stat='count', 
+                      aes(label=..count..),
+                      nudge_y=2 ) +
             scale_y_continuous( name="Frequency",
                                 breaks = y_axis,
                                 labels = y_labels ) +
