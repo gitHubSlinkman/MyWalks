@@ -12,14 +12,13 @@ knitr::opts_chunk$set(echo = FALSE )
 
 ```{r load libraries}
 #
-source( "functions/load_libraries_v002.R" )      # L0ad libraries ...
+source( "functions/load_libraries_v003.R" )      # Load libraries ...
 #
 ```
 
 
 ```{r load_functions}
 #
-source( 'functions/load_libraries_v002.R' )      # To load libraries ...
 source( "functions/compute_dates_v003.R" )       # To compute dates 
 source( "functions/get_walks_v004.R")            # Used to read walks.xlsx file ...
 #       
