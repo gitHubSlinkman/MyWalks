@@ -167,6 +167,7 @@ ggplot( reasons,
     scale_y_continuous( breaks=ticks,
                         labels=ticks ) +
     xlab( "Reason for missed walk") +
+    ylab( "Frequency" ) +
     coord_flip() +
     theme_cowplot()
 
@@ -218,6 +219,8 @@ younger_walks %>%
                                 breaks = y_axis,
                                 labels = y_labels ) +
             xlab( "Walking environment" )
+           
+
 
 #
 ```

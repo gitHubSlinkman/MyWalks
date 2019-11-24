@@ -347,8 +347,6 @@ predictions <-                                  # Build tibble for ggplot2 ...
            forecast,
            upper )
 
-
-            
            
         
 ```
@@ -357,7 +355,7 @@ predictions <-                                  # Build tibble for ggplot2 ...
 
 ```{r format_probability_statement_number}
 l <- round( predictions[[4]][2], 2 )
-u <- round( predictions[[4]][4])
+u <- round( predictions[[4]][4], 2 )
 ```
 
 
