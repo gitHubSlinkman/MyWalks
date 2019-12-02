@@ -68,6 +68,7 @@ last_007_days_walks <-
                 kcal ) %>% 
     arrange( desc( id ))
 
+
 ```
 
 ```{r plot_dotplot}
@@ -87,6 +88,18 @@ ggplot( last_007_days_walks,
     theme_cowplot()
 ```
 
+```{r compute_summary_statistics}
+#
+totals_line <- 
+    last_007_days_walks %>% 
+        summarise( walks = sum( walked, na.rm=TRUE ),
+                   miles = sum( miles,  na.rm=TRUE ),
+                   ksteps = sum( ksteps, na.rm = TRUE ),
+                   hours  = sum( hours, na.rm = TRUE ),
+                   kcal   = sum( kcal, na.rm=TRUE ))
+                   
+#
+```
 
 
 ```{r build_flextable}
@@ -95,8 +108,7 @@ ggplot( last_007_days_walks,
 # Create flexttable to display walk activity of last 7 days.
 ####################################################################################
 
-int_cols <- c( "id",                                   # Specifiy integer columns
-               "kcal")
+int_cols <- c( 1,10 )                                  # Specifiy integer columns ...
 
 num_0_cols <- "walked"                                 # Specify columns with 0
                                                        # decimal digits
@@ -104,6 +116,7 @@ num_0_cols <- "walked"                                 # Specify columns with 0
 num_2_cols <- c( "miles",                              # Specify columns with 2
                  "hours",                              #
                  "mph"  )
+
 
 last_007_days_walks %>%                                # Create flextable to display
     regulartable() %>%                                 # results
@@ -130,6 +143,7 @@ last_007_days_walks %>%                                # Create flextable to dis
                        "mph"           = "MPH",
                        "pace"          = "Pace",
                        "kcal"          = "KCal") %>% 
+    width( j=5, 32 ) %>% 
     align( i=1, j=2:5, align="left", part="header") %>% 
     theme_zebra() %>% 
     fontsize(  size = 13, part = "body") %>% 

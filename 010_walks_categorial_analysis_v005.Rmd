@@ -89,8 +89,10 @@ partition_by_age %>%
     regulartable() %>% 
     fontsize( size=14, part="all" ) %>% 
     colformat_num( col_keys="Percent",
-                   digits = 1 )
-
+                   digits = 1 ) %>% 
+    width( j=1, 32 ) %>% 
+    autofit()
+#     
 ```
 
 ### plot walks by older and younger walks 
@@ -178,7 +180,7 @@ ggplot( reasons,
 This section of report gives all the routes walked during the last 180 days.  Not all
 routes listed on this report are in use and will disappear as they age.
 
-```{r plot_routes_waklked}
+```{r plot_routes_walked}
 #
 
 ticks <- seq( from=0, to=256, by=2 )

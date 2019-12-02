@@ -151,26 +151,19 @@ predicteds <-
     rep(mean(BostonHousing$ptratio, na.rm=T),      # Get actual values 
         length(actuals))
 #
-regr.eval(actuals, predicteds)                     # Compare acttuals with
-                                                   # predicteds ...
+regr.eval(actuals, predicteds)                     # Compare acttuals with                                                               # predicteds ...
 #
 ```
 
 
-library(DMwR)
-actuals <- original$ptratio[is.na(BostonHousing$ptratio)]
-predicteds <- rep(mean(BostonHousing$ptratio, na.rm=T), length(actuals))
-regr.eval(actuals, predicteds)
-
-#>        mae        mse       rmse       mape 
-#> 1.62324034 4.19306071 2.04769644 0.09545664
 4. Prediction
+
 Prediction is most advanced method to impute your missing values and includes different approaches such as: kNN Imputation, rpart, and mice.
 
 4.1. kNN Imputation
-DMwR::knnImputation uses k-Nearest Neighbours approach to impute missing values. What kNN imputation does in simpler terms is as follows: For every observation to be imputed, it identifies ‘k’ closest observations based on the euclidean distance and computes the weighted average (weighted based on distance) of these ‘k’ obs.
+$DMwR::knnImputation$ uses k-Nearest Neighbours approach to impute missing values. What kNN imputation does in simpler terms is as follows: For every observation to be imputed, it identifies $k$ closest observations based on the euclidean distance and computes the weighted average (weighted based on distance) of these = obs.
 
-The advantage is that you could impute all the missing values in all variables with one call to the function. It takes the whole data frame as the argument and you don’t even have to specify which variable you want to impute. But be cautious not to include the response variable while imputing, because, when imputing in test/production environment, if your data contains missing values, you won’t be able to use the unknown response variable at that time.
+The advantage is that you could impute all the missing values in all variables with one call to the function. It takes the whole data frame as the argument and you don't even have to specify which variable you want to impute. But be cautious not to include the response variable while imputing, because, when imputing in test/production environment, if your data contains missing values, you won’t be able to use the unknown response variable at that time.
 
 library(DMwR)
 knnOutput <- knnImputation(BostonHousing[, !names(BostonHousing) %in% "medv"])  # perform knn imputation.
