@@ -54,11 +54,12 @@ character_partition_date <- as.character.Date( date_partition )
 last_007_days_walks <-
     walks %>%
         filter( as.character.Date( date ) >  character_partition_date ) %>% 
+        mutate( walks = walked ) %>% 
         select( id, 
                 date,
                 wday,
-                walked,
                 missed_reason,
+                walks,
                 route,
                 miles,
                 ksteps,
@@ -92,11 +93,24 @@ ggplot( last_007_days_walks,
 #
 totals_line <- 
     last_007_days_walks %>% 
-        summarise( walks = sum( walked, na.rm=TRUE ),
-                   miles = sum( miles,  na.rm=TRUE ),
-                   ksteps = sum( ksteps, na.rm = TRUE ),
-                   hours  = sum( hours, na.rm = TRUE ),
-                   kcal   = sum( kcal, na.rm=TRUE ))
+        summarise( id            = NA,
+                   date          = NA,
+                   wday          = NA,
+                   missed_reason = NA,
+                   routes        = NA,
+                   walks         = sum( walks, na.rm=TRUE ),
+                   miles         = sum( miles,  na.rm=TRUE ),
+                   ksteps        = sum( ksteps, na.rm = TRUE ),
+                   hours         = sum( hours, na.rm = TRUE ),
+                   mph           = NA,
+                   pace          = NA,
+                   kcal          = sum( kcal, na.rm=TRUE ))
+
+summary_lines <- totals_line
+
+last_007_days_walks <- 
+    rbind( last_007_days_walks,
+           summary_lines )
                    
 #
 ```

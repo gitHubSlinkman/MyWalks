@@ -122,7 +122,7 @@ ggplot( partition_by_age[1:2,],
 
 ```{r plot_bar_chart_days_walks_made_and_missed}
 #
-y_breaks <- seq( from=0, to=200, by=10 )
+y_breaks <- seq( from=0, to=200, by=20 )
 y_labels <- sprintf( "%3.0f", y_breaks )
 
 younger_walks %>% 
