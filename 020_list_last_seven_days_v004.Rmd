@@ -23,6 +23,10 @@ source( "functions/get_walks_v004.R" )                # To get walks and compute
                                                       # derived walk data ...
 source( "functions/compute_totals_means_stds_v004.R") #  Computes totals, means,
 #                                                     # and standard deviations
+#
+source('functions/compute_summary_statistics_v001.R') # Compute totals, means, and
+                                                      # standard devviations ...
+#
 ```
 
 ```{r compute_dates}
@@ -74,7 +78,7 @@ last_007_days_walks <-
 
 ```{r plot_dotplot}
 
-x_major <- seq( from=1, to=7, by=0.25 )
+x_major <- seq( from=1, to=7, by=0.20 )
 x_labels <- sprintf("%.2f",x_major)
 
 ggplot( last_007_days_walks, 
@@ -91,86 +95,38 @@ ggplot( last_007_days_walks,
 
 ```{r compute_summary_statistics}
 #
-totals_line <- 
-    last_007_days_walks %>% 
-        summarise( id            = NA,
-                   date          = NA,
-                   wday          = NA,
-                   missed_reason = NA,
-                   routes        = NA,
-                   walks         = sum( walks, na.rm=TRUE ),
-                   miles         = sum( miles,  na.rm=TRUE ),
-                   ksteps        = sum( ksteps, na.rm = TRUE ),
-                   hours         = sum( hours, na.rm = TRUE ),
-                   mph           = NA,
-                   pace          = NA,
-                   kcal          = sum( kcal, na.rm=TRUE ))
-
-summary_lines <- totals_line
-
-last_007_days_walks <- 
-    rbind( last_007_days_walks,
-           summary_lines )
-                   
+report <- compute_summary_statistics( last_007_days_walks)
 #
 ```
 
 
 ```{r build_flextable}
-
-####################################################################################
-# Create flexttable to display walk activity of last 7 days.
-####################################################################################
-
-int_cols <- c( 1,10 )                                  # Specifiy integer columns ...
-
-num_0_cols <- "walked"                                 # Specify columns with 0
-                                                       # decimal digits
-
-num_2_cols <- c( "miles",                              # Specify columns with 2
-                 "hours",                              #
-                 "mph"  )
-
-
-last_007_days_walks %>%                                # Create flextable to display
-    regulartable() %>%                                 # results
-    colformat_int( col_keys = int_cols, 
-                  big.mark = ",",
-                  na_str = "") %>% 
-     colformat_num( col_keys = num_0_cols,
-                   digits=0,
-                   big.mark=",",
-                   na_str="") %>% 
-     colformat_num( col_keys = num_2_cols,
-                    digits=2,
-                    big.mark=",",
-                    na_str="") %>% 
-    set_header_labels( "id"            = "Id",
-                       "date"          = "Date",
-                       "wday"          = "Day",
-                       "walked"        = "Walked",
-                       "missed_reason" = "Missed walk\nreason",
-                       "route"         = "Route",
-                       "miles"         = "Miles",
-                       "ksteps"        = "KSteps",
-                       "hours"         = "Hours",
-                       "mph"           = "MPH",
-                       "pace"          = "Pace",
-                       "kcal"          = "KCal") %>% 
-    width( j=5, 32 ) %>% 
-    align( i=1, j=2:5, align="left", part="header") %>% 
-    theme_zebra() %>% 
-    fontsize(  size = 13, part = "body") %>% 
-    autofit()
-#        
-```
-
-### Summary report
-
-```{r report_totals_meqns_and_std}
 #
-compute_totals_means_stds( last_007_days_walks)
+integers   <- 5
+decimals_0 <- 12
+decimals_2 <- 7:11
+
+
+
+    report %>% 
+        flextable %>%
+            colformat_char( j=1:4,
+                            na_str="") %>% 
+            colformat_int( j=5,
+                           na_str="" ) %>% 
+            colformat_num( j= decimals_2,
+                           big.mark=",",
+                           digits=2,
+                           na_str="" ) %>% 
+            colformat_num( j=decimals_0,
+                           big.mark=",",
+                           digits=0,
+                           na_str="") %>% 
+           width( j=2, 12) %>% 
+           align( j=2, align="left" ) %>% 
+        autofit()
 #
+
 ```
 
 #### End of report
