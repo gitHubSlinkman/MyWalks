@@ -27,6 +27,10 @@ source( "functions/compute_totals_means_stds_v004.R") #  Computes totals, means,
 source('functions/compute_summary_statistics_v001.R') # Compute totals, means, and
                                                       # standard devviations ...
 #
+source('~/R-Projects/Rsource/capitalize_first_letter_v001.R') # To capitalize
+                                                              # first letters of
+                                                              # a string vector ...
+#
 ```
 
 ```{r compute_dates}
@@ -102,31 +106,65 @@ report <- compute_summary_statistics( last_007_days_walks)
 
 ```{r build_flextable}
 #
-integers   <- 5
-decimals_0 <- 12
-decimals_2 <- 7:11
+integers   <- 5                                  # Specify integer columns ....
+decimals_0 <- 12                                 # Specify numeric with no digits ...
+decimals_2 <- 8:11                               # Specify 2 digits columns ...
+decimals_3 <- 7                                  # Spefify 3 digits columns ...
+rows       <- dim( report )[1]                   # Get number of rows ...
+cols       <- dim( report )[2]                   # Get number of columns ...
 
+#
+#####################################################################################
+# Prepare header labels for flextable.
+#####################################################################################
+#
+headers <- names( report )                       # Get variable names ...
+headers <-                                       # Capitalize the first letter
+    capitalize_all_first_letters( headers )      # of every variable names ...
+headers[3] <- "Day"                              # Overide "Wday" name to "Day" ...
+headers[4] <- "Missed\nreason"                   # Overide "missed_reason" to
+                                                 # "Missed\nreaspn"
+headers[10] <- "MPH"                             # Overide "mph" ro ""MPH"
+names( report ) <- headers                       # Reset names in Report tibble ...
+#
+#####################################################################################
+# Generate flextable.
 
-
-    report %>% 
+    report %>%                                   # Create flextable from repor ...
         flextable %>%
-            colformat_char( j=1:4,
+            fontsize( size=13,
+                      part="all") %>% 
+            colformat_char( j=1:4,               # Format character strings ...
                             na_str="") %>% 
-            colformat_int( j=5,
+            colformat_int( j=5,                  # Format integers ...
                            na_str="" ) %>% 
-            colformat_num( j= decimals_2,
+            colformat_num( j= decimals_2,        # Format 2 digit decimals 
                            big.mark=",",
                            digits=2,
-                           na_str="" ) %>% 
-            colformat_num( j=decimals_0,
+                           na_str="" ) %>%
+            colformat_num( j=decimals_3,         # Format 3 decimal columns ...
+                           big.mark=",",
+                           digits=3, 
+                           na_str="" ) %>%  
+            colformat_num( j=decimals_0,         # Format 0 digit decimals ...  
                            big.mark=",",
                            digits=0,
                            na_str="") %>% 
-           width( j=2, 12) %>% 
-           align( j=2, align="left" ) %>% 
-        autofit()
+           width( j=2, 12) %>%                   # Set column 2 to width=12 ...
+           align( j=2,                        # Align headers left ...
+                  align="left",                  
+                  part="header") %>% 
+           hline( i=rows-4,                     # Seperate detail lines from 
+                  j=1:cols,                     # summary lines by drawing a
+                  border=                       # horizontal black line ...
+                     fp_border( color = "black",
+                               style = "solid",
+                               width =3) ) %>% 
+           bold( i=(rows-3):rows,
+                 part="body"      ) %>% 
+           theme_zebra() %>%                     # Use zebra strips ...
+           autofit()                             # Adjust report size ...
 #
-
-```
+```  
 
 #### End of report
