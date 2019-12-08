@@ -160,7 +160,7 @@ names( report ) <- headers                       # Reset names in Report tibble 
                      fp_border( color = "black",
                                style = "solid",
                                width =3) ) %>% 
-           bold( i=(rows-3):rows,
+           bold( i=(rows-2):rows,
                  part="body"      ) %>% 
            theme_zebra() %>%                     # Use zebra strips ...
            autofit()                             # Adjust report size ...
