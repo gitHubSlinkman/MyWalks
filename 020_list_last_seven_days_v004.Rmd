@@ -82,7 +82,7 @@ last_007_days_walks <-
 
 ```{r plot_dotplot}
 
-x_major <- seq( from=1, to=7, by=0.20 )
+x_major <- seq( from=1, to=7, by=0.50 )
 x_labels <- sprintf("%.2f",x_major)
 
 ggplot( last_007_days_walks, 
