@@ -46,7 +46,7 @@ compute_summary_statistics <-
                     summarise( id            = NA,
                                date          = NA,
                                wday          = NA,
-                               missed_reason = "Standard deviations:",
+                               missed_reason = "Standard deviations",
                                walks         = NA,
                                route         = NA,
                                miles         = sd( miles,  na.rm=TRUE ),

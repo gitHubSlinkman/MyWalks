@@ -12,25 +12,24 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r load_libraries}
 #
-source('~/R-Projects/MyWalks4/functions/load_libraries_v002.R')
+source('~/R-Projects/Rsource/load_packages_v001.R')
 #
 ```
 
 ```{r load_functions}
 #
 source('functions/compute_dates_v003.R')              # To compute needed dates ...
+
 source( "functions/get_walks_v004.R" )                # To get walks and compute
                                                       # derived walk data ...
+
 source( "functions/compute_totals_means_stds_v004.R") #  Computes totals, means,
 #                                                     # and standard deviations
 #
 source('functions/compute_summary_statistics_v001.R') # Compute totals, means, and
                                                       # standard devviations ...
 #
-source('~/R-Projects/Rsource/capitalize_first_letter_v001.R') # To capitalize
-                                                              # first letters of
-                                                              # a string vector ...
-#
+source('~/R-Projects/Rsource/capitalize_first_letter_v001.R')
 ```
 
 ```{r compute_dates}
@@ -82,12 +81,12 @@ last_007_days_walks <-
 
 ```{r plot_dotplot}
 
-x_major <- seq( from=1, to=7, by=0.50 )
+x_major <- seq( from=1, to=7, by=0.25 )
 x_labels <- sprintf("%.2f",x_major)
 
 ggplot( last_007_days_walks, 
         aes(x=miles,
-            bin=20 )) +
+            binwidth=0.25 )) +
     geom_dotplot() +
     scale_x_continuous( breaks=x_major, labels=x_labels ) +
     coord_cartesian( ylim = c(0, 7 )) +
@@ -106,65 +105,38 @@ report <- compute_summary_statistics( last_007_days_walks)
 
 ```{r build_flextable}
 #
-integers   <- 5                                  # Specify integer columns ....
-decimals_0 <- 12                                 # Specify numeric with no digits ...
-decimals_2 <- c( 7, 9:11 )                       # Specify 2 digits columns ...
-decimals_3 <- 8                                  # Spefify 3 digits columns ...
-#
-rows       <- dim( report )[1]                   # Get number of rows ...
-cols       <- dim( report )[2]                   # Get number of columns ...
-#
-#####################################################################################
-# Prepare header labels for flextable.
-#####################################################################################
-#
-headers <- names( report )                       # Get variable names ...
-headers <-                                       # Capitalize the first letter
-    capitalize_all_first_letters( headers )      # of every variable names ...
-headers[3] <- "Day"                              # Overide "Wday" name to "Day" ...
-headers[4] <- "Missed\nreason"                   # Overide "missed_reason" to
-                                                 # "Missed\nreaspn"
-headers[10] <- "MPH"                             # Overide "mph" ro ""MPH"
-names( report ) <- headers                       # Reset names in Report tibble ...
-#
-#####################################################################################
-# Generate flextable.
+integers   <- 5
+decimals_0 <- 12
+decimals_2 <- 7:11
 
-    report %>%                                   # Create flextable from repor ...
+headers <- names( report )
+headers <- capitalize_all_first_letters( headers )
+names( report ) <- headers
+
+rows <- dim( report )[1]
+cols <- dim( report )[2]
+
+    report %>% 
         flextable %>%
-            fontsize( size=13,
-                      part="all") %>% 
-            colformat_char( j=1:4,               # Format character strings ...
+            colformat_char( j=1:4,
                             na_str="") %>% 
-            colformat_int( j=5,                  # Format integers ...
+            colformat_int( j=5,
                            na_str="" ) %>% 
-            colformat_num( j= decimals_2,        # Format 2 digit decimals 
+            colformat_num( j= decimals_2,
                            big.mark=",",
                            digits=2,
-                           na_str="" ) %>%
-            colformat_num( j=decimals_3,         # Format 3 decimal columns ...
-                           big.mark=",",
-                           digits=3, 
-                           na_str="" ) %>%  
-            colformat_num( j=decimals_0,         # Format 0 digit decimals ...  
+                           na_str="" ) %>% 
+            colformat_num( j=decimals_0,
                            big.mark=",",
                            digits=0,
                            na_str="") %>% 
-           width( j=2, 12) %>%                   # Set column 2 to width=12 ...
-           align( j=2,                        # Align headers left ...
-                  align="left",                  
-                  part="header") %>% 
-           hline( i=rows-4,                     # Seperate detail lines from 
-                  j=1:cols,                     # summary lines by drawing a
-                  border=                       # horizontal black line ...
-                     fp_border( color = "black",
-                               style = "solid",
-                               width =3) ) %>% 
-           bold( i=(rows-2):rows,
-                 part="body"      ) %>% 
-           theme_zebra() %>%                     # Use zebra strips ...
-           autofit()                             # Adjust report size ...
+           width( j=2, 12) %>% 
+           align( j=2, align="left" ) %>% 
+           bold( i=(rows -2):rows, 
+                 bold=TRUE ) %>% 
+        autofit()
 #
-```  
+
+```
 
 #### End of report
