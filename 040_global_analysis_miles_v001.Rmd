@@ -248,10 +248,17 @@ ggplot( bsample,
 
 ```{r display_ci_mean}
 #
-boot.ci( boot.out, index=1 )
-#
-boot.ci( boot.out, index=2 )
-#
+interval_types <-  c( "basic",                   # Define types of confidence
+                      "norm",                    # intervals to compute ...
+                      "perc" )
+
+boot.ci( boot.out,                               # Compute confidence intervals for
+         index=1,                                # the mean ...
+         type = interval_types )
+
+boot.ci( boot.out,                               # Compute confidence intervals for
+         index=2,                                # the standard deviation ...
+         type = interval_types )
 ```
 
 ### Predictions
