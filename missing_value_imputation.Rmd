@@ -9,17 +9,13 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This document show how to ompute missing values using the R package Hmisc.
-
 ### Load libraries
-
-We start by loding the libraries we frequently use.
 
 ```{r load packages}
 #
-source( 'functions/load_libraries_v003.R' )      # Load R packages
+source( 'functions/load_libraries_v003.R' )      # Load R packages ...
 #
-source('~/R-Projects/Rsource/plot_diagnostics_v001.R')
+
 ```
 
 ```{r load_functions}
@@ -33,41 +29,9 @@ source('~/R-Projects/Rsource/plot_diagnostics_v001.R') # Plot idagnostics ...
 
 ```{r compute_dates}
 #
-dates <- compute_dates()                         # Compute dates ...
-#
+dates <- compute_dates()                               # Compute dates lilely to be
+                                                       # used most often ...
 ```
-
-```{r impute_missing_values}
-#
-aregImpute( mph ~ miles + hours + pace + gain + kcal, 
-          walks_180, 
-           n.impute=10, 
-           nk=, 
-          tlinear=TRUE, type='regression',
-         curtail=TRUE, boot.method='simple',
-         burnin=3, 
-         x=FALSE, 
-         pr=TRUE,
-         plotTrans=TRUE, 
-         tolerance=NULL, 
-         B=75 )
-
-#
-```
-
-
-```{r get_180_days walks}
-#
-file_path <- file.path( "data",                  # Set file path ...
-                        "walks.csv" )
-#
-walks_all <- get_walks( file_path )              # Get all walks ...
-#
-# 
-wals_180 <-
-    walks_all %>%
-     filter( date > dates$date_180_days_ago ) %>% # Keep only days that are less than
-                                                  # or equal to 180 days old ...
-     filter( walked == 1 )                        # on days where a walked occured ...
-#
-```
+# used most often ...
+#                
+`
