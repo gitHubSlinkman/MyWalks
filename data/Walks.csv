@@ -472,3 +472,4 @@ id,chr_date,walked,missed_reason,route,start_hour,miles,steps,hours,mph,laps,mpl
 471,20191214,1,,Stovall Park,14,4.46,8592,1.12,3.99,4,1.12,15.08,70,398,15.28,15.07,14.97,15.05,14.88,,,,2,1,Samsung A50,MapMyWalk,0,
 472,20191215,1,,River Legacy Park  West,15,4.25,8423,1.12,3.81,1,4.25,15.88,93,377,15.70,16.05,15.80,16.02,15.42,,,,0,2,Samsung A50,MapMyWalk,0,
 473,20191216,1,,Parks Mall - Mostly inside,09,2.89,6170,0.88,3.27,2,1.45,18.30,42,249,17.07,19.02,18.93,,,,,,0,0,Samsung A50,MapMyWalk,0,
+474,20191217,1,,Vandergriff Park,14,2.77,5444,0.72,3.87,1,2.77,15.67,0,246,15.73,15.57,15.62,,,,,,0,0,Samsung A50,MapMyWalk,0,
