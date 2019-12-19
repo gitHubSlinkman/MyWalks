@@ -395,6 +395,6 @@ predictions %>%
  
  
  
-We interpret the above tables as follows.  On a randomly selected walk the mean walking distance is `r predictions$forcast[4]` miles.  There is a 95% probability that the walk will be between `r predictions$lower` and `r predictions$upper` miles.  This may seem like a wide interval.  
+We interpret the above tables as follows.  On a randomly selected walk the mean walking distance is `r predictions$forcast[4]` miles.  There is a 95% probability that the walk will be between `r predictions$lower[4]` and `r predictions$upper[]` miles.  This may seem like a wide interval.  
 
 This is due to some short walks I took six months ago which inflated the standard deviation of the error.  The length of different routes alks varies widely and this also increases the standard deviation.
