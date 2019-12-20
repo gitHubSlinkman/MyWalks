@@ -337,10 +337,10 @@ probability <-  c( 0.50, 0.75, 0.90,              # Define probabilities for
 z  <- abs( qnorm(  ( 1 - probability )/ 2,        # Compute normal quantiles 
                     lower.tail = TRUE ) )         # for prediction intervals.
 
-forecast <- rep(  mean_value, 
+forecast <- rep(  round( mean_value, 2), 
                   length( z ))
 
-error_bound <- std * z                           # Compute prediction interval
+error_bound <- round( std * z, 2)                # Compute prediction interval
                                                  # error bould.
 
 lower       <- mean_value - error_bound          # Compute ulower and upper 
@@ -395,6 +395,6 @@ predictions %>%
  
  
  
-We interpret the above tables as follows.  On a randomly selected walk the mean walking distance is `r predictions$forcast[4]` miles.  There is a 95% probability that the walk will be between `r predictions$lower[4]` and `r predictions$upper[]` miles.  This may seem like a wide interval.  
+We interpret the above tables as follows.  On a randomly selected walk the mean walking distance is `r predictions$forcast[4]` miles.  There is a 95% probability that the walk will be between `r predictions$lower[4]` and `r predictions$upper[[4]]`  miles.  
 
-This is due to some short walks I took six months ago which inflated the standard deviation of the error.  The length of different routes alks varies widely and this also increases the standard deviation.
+This may seem like a wide interval. This is due to some short walks I took six months ago which inflated the standard deviation of the error.  The length of different routes alks varies widely and this also increases the standard deviation.
