@@ -140,7 +140,7 @@ plot_distribution( values, "Miles", "Density Histogram and plot" )
 
 ```
 
-### Normal antiquate-quantile plot of miles
+### Normal quantile-quantile plot of miles
 
 ```{r draw_variable_qq_plot}
 

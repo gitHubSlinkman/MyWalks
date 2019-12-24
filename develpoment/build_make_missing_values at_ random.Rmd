@@ -1,0 +1,28 @@
+---
+title: "Development make_missing_values_at_random"
+author: "by Craig W. Slinkman"
+date: "12/21/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Function
+
+```{r define_function}
+#
+make_missing_values_at_random <- 
+    function( data, variables,  )
+#
+```c_names = c("age","bmi")
+prc_missing = 0.20
+n_remove = prc_missing * nrow(data)
+
+## Test
+
+```{r test_function}
+
+```
+
