@@ -9,16 +9,19 @@ library( lubridate )
 
 compute_dates <- 
     function(){
-        date_000_days_ago <- as.Date( today() )
-        date_007_days_ago <- as.Date(  date_000_days_ago -   7 )
-        date_030_days_ago <- as.Date(  date_000_days_ago -  30 )
-        date_090_days_ago <- as.Date ( date_000_days_ago -  90 )
-        date_180_days_ago <- as.Date ( date_000_days_ago - 180 )
-        date_365_days_ago <- as.Date ( date_000_days_ago - 365 )
-        
-        tibble( date_000_days_ago,
-                date_007_days_ago,
-                date_090_days_ago,
-                date_180_days_ago,
-                date_365_days_ago )
+        today          <- as.Date( today() )
+        minus_007_days <- as.Date(  today -   7 )
+        minus_030_days <- as.Date(  today -  30 )
+        minus_060_days <- as.Date (today -  90 )
+        minus_090_days <- as.Date ( today - 180 )
+        minus_365_days <- as.Date ( today - 365 )
+
+        tibble( today,
+                minus_007_days,
+                minus_030_days,
+                minus_060_days,
+                minus_090_days,
+                minus_365_days
+        )
     }
+#

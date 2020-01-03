@@ -1,0 +1,41 @@
+---
+title: "scheuke_walks"
+author: "Craig W. Slinkman"
+date: "1/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_packages}
+#
+source('~/R-Projects/Rsource/load_packages_v003.R')
+#
+```
+
+```{r load_functions}
+#
+source('functions/compute_dates_v003.R')         # To compute dates ...
+source('functions/get_walks_v004.R')             # Used to read and join walks and
+                                                 # routes table ...
+#
+```
+
+```{r compute_dates}
+#
+dates <- compute_dates()                         # Compute useful dates ...
+#
+```
+
+```{r get_walks}
+#
+file_path <- file.path( "data",                  # Define file path ...
+                        "walks.csv" )
+#
+walks <- get_walks( file_path )                  # read walks.csv and routes.csv and
+                                                 # join files together by route ...
+#
+```
+
