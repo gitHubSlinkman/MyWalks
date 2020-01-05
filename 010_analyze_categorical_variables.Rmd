@@ -18,10 +18,10 @@ source( "functions/load_libraries_v003.R" )
 
 ```{r load_functions}
 #
-source( "functions/compute_dates_v003.R" )
-source( "functions/compute_totals_means_stds_v004.R" )
-source( "functions/get_walks_v004.R" )
-
+source('~/R-Projects/Rsource/compute_dates_v003.R')        # Compute useful dates ...
+source( "functions/compute_totals_means_stds_v004.R" )     # Compute means and totals 
+source( "functions/get_walks_v004.R" )                     # To get data ...
+#
 ```
 
 

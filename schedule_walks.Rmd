@@ -39,3 +39,10 @@ walks <- get_walks( file_path )                  # read walks.csv and routes.csv
 #
 ```
 
+```{r filter_walks}
+#
+walks %>% 
+    filter( )
+#
+```
+
