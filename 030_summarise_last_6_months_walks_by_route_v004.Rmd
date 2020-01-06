@@ -19,8 +19,8 @@ source( "functions/load_libraries_v003.R" )      # Load libraries ...
 
 ```{r load_functions}
 #
-source( "functions/compute_dates_v003.R" )       # To compute dates 
-source( "functions/get_walks_v004.R")            # Used to read walks.xlsx file ...
+source('~/R-Projects/Rsource/compute_dates_v003.R') # To compute dates 
+source( "functions/get_walks_v004.R")               # To read walks.xlsx file ...
 #       
 ```
 
