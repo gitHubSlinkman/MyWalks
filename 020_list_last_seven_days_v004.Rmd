@@ -18,7 +18,7 @@ source('~/R-Projects/Rsource/load_packages_v003.R')
 
 ```{r load_functions}
 #
-source('~/R-Projects/Rsource/compute_dates_v003.R')   # To compute needed dates ...              
+source('~/R-Projects/Rsource/compute_dates_v003.R')   # To compute needed dates ...          
 
 source( "functions/get_walks_v004.R" )                # To get walks and compute
                                                       # derived walk data ...
@@ -27,8 +27,7 @@ source( "functions/compute_totals_means_stds_v004.R") #  Computes totals, means,
 #                                                     # and standard deviations
 #
 source('functions/compute_summary_statistics_v001.R') # Compute totals, means, and
-                                                      # standard devviations ...
-#
+                                                      # standard devviations ...#
 source('~/R-Projects/Rsource/capitalize_first_letter_v001.R')
 ```
 
