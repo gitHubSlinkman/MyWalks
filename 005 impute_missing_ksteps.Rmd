@@ -37,6 +37,9 @@ source('~/R-Projects/MyWalks/functions/get_walks_v004.R')  # To get walks data .
 source('~/R-Projects/Rsource/plot_distribution.R')         # To draw histigram and
                                                            # density diagram
 #
+source('~/R-Projects/Rsource/plot_qq_norm.R')              # To draw normal QQ plot
+                                                           # of residuals ...
+#
 ```
  
 ## Compute the partition date 
@@ -135,9 +138,9 @@ The line looks approximately linear because the slight upper word curvature does
 
 ```{r fita_model}
 #
-fit <- lm( ksteps ~ miles, 
-           data = non_missing_ksteps )
-summary(fit)
+ls_fit <- lm( ksteps ~ miles, 
+              data = non_missing_ksteps )
+summary(ls_fit)
 #
 ```
  
@@ -146,9 +149,9 @@ summary(fit)
 library( broom )                                 # To augment fitted model with
 #                                                # dianostice ...
 #
-fit_diagnostics <- augment( fit )                # Suppliment fitted diuagnostocs with
-                                                 # fitted diagnostics ...
-fit_diagnostics 
+ls_fit_diagnostics <- augment( ls_fit )          # Suppliment model statiostics with 
+                                                 # additional  diagnostics ...
+ls_fit_diagnostics 
 ```
  
 ### Plot studebtized residuakls versus predicted values 
@@ -164,7 +167,7 @@ library(lindia)
 ### Plot residuals versus fitted
 ```{r draw_residdual versus fitted plot}
 #
-gg_resfitted( fit )
+gg_resfitted( ls_fit )
 #
 ```
 
@@ -175,21 +178,29 @@ Whie there appear to be outliers in the middle of the plot of resiiduals versus 
 
 ```{r draw_scle_location_plot}
 #
-gg_scalelocation( fit )
+gg_scalelocation( ls_fit )
 #
 ```
 
 ## Draw box plot of residuals 
 
-```{r draw_boxplot}
+```{r draw_histogran_of_ressiduals}
 #
-plot_distribution( fit_diagnostics$.resid,
+plot_distribution( ls_fit_diagnostics$.resid,
                    "Residuals",
                    "Residual Distribution")
 #
 ```
 
+## Draw QQ normal plot of residuals 
 
+```{r draw_qq_plot}
+#
+plot_qq_norm( ls_fit_diagnostics$.resid,
+              variable_name = "residuals",
+              plot_title = "Residual normal QQ plot")
+#
+```
 
 
 
