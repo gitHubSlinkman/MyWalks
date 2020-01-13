@@ -59,7 +59,7 @@ older_walks <-
 
 younger_walks <- 
     walks %>% 
-        filter( date >= date_partition )
+        filter( date > date_partition )
 #
 ```
 
