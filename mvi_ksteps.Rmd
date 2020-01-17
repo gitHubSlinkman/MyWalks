@@ -1,0 +1,138 @@
+---
+title: "Missing values imputation using linear regression."
+author: "by Craig W. Slinkman"
+date: "11/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Load libraries
+
+```{r load packages}
+#
+source( 'functions/load_libraries_v003.R' )      # Load R packages ...
+#
+
+```
+
+```{r load_functions}
+#
+source('~/R-Projects/Rsource/compute_dates_v004.R')    # Computes useful dates ...
+source( 'functions/get_walks_v004.R' )                 # Load function to read ...
+                                                       # walks ...
+source('~/R-Projects/Rsource/plot_diagnostics_v001.R') # Plot idagnostics ...
+#
+```
+
+```{r compute_dates}
+#
+dates <- compute_dates()                               # Compute dates lilely to be
+                                                       # used most often ...
+#
+```
+              
+### Analysis dates 
+
+This analysis is based on date from **`r dates$date_180_days_ago`** through **`r dates$date_000_days_ago`**.
+
+## Read data 
+
+```{r read_data}
+#
+file_path <- file.path("data",                        # Build file_path
+                       "walks.csv" )
+#
+all_walks <- get_walks( file_path )                   # Get walks ...
+#
+```
+
+### Number of days in file.
+
+There are `r dim( all_walks )[1]` days recored in the $walks.csv$ file. 
+
+Note that the entries in the walk file are days not walks.  This is to allow us to record days when there is no walk taken. 
+
+## Getting all walks less than 180 days old 
+
+```{r filter_walk}
+
+recent_walks <- 
+    all_walks %>% 
+        filter( date > dates$date_180_days_ago )
+```
+
+There are `r dim(recent_walks)[1]` days in the recent walks.  After 180 days this number should be 180 or 179 if a walk has not been taken on the last day.
+
+## Remove days with no walks
+
+```{r remove_no_walks}
+#
+recent_walks <- 
+    recent_walks %>% 
+        filter( walked == 1 )
+#
+```
+
+## Remove row where $miles$ is missing
+
+```{r remove_missing_miles}
+#
+recent_walks <- 
+    recent_walks %>% 
+        filter( !is.na(miles) )
+
+```
+
+
+## Determine days where $ksteps$ is missing 
+
+Here we partitione the recent_walks into two subsets.  Days where the variable $ksteps$ is missing and days where $ksteps$ is not missing.
+
+```{r partion_by_missing_ksteps}
+
+missing <-                                       # Make a tibble that contians rows
+    recent_walks %>%                             # where ksteps is missing
+        filter( is.na(ksteps))
+
+not_missing <-                                   # Make a tibble that contians rows
+    recent_walks %>%                             # where ksteps is not missing ...
+        filter( !is.na(ksteps))
+
+```
+
+
+### Scatterplot of $ksteps$ versus $miles$
+
+```{r draw_scatterplot( ksteps_miles)}
+#
+ggplot( not_missing,
+        aes( x=miles, y=ksteps, color=environment)) +
+    geom_point() +
+    geom_smooth( method="lm",
+                 color="blue" ) +
+    geom_smooth( merhod="loess",
+                  color="red")
+```
+
+## Fit OLS regression line
+
+ols_1 <- lm( ksteps ~ miles, 
+           data=not_missing )
+
+
+ols_2 <-  lm( ksteps ~ environment + miles,
+              data=not_missing )
+summary( ols_2 )
+
+ols_3 <- lm( ksteps ~ miles* environment,
+             data=not_missing )
+summary( ols_3 )
+
+ols_4 <- lm( ksteps ~  environment + miles* environment,
+             data=not_missing )
+summary( ols_4 )
+
+
