@@ -135,7 +135,6 @@ cols <- dim( report )[2]
                  bold=TRUE ) %>% 
         autofit()
 #
-
 ```
 
 #### End of report

@@ -118,7 +118,7 @@ ggplot( partition_by_age[1:2,],
 ```
 
 
-### Number of days walks mand and walks missed
+### Number of days walks made and walks missed
 
 ```{r plot_bar_chart_days_walks_made_and_missed}
 #
