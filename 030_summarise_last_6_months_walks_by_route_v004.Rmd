@@ -160,10 +160,10 @@ summary_by_route %>%
     align( j=1:13, align="left", part="header" ) %>% 
     bold( i=last_row, bold=TRUE, part="body" ) %>% 
     theme_zebra() %>% 
-    fontsize( size = 12, part = "all") %>% 
+    fontsize( size = 13, part = "all") %>% 
     autofit()
 #
 
 ```
 
-#### End of report
+#### ***End of report***
