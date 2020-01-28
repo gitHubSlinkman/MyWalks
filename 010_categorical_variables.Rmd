@@ -10,6 +10,15 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
+```{r set_control_variables}
+#
+use_Imputed_missing_values <- TRUE               # Shoud this script read the imputed
+                                                 # imputed missing variables files ...
+#
+```
+
+
+
 ```{r load_packages, echo=FALSE}
 #
 source( "functions/load_libraries_v003.R" )
@@ -40,18 +49,36 @@ date_partition <- dates$date_180_days_ago        # access date 6 months ago ...
 ```
 
 
-### Walks categorical analysis of walks for the interval from `r format_date( date_partition ) ` to `r format_date( date_current )`
+### Walks categorical analysis of walks for the interval from `r format_date( date_partition ) ` to `r format_date( date_current )
 
-#### Variable specifications
 
-The list below gives the variable specifications in the walks tibble:
+```{r determin_input_source}
 
-```{r get_walks}
+if ( use_Imputed_missing_values ) {
+     walks <- readRDS( "data/imputed_walks")
+} else {
+statement2
+}
 
-walks <- get_walks()                             # Get walks and routes join them
-                                                 # and compute derived variables ...
 
-spec(walks)                                      # Display variable specifcations
+#
+if( use_Imputed_missing_values )
+{ walks <- readRDS( "data/imputed_walks") }
+else
+    { 
+    
+
+        file_path <- file.path( getwd(), "data/Walks.csv" )
+        #
+        walks <- get_walks( file_path )
+#
+    
+}
+
+
+file_path <- file.path( getwd(), "data/Walks.csv" )
+#
+walks <- get_walks( file_path )
 #
 ```
 
@@ -59,7 +86,7 @@ spec(walks)                                      # Display variable specifcation
 #
 older_walks <- 
     walks %>% 
-        filter( date <= date_partition ) 
+        filter( date < date_partition ) 
 
 younger_walks <- 
     walks %>% 
@@ -197,15 +224,12 @@ younger_walks <-
             aes( x=fct_rev( younger_walks$route ))) +
         geom_bar( color="black",
                   fill="yellow" ) +
-        geom_text(stat='count', 
-                      aes(label=..count..),
-                      nudge_y=2 ) +
         scale_y_continuous( breaks=ticks,
                             labels=ticks ) +
-        xlab("Routes") +
-        ylab("Frequency") +
-        theme_cowplot() +
-        coord_flip()
+    xlab("Routes") +
+    ylab("Frequency") +
+    theme_cowplot() +
+    coord_flip()
 ```
 
 ### Walks by walking environment
@@ -242,7 +266,7 @@ The start hour is the hour that a walk started.  Because some of my walks are in
 
 ```{r plot_start_times}
 
-x_labels <- c( "09", "10", "11", "12",
+x_labels <- c( " 9", "10", "11", "12",
                "13", "14", "15", "16",
                "17", "18", "19", "20" )
 
@@ -251,50 +275,11 @@ younger_walks %>%
         ggplot( aes( x=start_hour)) +
             geom_bar( color="black",
                       fill="yellow" ) +
-            geom_text(stat='count', 
-                      aes(label=..count..),
-                      nudge_y=1 ) +
             xlab( "Rounded start hour" ) +
             ylab( "Frequency" ) +
             theme_cowplot()
 #
 ```
 
-## Meausrement device  
-Thhemeasuremebt device is the device used to measure and record the data generatedf by the walks.  It can be either a cell phine or a watch.
-
-```{r plot_device}
-
-younger_walks %>% 
-    remove_missing( na.rm=TRUE,
-                   vars="device") %>%
-         ggplot( aes( x = device )) +
-         geom_bar( color="black",
-                  fill="yellow" ) +
-         geom_text(stat='count', 
-                     aes(label=..count..),
-                     nudge_y=3 ) +
-         xlab( "Data recording device") +
-        ylab( " Frequency" )
-    
-```
-
-## Shoes worn
-
-```{r}
-#
-younger_walks %>% 
-    remove_missing( na.rm=TRUE,
-                   vars="shoes") %>%
-         ggplot( aes( x = shoes )) +
-         geom_bar( color="black",
-                  fill="yellow" ) +
-         geom_text(stat='count', 
-                     aes(label=..count..),
-                     nudge_y=3 ) +
-         xlab( "Shoes worn") +
-        ylab( " Frequency" )
-#
-```
 
 #### End of report

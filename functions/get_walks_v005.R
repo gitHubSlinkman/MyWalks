@@ -1,22 +1,33 @@
+# get_walks_v005.R
 #
-# get_walks_v004.R
-
+###############################################################################
+# The function reads the walks and routes csv files and left joins them. It
+# then computes derived variables and returns the tibble to the calling
+# program.
+###############################################################################
+#
+#
 library(tidyverse)                              # I live in the tidyverse ...
 library(lubridate)                              # For date arthimetic ...
 library(readr)                                  # to read csv files ...
 
-get_walks <- function( file_path )
+get_walks <- function()                         # Start of function definition ...                  
 {
+    file_path <- file.path( "data",             # Define path to walks.csv ...
+                              "walks.csv" )
 
-    walks <- read_csv( file_path )               # read walks data from csv
-                                                 # files
+    walks <- read_csv( file_path,                # read walks data from csv
+                       col_types = cols())       # files
     #
     file_path <- file.path( "data",              # Construct file path to routes ...
-                            "routes.csv")    
-    routes <- read_csv( file_path )              # Get routes.csv file ...
+                            "routes.csv")   
+    #
+    routes <- read_csv( file_path,                # Get routes.csv file ...
+                        col_types=cols())             
     
     walks <- left_join( walks,                   # Left join walks and routes ...
-                        routes )
+                        routes, 
+                        col_types = cols())
     walks$start_hour <-                          # Convert start_hour to 
         as.character( walks$start_hour )         # character ...
     
@@ -27,7 +38,7 @@ get_walks <- function( file_path )
     
     walks$date <- ymd( walks$chr_date,           # Convert character to
                        tz=NULL )                 # Date object ...
-    walks#date <- as.Date( walks$date )          # Ensire date has no time
+    walks$date <- as.Date( walks$date )          # Ensire date has no time
                                                  # components ...
     
     walks$year  <- year(  walks$date )           # Extract year from date ...
@@ -59,11 +70,8 @@ get_walks <- function( file_path )
                 miles,
                 ksteps,
                 hours,
-                mph:reason )
- 
- pass_back
-          
-}
+                mph:shoes )
+ #
+    pass_back                                    # Return tibble ...
+}                     
 #
-
-

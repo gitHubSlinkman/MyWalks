@@ -26,7 +26,7 @@ source( 'functions/load_libraries_v003.R' )      # Load R packages ...
 ```{r load_functions}
 #
 source('~/R-Projects/Rsource/compute_dates_v004.R')    # Computes useful dates ...
-source( 'functions/get_walks_v004.R' )                 # Load function to read ...
+source( 'functions/get_walks_v005.R' )                 # Load function to read ...
                                                        # walks ...
 source('~/R-Projects/Rsource/plot_diagnostics_v001.R') # Plot idagnostics ...
 #
@@ -46,11 +46,8 @@ This analysis is based on date from **`r dates$date_180_days_ago`** through **`r
 ## Read data 
 
 ```{r read_data}
-#
-file_path <- file.path("data",                        # Build file_path
-                       "walks.csv" )
-#
-all_walks <- get_walks( file_path )                   # Get walks ...
+
+all_walks <- get_walks()                         # Get walks ...
 #
 ```
 
@@ -282,6 +279,6 @@ imputed_walks <- bind_rows( not_missing, missing) %>%
 
 ```{r}
 saveRDS( imputed_walks, 
-         file="data/imputed_walks")
+         file="data/imputed_walks.RDS")
 ```
 
