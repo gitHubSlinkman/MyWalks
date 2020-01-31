@@ -1,7 +1,6 @@
-# get_walks_v005.R
-#
+# get_days
 ###############################################################################
-# The function reads the walks and routes csv files and left joins them. It
+# The function reads the days and routes csv files and left joins them. It
 # then computes derived variables and returns the tibble to the calling
 # program.
 ###############################################################################
@@ -14,7 +13,7 @@ library(readr)                                  # to read csv files ...
 get_walks <- function()                         # Start of function definition ...                  
 {
     file_path <- file.path( "data",             # Define path to walks.csv ...
-                              "walks.csv" )
+                              "days.csv" )
 
     walks <- read_csv( file_path,                # read walks data from csv
                        col_types = cols())       # files
@@ -52,8 +51,8 @@ get_walks <- function()                         # Start of function definition .
     
     
  
- pass_back <-                                   # Pass wanted variables back to
-    walks %>%                                   # calling entity ...                              
+temo <-                                   # Pass wanted variables back to
+   days %>%                                   # calling entity ...                              
         select( id,                              
                 date,                            
                 year,                           
@@ -73,5 +72,5 @@ get_walks <- function()                         # Start of function definition .
                 mph:shoes )
  #
     pass_back                                    # Return tibble ...
-}                     
+    }                     
 #

@@ -26,9 +26,10 @@ source( 'functions/load_libraries_v003.R' )      # Load R packages ...
 ```{r load_functions}
 #
 source('~/R-Projects/Rsource/compute_dates_v004.R')    # Computes useful dates ...
-source( 'functions/get_walks_v005.R' )                 # Load function to read ...
-                                                       # walks ...
-source('~/R-Projects/Rsource/plot_diagnostics_v001.R') # Plot idagnostics ...
+source( 'functions/get_days_v006.R' )                  # Load function to read ...
+                                                       # walks and compute derived
+                                                       # variables ...
+source('~/R-Projects/Rsource/plot_diagnostics_v001.R') # Plot diagnostics ...
 #
 ```
 
@@ -46,34 +47,40 @@ This analysis is based on date from **`r dates$date_180_days_ago`** through **`r
 ## Read data 
 
 ```{r read_data}
-
-all_walks <- get_walks()                         # Get walks ...
+#
+all_days <- get_days()                         # Get days ...
 #
 ```
 
 ### Number of days in file.
 
-There are `r dim( all_walks )[1]` days recorded in the $walks.csv$ file. 
-
-Note that the entries in the walk file are days not walks.  This is to allow us to record days when there is no walk taken. 
+There are `r dim( all_days )[1]` days recorded in the $walks.csv$ file. 
 
 ## Getting all walks less than 180 days old 
 
 ```{r filter_walk}
+#
+partition_date <- as.Date( dates$date_180_days_ago + 1 )
 
-recent_walks <- 
-    all_walks %>% 
-        filter( date > dates$date_180_days_ago )
+
+recent_days <-                                  # Get last 180 days walks ...
+    all_days %>% 
+        filter( date > partition_date ) 
+                
 ```
 
-There are `r dim(recent_walks)[1]` days in the recent walks.  After 180 days this number should be 180 or 179 if a walk has not been taken on the last day.
+There are `r dim(recent_days)[1]` days in the recent walks.  After 180 days this number should be 180 or 179 if a walk has not been taken on the last day.
 
 ## Remove days with no walks
 
 ```{r remove_no_walks}
 #
-recent_walks <- 
-    recent_walks %>% 
+no_walk_days <-                                      # Get days with no walks ...
+    recent_days %>% 
+        filter( walked == 0 )
+
+recent_walk_days <- 
+    recent_days %>% 
         filter( walked == 1 )
 #
 ```
@@ -82,8 +89,8 @@ recent_walks <-
 
 ```{r remove_missing_miles}
 #
-recent_walks <- 
-    recent_walks %>% 
+recent_walk_days <-                              # Filter out days where 
+    recent_walk_days %>%                         # is missing 
         filter( !is.na(miles) )
 
 ```
@@ -96,11 +103,11 @@ Here we partition the recent_walks into two subsets.  Days where the variable $k
 ```{r partion_by_missing_ksteps}
 
 missing <-                                       # Make a tibble that contians rows
-    recent_walks %>%                             # where ksteps is missing
+    recent_days %>%                             # where ksteps is missing
         filter( is.na(ksteps))
 
 not_missing <-                                   # Make a tibble that contians rows
-    recent_walks %>%                             # where ksteps is not missing ...
+    recent_days %>%                             # where ksteps is not missing ...
         filter( !is.na(ksteps))
 
 ```
@@ -257,7 +264,7 @@ We the selected fitted model is $ols_4$.
 
 ## Make predictions
 
-```{r impute values}
+```{r impute_values}
 #
 imputed_values <- predict( ols_4, 
                            newdata=missing )
@@ -269,7 +276,9 @@ tibble( miles = missing$miles,
 
 missing$ksteps <- imputed_values
 
-imputed_walks <- bind_rows( not_missing, missing) %>% 
+imputed_days <- bind_rows(  not_missing, 
+                            missing,
+                            no_walk_days ) %>% 
         arrange( id )
 
 ```
@@ -278,7 +287,8 @@ imputed_walks <- bind_rows( not_missing, missing) %>%
 ## Save walks data
 
 ```{r}
-saveRDS( imputed_walks, 
-         file="data/imputed_walks.RDS")
+save( imputed_days, 
+         file="data/imputed_days.rds",
+         ascii = FALSE )
 ```
 

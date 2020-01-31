@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r set_control_variables}
 #
-use_Imputed_missing_values <- TRUE               # Shoud this script read the imputed
+use_Imputed_missing_values <- FALSE               # Shoud this script read the imputed
                                                  # imputed missing variables files ...
 #
 ```
@@ -28,8 +28,6 @@ source( "functions/load_libraries_v003.R" )
 ```{r load_functions}
 #
 source('~/R-Projects/Rsource/compute_dates_v003.R')        # Compute useful dates ...
-source( "functions/compute_totals_means_stds_v004.R" )     # Compute means and totals 
-source( "functions/get_walks_v004.R" )                     # To get data ...
 #
 ```
 
@@ -42,244 +40,21 @@ format_date <-                                   # Function to format dates
         format( unformated_date, "%Y-%m%-%d" )
     } 
         
-dates          <- compute_dates()                # Compute dates ...
-date_current   <- dates$date_000_days_ago        # Access current date ...
-date_partition <- dates$date_180_days_ago        # access date 6 months ago ...
+dates          <- compute_dates()                          # Compute dates ...
+date_current   <- dates$date_000_days_ago                  # Access current date ...
+date_partition <- dates$date_180_days_ago + 1              # Compute partition          
+                                                           # date ...
 #
 ```
 
-
-### Walks categorical analysis of walks for the interval from `r format_date( date_partition ) ` to `r format_date( date_current )
-
-
-```{r determin_input_source}
-
-if ( use_Imputed_missing_values ) {
-     walks <- readRDS( "data/imputed_walks")
-} else {
-statement2
-}
-
-
+```{r get_data}
 #
-if( use_Imputed_missing_values )
-{ walks <- readRDS( "data/imputed_walks") }
-else
-    { 
-    
-
-        file_path <- file.path( getwd(), "data/Walks.csv" )
-        #
-        walks <- get_walks( file_path )
-#
-    
-}
-
-
-file_path <- file.path( getwd(), "data/Walks.csv" )
-#
-walks <- get_walks( file_path )
-#
-```
-
-```{r partition_walks_by_age}
-#
-older_walks <- 
-    walks %>% 
-        filter( date < date_partition ) 
-
-younger_walks <- 
-    walks %>% 
-        filter( date > date_partition )
-#
-```
-
-```{r build partition_age_table}
-
-Age <- c( "Older than 180 days",
-          "Younger than or equal 180 days",
-          "All days walks")
-
-Frequency <- c( dim( older_walks )[1],
-                dim( younger_walks )[1],
-                dim(walks)[1] )
-
-Percent <- round( 100 * Frequency / Frequency[3], 1 )
-
-partition_by_age <- tibble( Age, Frequency, Percent)
-
-```
-
-### Partition all walks by age
-
-We define walks older than 180 days are older walks and are not used in this analysis.  Walks less than or equal to 180 days old we define to be younger walks.
-
-```{r display_partition_by_age}
-
-partition_by_age %>% 
-    regulartable() %>% 
-    fontsize( size=14, part="all" ) %>% 
-    colformat_num( col_keys="Percent",
-                   digits = 1 ) %>% 
-    width( j=1, 32 ) %>% 
-    autofit()
-#     
-```
-
-### plot walks by older and younger walks 
-
-```{r plot_age_partition}
-#
-n     <- Frequency[3]
-
-
-ticks <- seq( from=0, to=ceiling( 1.25*n  ), by=20 )
-
-
-ggplot( partition_by_age[1:2,],
-        aes( x=Age, y=Frequency )) +
-    geom_bar( stat="identity",
-              width=0.30,
-              color="black",
-              fill="yellow" ) +
-    scale_y_continuous( breaks=ticks, 
-                        labels=ticks ) +
-    theme_cowplot()
-#
-```
-
-
-### Number of days walks made and walks missed
-
-```{r plot_bar_chart_days_walks_made_and_missed}
-#
-y_breaks <- seq( from=0, to=200, by=20 )
-y_labels <- sprintf( "%3.0f", y_breaks )
-
-younger_walks %>% 
-    mutate( walked = ifelse( walked == 1, 
-                             "Walked",
-                             "Missed Walk")) %>% 
-    ggplot( aes( x=walked )) +
-        geom_bar( color="black",
-                  fill="yellow") +
-        geom_text(stat='count', 
-                  aes(label=..count..), 
-                  vjust=-1) +
-       xlab( "Days activity") +
-       scale_y_continuous( name="Counts",
-                           breaks=y_breaks, 
-                           labels=y_labels,
-                           expand=expand_scale() ) +
-     coord_cartesian(ylim=c(0,180)) +
-    theme_cowplot() 
-#
+file_path <- file.path( "data",
+                        "imputed_walks.rds" )             # Set file path ... 
+load( file_path )
+# 
 ```
 
 
 
-```{r tabilate_missed_reasons}
-#
-reasons <-
-    younger_walks %>% 
-        filter( walked == 0 ) %>% 
-        select(  missed_reason )
-#
-```
 
-### Tabulation of reasons for missing walks
-
-```{r plot_missed_reasons }
-
-ticks <- seq( from=0, to=32, by=2 )
-
-ggplot( reasons,
-        aes( x= fct_rev( reasons$missed_reason ))) +
-    geom_bar( color="black",
-              fill="yellow" ) +
-    scale_y_continuous( breaks=ticks,
-                        labels=ticks ) +
-    xlab( "Reason for missed walk") +
-    ylab( "Frequency" ) +
-    coord_flip() +
-    theme_cowplot()
-
-```
-
-### Routes walked
-
-This section of report gives all the routes walked during the last 180 days.  Not all
-routes listed on this report are in use and will disappear as they age.
-
-```{r plot_routes_walked}
-#
-
-ticks <- seq( from=0, to=256, by=2 )
-
-younger_walks <- 
-    younger_walks %>% 
-        filter( walked == 1)
-    
-    ggplot( younger_walks,
-            aes( x=fct_rev( younger_walks$route ))) +
-        geom_bar( color="black",
-                  fill="yellow" ) +
-        scale_y_continuous( breaks=ticks,
-                            labels=ticks ) +
-    xlab("Routes") +
-    ylab("Frequency") +
-    theme_cowplot() +
-    coord_flip()
-```
-
-### Walks by walking environment
-
-```{r plot_walking_environment}
-#
-
-y_axis <- seq(from=0, to=100, by=10 )
-y_labels <- as.character( y_axis )
-
-younger_walks %>% 
-    filter( !is.na(environment) ) %>% 
-        ggplot( aes( x= environment ) ) +
-            geom_bar( color="black",
-                            fill="yellow" ) +
-            geom_text(stat='count', 
-                      aes(label=..count..),
-                      nudge_y=2 ) +
-            scale_y_continuous( name="Frequency",
-                                breaks = y_axis,
-                                labels = y_labels ) +
-            xlab( "Walking environment" )
-           
-
-
-#
-```
-
-Note that the environment of both includes a walk that is mainlu inside but contains a route that is partially outside.
-
-### Walks start times
-
-The start hour is the hour that a walk started.  Because some of my walks are inside the Parks Mall in Arlington Texas congestion can slow me down.  This leads to seasonality in some of the data.  The day o the walk and the start_time effect speed and any of the variables that are functions of speed.  
-
-```{r plot_start_times}
-
-x_labels <- c( " 9", "10", "11", "12",
-               "13", "14", "15", "16",
-               "17", "18", "19", "20" )
-
-younger_walks %>% 
-    filter( !is.na( start_hour )) %>% 
-        ggplot( aes( x=start_hour)) +
-            geom_bar( color="black",
-                      fill="yellow" ) +
-            xlab( "Rounded start hour" ) +
-            ylab( "Frequency" ) +
-            theme_cowplot()
-#
-```
-
-
-#### End of report
