@@ -1,0 +1,123 @@
+---
+title: "Walks Analysis: Categorical variables"
+author: "by Craig W. Slinkman"
+date: "July 23, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r set_control_variables}
+#
+use_Imputed_missing_values <- FALSE               # Shoud this script read the imputed
+                                                  # imputed missing variables files ...
+
+library( grid )                                   # This packages enable use to display
+library( gridExtra )                              # small tables with graphic output
+#
+```
+
+
+
+```{r load_packages, echo=FALSE}
+#
+source( "functions/load_libraries_v003.R" )
+#
+```
+
+```{r load_functions}
+#
+source('~/R-Projects/Rsource/compute_dates_v004.R')        # To compute dates ...
+source('functions/display_selected_days_v001.R')          # To d isplay days  ...
+#
+```
+
+
+```{r display_period, echo=FALSE}
+#
+
+format_date <-                                   # Function to format dates 
+    function( unformated_date ){
+        format( unformated_date, "%Y-%m%-%d" )
+    } 
+        
+dates          <- compute_dates()                          # Compute dates ...
+date_current   <- dates$date_000_days_ago                  # Access current date ...
+date_partition <- dates$date_180_days_ago + 1              # Compute partition          
+                                                           # date ...
+#
+```
+
+```{r get_data}
+#
+file_path <- file.path( "data",                           # Set file path ...
+                        "imputed_days.rds" ) 
+#
+load( file_path )                                         # Load days object ...
+# 
+```
+
+### Display dFirst 10 observation inn last 180 days 
+
+#### First 10 observations
+
+```{r display_first_10}
+
+days <- imputed_days[ 1:10, c(1,2,6:14)]                  # First 10 observations in
+                                                          # last 180 days ...
+display_selected_days( days )
+            
+    
+
+
+```
+
+#### Last 10 days of the last 180 days 
+
+
+```{r display_last_10_days}
+#
+to <- dim( imputed_days )[1]                  # Number of last row ...
+from <- to - 10 + 1                           # Number of 10 rows drom to ...
+
+days <- imputed_days[ from:to, c(1,2,6:14)] 
+
+display_selected_days( days )                 # Display as flextable ...
+
+days <- imputed_days[ from:to, c(1,2,6:14)]
+```
+ 
+### Days walked and missed 
+
+```{r plot_barchars_od Missed_walks and walks}
+#
+
+
+to   <- dim( imputed_days )[1]
+from <- to - 180 + 1
+
+days <- imputed_days[from:to, c(1,2,6:14)]
+
+y_scale = seq( from=0,to=180, by=10 )
+y_labels = y_scale
+
+days %>% 
+    mutate( Walked = ifelse( walked == 1,
+                             "Yes", "No")) %>% 
+    ggplot( aes( x = Walked )) + 
+        geom_bar( color="blue",
+                  fill="yellow" ) +
+        geom_text(stat='count', 
+                  aes(label=..count..), vjust=-1) +
+    scale_y_continuous( "Frequency",
+                        breaks = y_scale,
+                        labels= y_scale) +
+    coord_cartesian(ylim=c(0, 180))
+#
+```
+
+
+

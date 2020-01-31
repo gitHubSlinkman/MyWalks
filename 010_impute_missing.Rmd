@@ -277,12 +277,12 @@ tibble( miles = missing$miles,
 missing$ksteps <- imputed_values
 
 imputed_days <- bind_rows(  not_missing, 
-                            missing,
-                            no_walk_days ) %>% 
+                            missing  ) %>% 
         arrange( id )
 
 ```
 
+There are `r dim( imputed_days )[1]` days in the imputed_walks file.
 
 ## Save walks data
 
