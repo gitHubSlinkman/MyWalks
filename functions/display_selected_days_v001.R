@@ -18,7 +18,7 @@ display_selected_days <-
                     environment) %>% 
             
             flextable() %>% 
-            width( j = 2, 2.0 ) %>% 
+            width( j = 2, 2.5 ) %>% 
             width( j = 8, 3.0 ) %>% 
             colformat_num( j = 6,
                            big.mark = ",",

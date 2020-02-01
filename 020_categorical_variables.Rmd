@@ -12,11 +12,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r set_control_variables}
 #
-use_Imputed_missing_values <- FALSE               # Shoud this script read the imputed
-                                                  # imputed missing variables files ...
 
-library( grid )                                   # This packages enable use to display
-library( gridExtra )                              # small tables with graphic output
+
 #
 ```
 
@@ -31,7 +28,10 @@ source( "functions/load_libraries_v003.R" )
 ```{r load_functions}
 #
 source('~/R-Projects/Rsource/compute_dates_v004.R')        # To compute dates ...
-source('functions/display_selected_days_v001.R')          # To d isplay days  ...
+source('functions/display_selected_days_v001.R')           # To d splay days  ...
+#
+library( grid )                                   # This packages enable use to display
+library( gridExtra )                              # small tables with graphic output
 #
 ```
 
@@ -118,6 +118,90 @@ days %>%
     coord_cartesian(ylim=c(0, 180))
 #
 ```
+
+
+### Reasons for days without walks 
+
+```{r draw_parchart_of_reasons_for_no_walks}
+#
+y_scale <- seq( from=0, to=50, by=2 )
+#
+days %>% 
+    filter( walked == 0 ) %>% 
+        ggplot( aes( x= missed_reason )) +
+            geom_bar( color="black",
+                      fill="red") +
+             geom_text( stat='count', 
+                        aes(label=..count..), vjust=-1) +
+               xlab( "Reason for missing walk" ) +
+               ylab( "Frequency" ) +
+               theme(axis.text.x=element_text(angle = -90, hjust = 0))
+#
+```
+
+## Weather conditions
+
+```{r plot_bar_chart_weather}
+#
+weather_tabulation  <-                           # Count weather occurences
+    days %>%  
+        filter( !is.na( weather ) == 1 ) %>% 
+            group_by( weather ) %>% 
+                tally()
+#
+max_frequency <- max( weather_tabulation$n )    # Determine maxoccurences
+#
+days %>% 
+    filter( !is.na( weather )) %>% 
+    ggplot( aes( x = weather )) +
+        geom_bar( color="black",
+                  fill="blue") +
+         geom_text( stat='count', 
+                        aes(label=..count..), vjust=-1) +
+        coord_cartesian(ylim = c(0, max_frequency + 2)) +
+        xlab( "Weather") +
+        ylab( "Frequency" ) +
+        theme_cowplot() +
+       theme(axis.text.x=element_text(angle = -90, hjust = 0))
+
+
+```
+ 
+## Routes walked 
+ 
+```{r plot_routes_walked}
+#
+route_tabulation  <-                           # Count weather occurences
+    days %>%  
+        filter( !is.na( route ) == 1 ) %>% 
+            group_by( route ) %>% 
+                tally()
+#
+max_route <- max(route_tabulation$n )
+
+days %>% 
+    filter( walked == 1 ) %>% 
+        ggplot(  aes( x = route) ) +
+            geom_bar( color="black",
+                      fill = "yellow") +            
+            geom_text( stat='count', 
+                        aes(label=..count..), vjust=-1) +
+            coord_cartesian(ylim = c(0, max_route + 4)) +
+            theme_cowplot() +
+            theme(axis.text.x=element_text(angle = -90, hjust = 0))
+#
+```
+
+### Instrumentation 
+
+```{r plot_barchart_}
+
+```
+
+
+
+
+
 
 
 
