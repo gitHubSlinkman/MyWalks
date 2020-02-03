@@ -31,6 +31,8 @@ source( 'functions/get_days_v006.R' )                  # Load function to read .
                                                        # variables ...
 source('~/R-Projects/Rsource/plot_diagnostics_v001.R') # Plot diagnostics ...
 #
+source('~/R-Projects/Rsource/plot_diagnostics_v001.R') # To perform graphical
+                                                       # diagnostic analysis ...
 ```
 
 ```{r compute_dates}
@@ -102,7 +104,7 @@ Here we partition the recent_walks into two subsets.  Days where the variable $k
 
 ```{r partion_by_missing_ksteps}
 
-missing_ksteps <-                                       # Make a tibble that contians rows
+missing_ksteps <-                             # Make a tibble that contians rows
     walk_days %>%                             # where ksteps is missing
         filter( is.na(ksteps))
 
@@ -113,7 +115,7 @@ not_missing_ksteps <-                                   # Make a tibble that con
 ```
 
 
-### Scatterplot of $ksteps$ versus $miles$
+### Scatterplot of $ksteps$ versus $miles$ using not_missing_ksteps
 
 ```{r draw_scatterplot( ksteps_miles)}
 #
@@ -150,16 +152,31 @@ tidy( ols_1 ) %>%
     autofit()
 #
 glance_1 <- bind_cols( data.frame( ols = 1 ),
-                    glance( ols_1 ))
+                       glance( ols_1 ))
 #
 ```
-           
-## Fit model $OLS_2: ksteps = environment + miles$
+
+### Diagnostic analysis
+
+```{r perform_diagnostic_analysis}
+#
+plots <- diagPlot( ols_1 )
+#
+plots$rvfPlot
+plots$qqPlot
+plots$sclLocPlot
+plots$cdPlot
+plots$rvlevPlot
+plots$cvlPlot
+
+```
+
+## Fit model ols_2: $ksteps = environment + miles$
 
 ```{r fit_ols_2}
 #
 ols_2 <- lm( ksteps ~ environment + miles,
-             data = not_missing )
+             data = not_missing_ksteps )
 #
 tidy( ols_2 ) %>% 
     flextable( ) %>% 
@@ -167,7 +184,7 @@ tidy( ols_2 ) %>%
                    digits=3 ) %>% 
     colformat_num( j=5, 
                 digits = 4 ) %>% 
-    add_header_lines( values ="ksteps ~ environment + miles", 
+    add_header_lines( values ="ksteps ~ miles", 
                          top = TRUE) %>% 
     merge_at( i = 1, j = NULL, part = "header") %>% 
     fontsize( size=14,
@@ -176,120 +193,133 @@ tidy( ols_2 ) %>%
     theme_box() %>% 
     autofit()
 #
+
 glance_2 <- bind_cols( data.frame( ols = 2 ),
-                    glance(ols_2 ))
+                       glance( ols_2 ))
 #
 ```
 
-## Fit model ols_3: $ksteps = miles * environment$ 
+### Diangnostioc analysis
 
-```{r filt_model_3}
+```{r diasagnose_ols_2}
 #
-ols_3 <- lm( ksteps ~ miles * environment,
-             data = not_missing )
+plots <- diagPlot( ols_2 )
 #
+plots$rvfPlot
+plots$qqPlot
+plots$sclLocPlot
+plots$cdPlot
+plots$rvlevPlot
+plots$cvlPlot
+#
+```
+
+## Moldel 0ls_3: $ksteps = environment * Miles$
+
+```{r fit_ols3}
+#
+ols_3 <- lm( ksteps ~ environment * miles,
+             data = not_missing_ksteps )
+
 tidy( ols_3 ) %>% 
-    flextable( ) %>% 
+   flextable( ) %>% 
     colformat_num( j=2:4,
                    digits=3 ) %>% 
     colformat_num( j=5, 
                 digits = 4 ) %>% 
-    add_header_lines( values = "ksteps ~ miles * environment", 
+    add_header_lines( values ="ksteps ~ miles", 
                          top = TRUE) %>% 
     merge_at( i = 1, j = NULL, part = "header") %>% 
     fontsize( size=14,
               part="all" )  %>% 
     fontsize( size = 14, part="all" ) %>% 
     theme_box() %>% 
-    autofit()  
-#
-glance_3 <- bind_cols( data.frame( ols = 3 ),
-                    glance(ols_3 ))
+    autofit()
+
+glance_3= bind_cols( data.frame( ols = 3 ),
+                      glance( ols_3 ))
 #
 ```
 
-## Model OLS 4:$ksteps = route + miles$  
+# Diagnostic plots
 
-```{r filr_ols_3}
+```{r diagnose_ols_3}
 #
-ols_4 <- lm( ksteps ~ route + miles,
-             data = not_missing )
+plots <- diagPlot( ols_3 )
 #
-tidy( ols_4 ) %>% 
+plots$rvfPlot
+plots$qqPlot
+plots$sclLocPlot
+plots$cdPlot
+plots$rvlevPlot
+plots$cvlPlot
+#
+```
+
+## Model OLS_4: $ksteps = route * miles $
+
+```{r fir_ols_4}
+#
+ols_4 <- lm( ksteps ~ route * miles,
+             data = not_missing_ksteps)
+tidy(ols_4) %>% 
     flextable( ) %>% 
     colformat_num( j=2:4,
                    digits=3 ) %>% 
     colformat_num( j=5, 
                 digits = 4 ) %>% 
-    add_header_lines( values = "ksteps ~ miles * environment", 
+    add_header_lines( values ="ksteps ~ miles", 
                          top = TRUE) %>% 
     merge_at( i = 1, j = NULL, part = "header") %>% 
     fontsize( size=14,
               part="all" )  %>% 
     fontsize( size = 14, part="all" ) %>% 
     theme_box() %>% 
-    autofit()  
+    autofit()
 #
-#
-glance_4 <- bind_cols( data.frame( ols = 4 ),
-                    glance(ols_4 ))
-    
+glance_4= bind_cols( data.frame( ols = 4 ),
+                      glance( ols_4 ))
+
 ```
 
+### Disagnostic plots
 
-## Compare_models
+```{r diagnose_ols_4}
+
+plots <- diagPlot( ols_4 )
+#
+plots$rvfPlot
+plots$qqPlot
+plots$sclLocPlot
+plots$cdPlot
+plots$rvlevPlot
+plots$cvlPlot
+#
+
+
+```
+
+## Compare models
 
 ```{r compare_models}
-#
-comparison <- bind_rows( glance_1,
-                         glance_2,
-                         glance_3,
-                         glance_4 )
-comparison %>% 
-    flextable(  ) %>% 
-    colformat_num( j = 2:4, 
-                   digits = 3 ) %>% 
-    colformat_num( j = 5,
-                   digits =2 ) %>% 
-    colformat_num( j = 6, 
-                  digits = 4 ) %>% 
-    colformat_num(  j= 8:11,
-                   digits = 2 ) %>% 
-    fontsize( size=14, part="all" ) %>% 
-    theme_box() %>% 
-    autofit()
-#
-```
-
-We the selected fitted model is $ols_4$.
-
-## Make predictions
-
-```{r impute_values}
-#
-imputed_values <- predict( ols_4, 
-                           newdata=missing )
-
-tibble( miles = missing$miles,
-        ksteps = imputed_values ) %>% 
-    ggplot( aes( x=miles, y=ksteps )) +
-        geom_point()
-
-missing$ksteps <- imputed_values
-
-imputed_days <- bind_rows(  not_missing, 
-                            missing  ) %>% 
-        arrange( id )
+models = bind_rows( glance_1,
+                    glance_2,
+                    glance_3,
+                    glance_4 )
+models %>% 
+    flextable() %>% 
+    colformat_num( j= 2:5,  digits = 2 ) %>% 
+    colformat_num( j = 6,   digits = 4 ) %>% 
+    colformat_num( j= 8:11, digits = 2 )
 
 ```
+ ### Save imputation model
+ 
+```{r save_imputation_model}
 
-There are `r dim( imputed_days )[1]` days in the imputed_walks file.
+mviksteps <- ols_2 
 
-## Save walks data
 
-```{r}
-save( imputed_days, 
-         file="data/imputed_days.rds",
-         ascii = FALSE )
 ```
+ 
 
