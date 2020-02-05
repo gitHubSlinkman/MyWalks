@@ -94,6 +94,3 @@ save( file = "data/days_180.rds", days_180 )
 #
 ```
 
-
-
-
