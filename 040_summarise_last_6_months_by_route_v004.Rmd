@@ -19,49 +19,38 @@ source( "functions/load_libraries_v003.R" )      # Load libraries ...
 
 ```{r load_functions}
 #
-source('~/R-Projects/Rsource/compute_dates_v003.R') # To compute dates 
-source( "functions/get_walks_v004.R")               # To read walks.csv file ...
+source('~/R-Projects/Rsource/compute_dates_v004.R') # To compute dates 
 #       
 ```
 
 ```{r get_dates}
 #
 dates <- compute_dates()                         # Compute dates used ...
-date_current <- dates$date_000_days_ago          # Get current date ...
+date_current <-   dates$date_000_days_ago        # Get current date ...
 date_partition <- dates$date_180_days_ago        # Get date 180 days ago ...
-chharater_date_partion <- 
-    as.character( date_partition )
 #
-
 ```
 
 
 ```{r get_all_walks}
 #
-file_path <- file.path( getwd(), "data/Walks.csv" )  # Make path to file ...
-
-walks <- get_walks( file_path )                       # Get all walks ....
+file_path <- file.path( "data",             # Build path to file ...
+                        "days_180.rds" ) 
 #
+load( file_path )                           # Load data_180 from rds file 
+                                            # fays_180 ...
 ```
 
-```{r Keep_only_walks_less than_180_days_old}
-#
-###############################################################################
-# Keep only days that are less than 180 days old and a walked took place.
-###############################################################################
-#
-character_date_partition <- as.character.Date( date_partition )
-
-last_6_months_walks <- 
-    walks %>%
-        filter( as.character.Date( date ) >  character_date_partition ) %>% 
-        filter( walked == 1 )
-```
 
 ```{r summarise_walks_by_route}
 #
-summary_by_route <- 
-    last_6_months_walks %>% 
+walked_days <-                             # Keep only days with walks ...
+    days_180 %>%      
+        filter( walked == 1)
+
+
+summary_by_route  <- 
+    walked_days %>% 
         group_by( route ) %>% 
         summarise( walks = n(),
                    tl_miles  = round( sum( miles,  na.rm = TRUE ), 2 ),
@@ -90,7 +79,7 @@ summary_by_route <-
            mn_kcal )
 #
 summary_line <- 
-     last_6_months_walks %>% 
+     walked_days %>% 
         summarise( route = "All routes",
                    walks = n(),
                    tl_miles  = round( sum( miles,  na.rm = TRUE ), 2 ),
@@ -128,22 +117,25 @@ last_row <- dim( summary_by_route )[1]
 
 ```{r display_summary_by_route}
 #
+decimal_0 <- c( 5, 13 )
+decimal_2 <- c( 3:4, 8, 10, 12 )
+decimal_3 <- c( 4, 9 )
+#
 summary_by_route %>% 
     regulartable() %>% 
-    width( j = 1, 4.50 ) %>% 
-    colformat_num( col_keys = c( "tl_miles", "mn_miles",
-                                 "tl_ksteps", "mn_ksteps",
-                                 "tl_hours", "mn_hours", 
-                                 "mn_mph" ),
+    width( j = 1, 15.0 ) %>% 
+    colformat_num( j = decimal_0,
+                   big.mark = ",",
+                   digits   = 0,
+                   na_str = "" ) %>% 
+    colformat_num( j = decimal_2,
                    big.mark = ",",
                    digits   = 2,
                    na_str = "" ) %>% 
-    colformat_num( col_keys = c( "tl_gain",
-                                 "mn_gain", "tl_kcal", 
-                                 "mn_kcal" ),
-                    big.mark=",",
-                    digits = 0,
-                    na_str = "" ) %>% 
+    colformat_num( j = decimal_3,
+                   big.mark = ",",
+                   digits   = 3,
+                   na_str = "" ) %>% 
     set_header_labels( "route"     = "Route",
                        "walks"     = "Walks", 
                        "tl_miles"  = "Total  \nmiles",
@@ -160,7 +152,7 @@ summary_by_route %>%
     align( j=1:13, align="left", part="header" ) %>% 
     bold( i=last_row, bold=TRUE, part="body" ) %>% 
     theme_zebra() %>% 
-    fontsize( size = 13, part = "all") %>% 
+    fontsize( size = 14, part = "all") %>% 
     autofit()
 #
 
