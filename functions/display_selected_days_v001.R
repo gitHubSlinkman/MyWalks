@@ -1,9 +1,11 @@
 # display_selected_days_v001.R
 
+library(flextable)
+
 display_selected_days <- 
-    function( day ){
+    function( selected_days ){
         
-        days %>% 
+        selected_days %>% 
             mutate( Walked = ifelse( walked == 1,
                                      "Yes",
                                      "No")) %>%

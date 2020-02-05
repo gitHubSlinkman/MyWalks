@@ -1,5 +1,5 @@
 ---
-title: "Missing values imputation using linear regression."
+title: "MyWalks data preperation."
 author: "by Craig W. Slinkman"
 date: "11/22/2019"
 output: html_document
@@ -70,56 +70,30 @@ all_days <- get_days()                         # Get all days ...
 
 ### Number of days in file.
 
-There are `r dim( all_days )[1]` days recorded in the $walks.csv$ file. 
+There are `r dim( days )[1]` days recorded in the $walks.csv$ file. 
 
-### Getting all walks less than 180 days old 
+### Getting all walks less than 180 days old
 
-```{r filter_days}
+```{r keep_onl_last_180_days}
 #
-partition_date <- as.Date( dates$date_180_days_ago + 1 )
-
-
-recent_days <-                                  # Get last 180 days walks ...
+days_180 <- 
     all_days %>% 
-        filter( date > partition_date ) 
-#               
-```
-
-There are `r dim(recent_days)[1]` days in the recent walks.  After 180 days this number should be 180 or 179 if a walk has not been taken on the last day.
-
-## Remove days with no walks
-
-```{r remove_no_walks}
-#
-no_walk_days <-                                      # Get days with no walks ...
-    recent_days %>% 
-        filter( walked == 0 )
-
-walk_days <- 
-    recent_days %>% 
-        filter( walked == 1 )
+        filter( date > dates$date_180_days_ago + 1 )
 #
 ```
 
-## Summary of data 
 
-### There are `r dim(no_walk_days)[1]` days with no walks. 
 
-### There are `r dim(walk_days)[1]` with walks. 
+There are `r dim( days )[1]` days in the in the data.  After 180 days this number should be 180 or 179 if a walk has not been taken on the last day.
 
-### End of report
+
 
 ```{r save_walks}
 #
-save( file = "data/no_walk_days.rds",          
-              no_walk_days)
-#  
-save( file = "data/walk_days.rds",
-              walk_days )
+save( file = "data/days_180.rds", days_180 )          
 #
 ```
 
 
 
-```
 
