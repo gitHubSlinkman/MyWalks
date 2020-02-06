@@ -7,3 +7,7 @@ after <- dir()
 after
 delta <- setdiff( before, after )
 delta
+
+directories <- list.files( pattern = "\\._files$")
+
+glob2rx( "*_files" )

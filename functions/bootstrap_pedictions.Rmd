@@ -9,38 +9,33 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r load_packages}
-#
-#######################################################################
-# This code chunk loads the thr R packages needed for specific 
-# functionality
-#######################################################################
-#
-suppressMessages( library( tidyverse ))
-suppressMessages( library( lubridate ) )
-suppressMessages( library( flextable ) )
-suppressMessages( library( officer ) )
-suppressMessages( library( cowplot ) )
-suppressMessages( library( boot ) )
-#
-```
-
 ```{r set_constants}
 #
 #######################################################################
 # This code chunk sets constants for this R Markdown document.
 #######################################################################
+
 #
-DAYS <- 180                            # Assumed number of days in 6 months
+VARIABLE <- "ksteps"                    # Variables to be analyzed
 #
-VARIABLE <- "miles"                    # Variables to be analyzed
-#
-VLABEL   <- "Miles walked"             # Label for variable
-       
+VLABEL   <- "Steps(k)"
 REPS <- 1025                           # Replications for bootstrap
 #
 ```
 
+```{r load_packages}
+#
+#######################################################################
+# This code chunk loads the thr R packages needed for specific 
+# functionality.  A script names load_paxkages_v003.R loads the
+# packages I use frequebtly.
+#######################################################################
+#
+source('~/R-Projects/Rsource/load_packages_v003.R')
+#
+library( boot )                                  # For bootstrapping ...
+#
+```
 
 
 
@@ -57,9 +52,6 @@ source( 'functions/compute_dates_v003.R' )      # Compute dates for display and
 
 source('functions/display_period.R')            # Display analysis 
                                                 # period dates ...
- 
-source('functions/get_walks_v004.R')             # Read all walks ...
-
 
 source('functions/search_v001.R')               # Finds column position of
                                                 # variable ...
@@ -89,6 +81,7 @@ source("functions/diagnose_bootstrap_statistics.R") # Used to graphicall diagnos
 source("functions/simulate_pi_v001.R")              # Used rto simulated predictions
                                                     # to enable us to construct
                                                     # prediction interva;s ...
+#
 ``` 
 
 ```{r read_walks}
@@ -100,43 +93,49 @@ source("functions/simulate_pi_v001.R")              # Used rto simulated predict
 ##############################################################################
 
 
-file_path <- file.path( "data", "walks.csv" )
+file_path <- file.path( "data",                 # Build file path ...
+                        "days_180.rds" )   
+#
+ load( file_path )                              # Get days_180 tibble ...            
 
-all_walks <- get_walks( file_path)              # Read walks into tibble 
-
-six_months_walks <- 
-    all_walks %>% 
-        filter( walked == 1 ) %>% 
-        filter( date > as.Date( today() - 180 ))
+days <-                                         # Keep only days when a walk
+    days_180 %>%                                # occured ...
+        filter( walked == 1 )                   
 
 
 ```
 
 
-## Univariate analysis for $miles$ walked
+## Univariate analysis for `r VLABEL` walked
 
 The following is an analysis miles walked variable.
 
 ```{r extract_variable_vaalues}
 
-
-variable_names <- colnames( six_months_walks )       # Get vaeiable names ...# 
+variable_names <- colnames( days )                 # Get variable names vector ...
 #
-p <- search( key="miles", variable_names )           # Got variable columns number
+p <- search( key=VARIABLE,                         #  Determine variable column 
+             variable_names )                      # number ...
 
+###############################################################################
+# If the variable number is missing whe issue an error message and stop.
+###############################################################################
+                                                   
 if( is.na(p)) stop(                                # Ensure variable columns was
     paste("Unable to find variable", VARIABLE))    # found ...
 #
-values <- six_months_walks[[p]]
+values <- days[[p]]                                # Get variable values ...
 #
-```
-
-
+values <- values[!is.na(values)]                   # Ensure that there ar no missing
+                                                   # values in values ...
+```  
 
 
 ```{r draw_variable_histogram}
 
-plot_distribution( values, "Miles", "Density Histogram and plot" )
+plot_distribution( values,                       # Plot density historgram and
+                   VARIABLE,                     # diagram
+                   "Density Histogram and plot" )
 
 ```
 
@@ -156,7 +155,7 @@ plot_qq_norm( values, variable_name =VLABEL )
 # Define function to compute the bootstrap sample statistics: the sample mean
 # and the sample standard deviation
 ###############################################################################
-
+#
 compute_statistics <-                             # Compute the bootstrap
     function( y, index ){
     y <- y[index]
@@ -164,8 +163,7 @@ compute_statistics <-                             # Compute the bootstrap
     ystd <- sd( y )
     c( ybar, ystd ) 
     }
-
-
+#
 ```
 
 
@@ -176,13 +174,12 @@ compute_statistics <-                             # Compute the bootstrap
 # bootstrap simmary statistics 
 ###############################################################################
 #
-
 boot.out <- boot( values,
-                     compute_statistics,
+                  compute_statistics,
                      R=REPS )
-
+#
 display_bootstrap_summary( boot.out )
-
+#
 ```
 
 ### Bootstrap diagnostic plots
@@ -192,23 +189,26 @@ display_bootstrap_summary( boot.out )
 # Draw density histogram and plot of bootstrapped sample
 ###############################################################################
 
-ybar         <- boot.out$t[,1]
-std          <- boot.out$t[,2]
-bsample      <- tibble( ybar,std )
-
-
-p1a <- 
-    plot_distribution( ybar, 
-                       "Means distribution",
-                       "Bootstrap Histogram" )
+ybar         <- boot.out$t[,1]                   # Get bootsrap means ...
+std          <- boot.out$t[,2]                   # get boot strap standard
+                                                 # deviation ...
+#
+bsample      <- tibble( ybar,std )               # Make tibble for use by 
+                                                 # ggplot ...
+#
+p1a <-                                
+    plot_distribution( ybar,                     # Draw density histogram and 
+                       "Means distribution",     # density plot of the sample 
+                       "Bootstrap Histogram" )   # means and 
+                                                 # standard deviations ...
 
 p1b <- plot_distribution( std,
                           "Standard deviation distribution",
                           "Bootstrap Histogram")
 
 p1c <- 
-    plot_qq_norm( ybar, 
-                R = 100,
+    plot_qq_norm( ybar,                          # Draw normal qq plots of bootstrap
+                R = 100,                         # means and standard deviations ...
                 variable_name="Means",
                 plot_title = "Normal QQ plot")
 
@@ -225,7 +225,7 @@ plot_grid( p1a, p1b, p1c, p1d )
 ```
 
 
-```{r plot_two_bootstrap_means_vs-std}
+```{r plot_two_bootstrap_means_vs_std}
 ggplot( bsample,
         aes(x=ybar, y=std )) +
     geom_point() +
@@ -243,6 +243,17 @@ ggplot( bsample,
     theme_cowplot()
 #
 ```
+
+### Correlation of bootstrap estimates 
+
+If the bootstraped means and standard errors are normally idstributed then they be uncorrelated.  We compute the correlation matrix to investicate if the correlation between the means and standard deviations are ubcorreleated.
+
+```{r correlation}
+#
+cor.test( bsample$ybar, bsample$std ) 
+#
+```
+
 
 #### Bootstrap 95% confidence intervals for the mean and standard deviation of miles walked
 
@@ -346,9 +357,9 @@ error_bound <- round( std * z, 2)                # Compute prediction interval
 lower       <- mean_value - error_bound          # Compute ulower and upper 
 upper       <- mean_value + error_bound          # bounds.
 
-percent     <- round( 100 * probability  )       # Convert ecimal to precentage for                                                    # graphics ...
+percent     <- round( 100 * probability  )       # Convert ecimal to precentage for                                                     # graphics ...
 
-predictions <-                                  # Build tibble for ggplot2 ...
+predictions <-                                   # Build tibble for ggplot2 ...
     tibble(percent,    
            lower,
            forecast,
@@ -394,7 +405,40 @@ predictions %>%
 ```
  
  
- 
 We interpret the above tables as follows.  On a randomly selected walk the mean walking distance is `r predictions$forcast[4]` miles.  There is a 95% probability that the walk will be between `r predictions$lower[4]` and `r predictions$upper[[4]]`  miles.  
 
 This may seem like a wide interval. This is due to some short walks I took six months ago which inflated the standard deviation of the error.  The length of different routes alks varies widely and this also increases the standard deviation.
+
+```{r bootstrap_prediction intervals}
+#
+compute_prediction <- function( y, 
+                                index, 
+                                alpha=0.05 ){
+    y <- y[index]
+    n <- length( y )
+    df <- n - 1
+    t <- qt( lpha/2, 
+             df = n- 1,
+             lower.tail=FALSE  )
+    prediction <- mean( y )
+    std    <- sd( y )
+    se     <- sd / sqrt( n )
+    eb     <- t * se
+    lower  <- prediction - eb
+    upper  <- prediction + eb
+    c( lower, prediction, upper )     
+}
+#
+```
+
+## Bootstrap predictions 
+
+```{r bootstrap_predictions}
+boot_out <- boot( variable,
+                  compute_prediction,
+                         index,
+                         R = REPS)
+
+```
+
+
