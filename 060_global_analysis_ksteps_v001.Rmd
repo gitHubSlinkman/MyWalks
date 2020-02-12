@@ -361,8 +361,9 @@ percent     <- round( 100 * probability  )       # Convert ecimal to precentage 
 
 predictions <-                                   # Build tibble for ggplot2 ...
     tibble(percent,    
-           lower,
+           error_bound,
            forecast,
+           lower,
            upper )
 
            
@@ -383,8 +384,9 @@ Here we display the prediction intervals for **`R VLABEL`**.  Unlike classical c
 ```{r display_predictions}
 
 digits_0 <- "Probability"
-digits_2 <- c( "Lower",
-               "Forecast",
+digits_2 <- c( "Forecast",
+               error_bound,
+               "Lower",
                "Upper" )
 
 predictions %>%

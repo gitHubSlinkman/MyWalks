@@ -281,10 +281,10 @@ predictions <- simulate_predictions( bsample  )
 p2a <- plot_distribution( predictions,
                           "prediction",
                           "Predictive distribution")
-p2a
 
 p2b <- plot_qq_norm( predictions,
                      variable_name="prediction")
+#
 
 
 #
@@ -328,7 +328,7 @@ We draw a density histogram with a density plot and a normal quantile-quantile p
 
 ```{r plot_prediction_distribution_diagnostics}
 #
-p2a
+plot_grid
 #
 p2b
 #

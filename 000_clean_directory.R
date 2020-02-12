@@ -9,5 +9,6 @@ delta <- setdiff( before, after )
 delta
 
 directories <- list.files( pattern = "\\._files$")
+directories
 
 glob2rx( "*_files" )

@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ```{r load_functions}
 #
 source('~/R-Projects/Rsource/compute_dates_v004.R')        # To compute dates ...
-source('functions/display_selected_days_v001.R')           # To d splay days  ...
+source('functions/display_selected_days_v001.R')           # To d \isplay days  ...
 #
 ```
  
@@ -41,31 +41,30 @@ load( file_path )                                         # Load days object ...
 ```
  
  
-### Display dFirst 10 observation inn last 180 days 
-
-#### First 10 observations
+### Display first 7 days in last 180 days 
+ 
 
 ```{r display_first_10}
 #
-first_10_days <- days_180[ 1:10, c(1,2,6:14)]         # Select first 10 days ...
+first_7_days <- days_180[ 1:7, c(1,2,6:14)]         # Select first 7 days ...
 #                                                     
-display_selected_days( first_10_days )                # Display first 10 days 
+display_selected_days( first_7_days )                # Display first 7 days 
 #
 ```
  
  
-#### Last 10 days of the last 180 days 
+#### Last 7 days of the last 180 days 
 
 ```{r display_last_10_days}
 #
 to <- dim( days_180 )[1]                      # Get subscript of last row...
-from <- to - 10 + 1                           # Compute starting subscrupt of last
+from <- to - 7 + 1                           # Compute starting subscrupt of last
                                               # 10 rows ...
 #
-last_10_days <-                               # Get last 10 days ...
+last_7_days <-                               # Get last 10 days ...
     days_180[ from:to, c(1,2,6:14)] 
 #
-display_selected_days( last_10_days )                 # Display as flextable ...
+display_selected_days( last_7_days )                 # Display as flextable ...
 #
 ```
  

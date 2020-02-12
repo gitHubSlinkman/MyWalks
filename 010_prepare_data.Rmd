@@ -78,13 +78,13 @@ There are `r dim( days )[1]` days recorded in the $walks.csv$ file.
 #
 days_180 <- 
     all_days %>% 
-        filter( date > dates$date_180_days_ago + 1 )
+        filter( date >= dates$date_180_days_ago + 1 )
 #
 ```
 
 
 
-There are `r dim( days )[1]` days in the in the data.  After 180 days this number should be 180 or 179 if a walk has not been taken on the last day.
+There are `r dim( days_180 )[1]` days in the in the data.  After 180 days this number should be 180 or 179 if a walk has not been taken on the last day.
 
 
 
