@@ -16,10 +16,11 @@ knitr::opts_chunk$set(echo = FALSE)
 #######################################################################
 
 #
-VARIABLE <- "ksteps"                    # Variables to be analyzed
+VARIABLE  <- "ksteps"                    # Variables to be analyzed
+VLABLE    <- "Steps(K)"                  # Variable label
+ forecast <- "Thousand Steps"            # Variable unis
 #
-VLABEL   <- "Steps(k)"
-REPS <- 1025                           # Replications for bootstrap
+REPS <- 1025                             # Replications for bootstrap
 #
 ```
 
@@ -106,7 +107,7 @@ days <-                                         # Keep only days when a walk
 ```
 
 
-## Univariate analysis for `r VLABEL` walked
+## Univariate analysis for `r VLABLE` walked
 
 The following is an analysis miles walked variable.
 
@@ -143,7 +144,7 @@ plot_distribution( values,                       # Plot density historgram and
 
 ```{r draw_variable_qq_plot}
 
-plot_qq_norm( values, variable_name =VLABEL )
+plot_qq_norm( values, variable_name =VLABLE )
 
 ```
 
@@ -246,7 +247,7 @@ ggplot( bsample,
 
 ### Correlation of bootstrap estimates 
 
-If the bootstraped means and standard errors are normally idstributed then they be uncorrelated.  We compute the correlation matrix to investicate if the correlation between the means and standard deviations are ubcorreleated.
+If the bootstrapped means and standard errors are normally  is distributed then they be uncorrelated.  We compute the correlation matrix to investigate if the correlation between the means and standard deviations are un-correlated.
 
 ```{r correlation}
 #
@@ -323,19 +324,6 @@ tibble( mean_prediction,
 
 The value of the bias is small when compared to the mean and standard deviation so we can ignore it.
 
-
-#### Diagnostic plots of prediction distribution
-
-We draw a density histogram with a density plot and a normal quantile-quantile plot to assess the normality of the prediction distribution.  If the distribution appear to be normally distributed then we can use the normal distribution to assess the the prediction intervals.
-
-```{r plot_prediction_distribution_diagnostics}
-#
-p2a
-#
-p2b
-#
-```
-
 #### Compute prediction intervals 
 
 G. E. P Box once recommended that one should give more one confidence interval to give the user an idea of the degree of risk to the user of the confidence intervals.  We do that here computing the 50%, 0.75, 90%, 95%, and 99% confidence intervals.  
@@ -354,62 +342,46 @@ forecast <- rep(  round( mean_value, 2),
 error_bound <- round( std * z, 2)                # Compute prediction interval
                                                  # error bould.
 
-lower       <- mean_value - error_bound          # Compute ulower and upper 
-upper       <- mean_value + error_bound          # bounds.
+lower       <-                                   # Compute ulower and upper 
+    round( mean_value - error_bound, 2)          # bounds ...
+upper       <- 
+    round( mean_value + error_bound, 2)          
 
-percent     <- round( 100 * probability  )       # Convert ecimal to precentage for                                                     # graphics ...
+probability  <- round( 100 * probability, 0  )    # Convert decimal to precentage for                                                   # display 
 
-predictions <-                                   # Build tibble for ggplot2 ...
-    tibble(percent,    
-           error_bound,
-           forecast,
-           lower,
-           upper )
+predictions <-                                    # Build tibble for flextable ...
+    tibble( probability,    
+            error_bound,
+            lower,
+            forecast,
+            upper )
+#
+predictions
 
-           
-        
 ```
 
 ### Predictions and prediction intervals
 
-```{r format_probability_statement_number}
-l <- round( predictions[[4]][2], 2 )
-u <- round( predictions[[4]][4], 2 )
-```
-
-
-Here we display the prediction intervals for **`R VLABEL`**.  Unlike classical confidence intervals these are true probability statements.  
+Here we display the prediction intervals for **`r VLABLE`**.  Unlike classical confidence intervals these are true probability statements.  
 
 
 ```{r display_predictions}
 
-digits_0 <- "Probability"
-digits_2 <- c( "Forecast",
-               error_bound,
-               "Lower",
-               "Upper" )
-
-predictions %>%
-    rename( "Probability"= "percent",
-            "Lower"      = "lower",
-            "Forecast"   = "forecast",
-            "Upper"      = "upper" )  %>%
-        flextable() %>% 
-            colformat_num( col_keys = "Probability",
-                           digits = 0,
-                           suffix="%" ) %>% 
-            colformat_num( col_keys = digits_2,
-                        digits = 2,
-                        big.mark = "," ) %>% 
-            fontsize( size = 14, 
-                       part = "all" )
+predictions %>% 
+    flextable() %>% 
+        set_header_labels( "probability" = "Probability",
+                           "error_bound" = "Error\nbound",
+                           "lower"       = "Lower\nlimit",
+                           "forecast"    = "Point\nprediction",
+                           "upper"       = "Upper\nlimit" )
 
 ```
  
  
-We interpret the above tables as follows.  On a randomly selected walk the mean walking distance is `r predictions$forcast[4]` miles.  There is a 95% probability that the walk will be between `r predictions$lower[4]` and `r predictions$upper[[4]]`  miles.  
+We interpret the above tables as follows.  On a randomly selected walk the pedicted `r VLABLE` distance 'r prediction`  ``.  There is a wal95% probability that the walk will be between  and 
+miles.  
 
-This may seem like a wide interval. This is due to some short walks I took six months ago which inflated the standard deviation of the error.  The length of different routes alks varies widely and this also increases the standard deviation.
+This may seem like a wide interval. This is due to some short walks I took six months ago which inflated the standard deviation of the error.  The length of different routes alks varies widely and this also increases the standard deviation. label
 
 
 ```

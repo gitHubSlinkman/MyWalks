@@ -83,7 +83,8 @@ x_labels <- sprintf("%.2f",x_major)
 ggplot( last_007_days_walks, 
         aes(x=miles,
             binwidth=0.25 )) +
-    geom_dotplot( binwidth =0.10 ) +
+    geom_dotplot( binwidth =0.10,
+                  dotsize = 0.5 ) +
     scale_x_continuous( breaks=x_major, labels=x_labels ) +
     coord_cartesian( ylim = c(0, 7 )) +
     xlab("Miles walked") +

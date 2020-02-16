@@ -214,13 +214,15 @@ y_breaks <- seq( from = 0,
                to   = max_bin,
                by = 25 )
 
+
+
 walk_days %>% 
     ggplot( aes( x = device )) +
        geom_bar( color="black",
                  fill = "yellow") +            
             geom_text( stat='count', 
                         aes( label=..count.. ), vjust=-1) +
-            coord_cartesian(ylim = c(0, max_bin + 5 )) +
+            coord_cartesian(ylim = c(0, max_bin + 10 )) +
             xlab( "Measure device" ) +
             theme_cowplot() +
             theme(axis.text.x=element_text(angle = -90, hjust = 0 ))
@@ -236,10 +238,10 @@ shoe_bin <-                                    # Tabulate bins by shoes ...
     walk_days %>% 
         count( shoes )
 #
-max_count <- max( shoe_bin$n )              # Detrmine maximum bin count
+max_count <- max( shoe_bin$n )                 # Compute neximum bin count
 #
 y_breaks <- seq( from = 0, 
-               to   = max_count+20,
+               to   = max_count+25,
                by = 25 )
 
 walk_days %>% 
@@ -248,7 +250,7 @@ walk_days %>%
                  fill = "yellow") +            
             geom_text( stat='count', 
                         aes( label=..count.. ), vjust=-1) +
-            coord_cartesian(ylim = c(0, max_bin + 20 )) +
+            coord_cartesian(ylim = c(0, max_bin + 25 )) +
             xlab( "Shoes" ) +
             theme_cowplot()
 #  
