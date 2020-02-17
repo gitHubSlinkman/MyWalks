@@ -117,7 +117,7 @@ last_row <- dim( summary_by_route )[1]
 
 ```{r display_summary_by_route}
 #
-decimal_0 <- c( 5, 13 )
+decimal_0 <- c( 5, 7, 13 )
 decimal_2 <- c( 3:4, 8, 10, 12 )
 decimal_3 <- c( 4, 9 )
 #

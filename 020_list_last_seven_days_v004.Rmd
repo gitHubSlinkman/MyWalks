@@ -56,7 +56,7 @@ load( file_path )                                  # Load last 180 days od data 
 #
 last_007_days_walks <-                             # Keep only last 7 days of
     days_180 %>%
-        filter( walked == 1 ) %>%                      # Keep only days with walks ....
+        filter( walked == 1 ) %>%               # Keep only days with walks ....
         filter( date >= date_partition + 1 ) %>%   # Keep only last week ...
         mutate( walks = walked ) %>%               # Add walks to report data ...
         select( id,                                # Keep these variables only ...
@@ -75,18 +75,28 @@ last_007_days_walks <-                             # Keep only last 7 days of
 #
 ```
 
+```{r compute_x_scales}
+#
+x_min <- floor( min( last_007_days_walks$miles ))
+x_max <- ceiling( max( last_007_days_walks$miles ))
+#
+```
+ 
+
+
+
 ```{r plot_dotplot}
 #
-x_major <- seq( from=1, to=7, by=0.25 )
+x_major <- seq( from=x_min, to=x_max, by=0.50 )
 x_labels <- sprintf("%.2f",x_major)
 #
 ggplot( last_007_days_walks, 
         aes(x=miles,
             binwidth=0.25 )) +
-    geom_dotplot( binwidth =0.10,
-                  dotsize = 0.5 ) +
+    geom_dotplot( binwidth =0.25,
+                  dotsize = 0.25 ) +
     scale_x_continuous( breaks=x_major, labels=x_labels ) +
-    coord_cartesian( ylim = c(0, 7 )) +
+    coord_cartesian(  ylim = c( 0, 7)) +
     xlab("Miles walked") +
     ylab( "Frequency") +
     ggtitle( "Miles walked during last 7 days") +
@@ -135,7 +145,7 @@ cols <- dim( report )[2]                         # columns ....
            align( j=2, align="left" ) %>%        # to set alignment ...
            bold( i=(rows -2):rows,               # to bold formater 
                  bold=TRUE ) %>% 
-           fontsize( size=13, part="all" ) %>% 
+           fontsize( size=14, part="all" ) %>% 
         autofit()                                # to autofit
 #
 ```
