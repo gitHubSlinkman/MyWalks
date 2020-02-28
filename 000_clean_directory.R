@@ -9,8 +9,13 @@ after
 delta <- setdiff( before, after )
 delta
 
-directories <- list.dirs( path =".",
-                          pattern =  "^.*_files$" ) 
-directories
+directories <- list.dirs( recursive=FALSE)
 
-glob2rx( "*_files" )
+pattern <- glob2rx( "*_files" )
+
+library( stringr )
+
+to_delete <- directories[grepl( pattern, directories )]
+
+unlink( to_delete, recursive=TRUE )
+
