@@ -1,0 +1,89 @@
+---
+title: "Explore MyWalks data"
+author: "Craig W. Slinkman"
+date: "3/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This R Markdown document is an exploration of the MyWalks data which is stored in the 
+data folder in this project.  I try to take a long walk each day on the advice of my oncologist.
+
+I have found that recording and analyzing this data provides me with motivation to keep walking.  
+
+### loading the required packages
+
+I live and work in the tidyverse.  Therefore I first load the R packages that I need to perform out my analysis.  The code chunk below does this.
+
+```{r load_packages}
+#
+library( tidyverse )                             # I live int the tidyverse ...
+#
+library( lubridate )                             # Required for advanced date
+                                                 # arithimetic ...
+#
+library( readxl )                                # Required to read Microsoft
+                                                 # xlsx files ...
+#
+```
+
+### Set constants for running the analysis
+
+In this section we set variables that will remain unchnaged for this run.  Note that I use the java programming standard that run constants are in all upercase letters.
+
+```{r set_run_cinstants}
+#
+FOLDER <- "data"                                 # Folder location for data ...
+
+DAYS   <- "days"                                 # Name of file containing the
+                                                 # MyWalks data ...
+
+ROUTES <- "routes"                               # A file containg properties
+                                                 # of each route I walk ...
+#
+```
+
+
+### Compute the current date and historical dates 
+
+In the code chunk below I compute the datyes that will be needed in the system in all applications. Eventually this will be moved to a function.  
+
+We use a moving windows of 7 days, 30 days, 180 days, and 365 days.  These dates will
+be used to filter all dates outside of this range in various prpgrams.
+
+```{r compute_window_dates}
+#
+dates <- tibble( 
+    date_today        <- today(),                # Today'a date ...
+    date_007_days_ago <- today() - 7,            # Last week's date ...
+    date_030_days_ago <- today() - 30,           # Last momth's date ...
+    date_180_days_ago <- today() - 180,          # Six month's date ...
+    date_365_days_ago <- today() - 365 )         # One year's ago date ...
+
+dates
+#
+```
+
+
+# Obtainin g data 
+       
+In this section we read the data from the two Microsoft Excem spread sheets $days$ and $routes$.  We then left jpoin dys with routes.
+
+```{r read_data}
+#
+days   <- read_MyWalks( FOLDER, DAYS )           # 
+routes <- read_MyWalks( "data", ROUTES )         # Read days.xlsx spreadaheet ...
+
+days <- left_join( days,
+                   routes,
+                   by = "route" )
+#
+
+
+```
+
+
+

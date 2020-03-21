@@ -8,14 +8,6 @@ library( readxl )
 # Read MyWalks data files which are storded in xlsx format,
 ###############################################################################
 
-read_MyWalks <- function( folder_path, data_file ){
-
-    data_file  <- paste0( data_file,".xlsx")
-    file_path <- file.path( folder_path,
-                             data_file  )
-    read_xlsx( file_path )
-}
-
 FOLDER <- "data"
 DAYS   <- "days"
 ROUTES <- "routes"
@@ -28,7 +20,7 @@ days <- left_join( days,
                    by = "route" )
 
 ##############################################################################
-# Get year, month, and day from unput date
+# Get year, month, and day from input date
 ##############################################################################
 
 tz( days$date ) <- "America/Chicago"
@@ -54,7 +46,7 @@ days$start_time   <- hour( days$start_time ) +
 
 days$ksteps <- days$steps / 1000
 
-modified_days <- 
+mutated_days <- 
    days %>%
         select( id,
                 date,
@@ -86,4 +78,8 @@ modified_days <-
                 shuffles,
                 device:failure_reason )
 #
-````
+mutated_days
+
+mutated_days %>% 
+    filter( walked ==1 & gps_failure == 0  )
+
