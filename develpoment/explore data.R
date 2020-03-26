@@ -12,12 +12,6 @@ FOLDER <- "data"
 DAYS   <- "days"
 ROUTES <- "routes"
 
-days   <- read_MyWalks( FOLDER, DAYS )
-routes <- read_MyWalks( "data", ROUTES )
-
-days <- left_join( days,
-                   routes,
-                   by = "route" )
 
 ##############################################################################
 # Get year, month, and day from input date
@@ -46,8 +40,8 @@ days$start_time   <- hour( days$start_time ) +
 
 days$ksteps <- days$steps / 1000
 
-mutated_days <- 
-   days %>%
+mutated_days <-                        # Keep the variables listed in the select
+   days %>%                            # function and save data to mutated_days
         select( id,
                 date,
                 year:month_day,
@@ -78,8 +72,11 @@ mutated_days <-
                 shuffles,
                 device:failure_reason )
 #
-mutated_days
+mutated_days                                     
 
-mutated_days %>% 
-    filter( walked ==1 & gps_failure == 0  )
+clean_data <- 
+    mutated_days %>%                             # Remove days that no walks were
+        filter( walked ==1 & gps_failure == 0  ) # taken or walks were there was
+                                                 # or there was adata was not
+clean_data                                       # recorded ...
 
