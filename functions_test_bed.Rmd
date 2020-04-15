@@ -1,0 +1,41 @@
+---
+title: "Test bed for new functions"
+author: "Craig W. Slinkman"
+date: "4/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is the test bed for the new functions for the **MyWalks** project.  
+
+I have decided to define all my functions on a single source file to make development and
+maintenance simpler.
+
+### load packages
+
+In the following chunk we load the required library functions for this project.
+
+```{r load_packages}
+library( tidyverse )  # I live in the tidyverse ...
+library( readxl )     # Required to read Microsft Excel files ...
+library( lubridate )  # For advanced date processing ...
+
+source("functions.R")
+```
+
+
+### Test get_days()
+
+The **get_days** function should return a tibble of my walking data saved on a Microsoft Excel spreadsheet called **days.xlsx**.  
+
+```{r test_get_days}
+days <- get_days()     # Test get days ...
+days                   # # Should return a tibble of the days walks ...
+```
+
+
+                
+                                     
