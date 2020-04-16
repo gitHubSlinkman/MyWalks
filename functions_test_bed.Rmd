@@ -19,23 +19,31 @@ maintenance simpler.
 In the following chunk we load the required library functions for this project.
 
 ```{r load_packages}
-library( tidyverse )  # I live in the tidyverse ...
-library( readxl )     # Required to read Microsft Excel files ...
-library( lubridate )  # For advanced date processing ...
-
-source("functions.R")
+source( "define_functions.R" )
 ```
 
 
-### Test get_days()
+### get_days()  test
 
-The **get_days** function should return a tibble of my walking data saved on a Microsoft Excel spreadsheet called **days.xlsx**.  
+The **get_days()** function should return a tibble of my walking data saved on a Microsoft Excel spreadsheet called **days.xlsx**.  
 
 ```{r test_get_days}
 days <- get_days()     # Test get days ...
-days                   # # Should return a tibble of the days walks ...
+days                   # Should return a tibble of the days walks ...
 ```
 
 
-                
-                                     
+### plot_bar_walks()
+
+```{r test_plot_)bar_walks}
+
+plot_bar_walks( days ) 
+
+```
+
+### plot_bar_missed_reasons() test
+
+```{r test_bar_missied_reasons}
+plot_bar_missed_reasons( days )
+```
+

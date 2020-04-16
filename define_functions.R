@@ -5,8 +5,6 @@
 # to cowpolut.
 ###############################################################################
 
-load_packages <- 
-    function() { 
         suppressMessages( library( tidyverse ) )         # I live in the tidyverse ...
         suppressMessages( library( lubridate ) )         # For powerful date processing ...
         suppressMessages( library( readr ) )             # For raw data input ...
@@ -27,12 +25,18 @@ load_packages <-
         suppressMessages( library( latex2exp ) )         # Converts laytec notation to
         # R mathemtical exprressions ...
         suppressMessages( library( cowplot ) )           # For better looking graphs with
-        # ggplot2 ....
-        #
-        theme_set( theme_cowplot())                      # Sets cpowplot theme to be the  
-        # default theme ...
-    }
+        
+###############################################################################
+# We set the defualt theme to them_cowplot to make our graphs publishable
+# quality.
+###############################################################################        
 
+theme_set( theme_cowplot())                             
+        
+
+##############################################################################
+# get_days( ) function
+##############################################################################
 
 get_days <- 
     function()
@@ -42,7 +46,7 @@ get_days <-
                        'days.xlsx')
         
         days <- read_excel( fp )                       # Read days.xlsx  ...
-        days
+        days 
     }
 
 
@@ -55,7 +59,6 @@ get_days <-
 
 plot_bar_walks <- 
     function( days )
-        
     {
        walked  = sum( days$walked ) 
      
@@ -75,8 +78,38 @@ plot_bar_walks <-
             
             scale_x_discrete( "Walked" ) +
             scale_y_continuous( "Days"  ) +
-            ggtitle( "MyWalks: Days walked and das not walked" )
+            ggtitle( "MyWalks: Days walked and days not walked" )
    }
 
 
 ###############################################################################
+# Function: plot_bar_missed_reasons
+###############################################################################
+# This function draws a bar-chart of the resons for missing walks. It is 
+# rotated 90 degrees so the baar chart categories will show.
+###############################################################################
+
+plot_bar_missed_reasons <- 
+  function( days ){
+
+    
+missed_walks <-     
+    days %>% 
+      filter( walked == 0 )
+
+y_max = dim( missed_walks )[1] + 5      
+      
+    missed_walks %>% 
+        ggplot( aes( x = missed_reason )) +
+          geom_bar( color = "red",
+                    fill = "red" ) +
+      geom_text( stat='count', 
+                 aes(label=..count..) ,
+                 hjust=1 ) +
+      expand_limits( x =  + 10 ) +
+      coord_flip()
+    
+  }
+
+
+#
