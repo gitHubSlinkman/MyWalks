@@ -35,10 +35,8 @@ days                   # Should return a tibble of the days walks ...
 
 ### plot_bar_walks()
 
-```{r test_plot_)bar_walks}
-
+```{r test_plot_bar_walks}
 plot_bar_walks( days ) 
-
 ```
 
 ### plot_bar_missed_reasons() test
@@ -47,3 +45,28 @@ plot_bar_walks( days )
 plot_bar_missed_reasons( days )
 ```
 
+### test_hhmm_tohh.dd
+
+```{r test_hhmm_to_hh_dd}
+days_with_time <- 
+    days %>% 
+        filter( id  > 556 )
+```
+
+
+```{r test_hhmm_to_hh_dd}
+start_times <-  
+    days_with_time %>% 
+        pull( date_time )
+
+start_times <- ymd_hms( start_times )
+hours <- hour( start_times )
+minutes = minute( start_times  )
+decimal_time <- round( ( hours + minutes /60 ),2 )
+ decimal_time
+ 
+```
+
+
+```{r test_hhmm_to_hh_dd}
+```

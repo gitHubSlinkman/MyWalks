@@ -1,2 +1,0 @@
-# Develope bootstrap functions
-

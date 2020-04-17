@@ -63,7 +63,7 @@ plot_bar_walks <-
        walked  = sum( days$walked ) 
      
         days %>%
-            select( date,
+            select( date_time,
                     walked ) %>% 
             mutate( walked = ifelse( walked == 0, 
                                      "No", 
@@ -71,11 +71,10 @@ plot_bar_walks <-
             ggplot( aes( x = walked )) +
                 geom_bar( fill = "blue",
                           width = 0.5 ) +
-            geom_text( stat='count', 
+            geom_text(stat='count', 
                        aes(label=..count..) ,
-                    vjust=-1 ) +
+                       vjust =-1 ) +
             expand_limits( y = walked + 5 ) +
-            
             scale_x_discrete( "Walked" ) +
             scale_y_continuous( "Days"  ) +
             ggtitle( "MyWalks: Days walked and days not walked" )
@@ -92,24 +91,53 @@ plot_bar_walks <-
 plot_bar_missed_reasons <- 
   function( days ){
 
+  #############################################################################
+  # We keep only days with missedd walks.
+  #############################################################################  
     
-missed_walks <-     
+  missed_walks <- 
     days %>% 
       filter( walked == 0 )
+  
+  ############################################################################
+  # We tally the number of missed walks by reason.  We need this to place
+  # our counted data above each bar
+  ############################################################################
+  
+    tallied_missed_reasons <-    
+      missed_walks %>% 
+        group_by( missed_reason ) %>% 
+          tally( sort = TRUE, name = "frequency" )
+   
+     max_y <- max( tallied_missed_reasons$frequency ) + 2 
 
-y_max = dim( missed_walks )[1] + 5      
-      
+    ########################################################################
+    # Draw barchart of missed_reason.
+    ########################################################################
+     
     missed_walks %>% 
         ggplot( aes( x = missed_reason )) +
           geom_bar( color = "red",
                     fill = "red" ) +
-      geom_text( stat='count', 
-                 aes(label=..count..) ,
-                 hjust=1 ) +
-      expand_limits( x =  + 10 ) +
-      coord_flip()
-    
+          geom_text( stat='count', 
+                     aes(label=..count..) ,
+                     vjust = -1 ) +
+          expand_limits( y = max_y ) +
+          xlab( "Reason of missed walk" ) +
+          ylab( "Frequency" ) +
+          theme(axis.text.x=element_text(angle=90,hjust=1)) +
+          ggtitle( "MyWalks: Reasons of missing walks" )
   }
 
 
-#
+#######################################################################
+# Function convert_hhmm_hhdd
+#######################################################################
+# This function converts the time in hh:mm format to the decimal 
+# format hh.dd.
+#######################################################################
+        
+convert_hhmm_to_hh.dd <- 
+  function( hours, minutes ){
+    round( ( hours + minutes /60 ), 2)
+  }
