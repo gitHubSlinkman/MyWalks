@@ -45,28 +45,19 @@ plot_bar_walks( days )
 plot_bar_missed_reasons( days )
 ```
 
-### test_hhmm_tohh.dd
+### test_convert_hhmm to_decimal
 
-```{r test_hhmm_to_hh_dd}
-days_with_time <- 
+We are going to covert from hh:mm to hh.dd.
+
+```{r test_convert_hhmm to decimal }
+date_times <- 
     days %>% 
-        filter( id  > 556 )
+        filter( walked == 1 ) %>% 
+            pull( date_time )
+
+date_times <- as.POSIXct( date_times )
+
+convert_hhmm_to_decimal( date_times )
+
 ```
 
-
-```{r test_hhmm_to_hh_dd}
-start_times <-  
-    days_with_time %>% 
-        pull( date_time )
-
-start_times <- ymd_hms( start_times )
-hours <- hour( start_times )
-minutes = minute( start_times  )
-decimal_time <- round( ( hours + minutes /60 ),2 )
- decimal_time
- 
-```
-
-
-```{r test_hhmm_to_hh_dd}
-```

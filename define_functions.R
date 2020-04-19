@@ -41,12 +41,54 @@ theme_set( theme_cowplot())
 get_days <- 
     function()
       {
+        #######################################################################
+        # We read the days.xlsx file in the followiung two statements.
+        #######################################################################
+        
         fp <-                                           # Build file path ...
             file.path( '~/R-Projects/MyWalks/data',
                        'days.xlsx')
         
         days <- read_excel( fp )                       # Read days.xlsx  ...
-        days 
+      
+        
+        ##########################################*****************************
+        # The routes file contains information concerning the route that does
+        # not change from route to route.  We rera it now.
+        #######################################################################
+        
+        fp <-                                           # Build file path ...
+          file.path( '~/R-Projects/MyWalks/data',
+                     'routes.xlsx' )
+        routes <- read_excel( fp )
+        
+        #######################################################################
+        # We perform a left join on the days and routes tibbles.
+        #######################################################################
+        
+        days <- 
+          left_join( days, routes, 
+                     by = "route",
+                     copies = FALSE,
+                     keep = FALSE )
+        
+        #######################################################################
+        # We add erived data files to the days tibble.  We make thew follwing
+        # data conversions:
+        #   1. Convert Excel data and time POSIXct data and tine.
+        #######################################################################  
+        
+        days <- 
+          days %>% 
+            mutate( date_time =  ymd_hms( date_time ))
+        
+        tz( days$date_time ) <- Sys.timezone( location = TRUE )
+              
+        #######################################################################
+        # We return the tibble to the calling programs'
+        #######################################################################
+        
+        days
     }
 
 
@@ -130,14 +172,19 @@ plot_bar_missed_reasons <-
   }
 
 
-#######################################################################
+###############################################################################
 # Function convert_hhmm_hhdd
-#######################################################################
+###############################################################################
 # This function converts the time in hh:mm format to the decimal 
 # format hh.dd.
-#######################################################################
+###############################################################################
         
-convert_hhmm_to_hh.dd <- 
-  function( hours, minutes ){
-    round( ( hours + minutes /60 ), 2)
+convert_hhmm_to_decimal <- 
+  function( date_time ){
+   h <- hour( date_time )
+   m <- minute( date_time )
+   round( h + m/60, 2 )
   }
+        
+        
+###############################################################################
