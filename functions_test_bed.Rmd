@@ -97,9 +97,170 @@ tibble( start_times ) %>%
     ggplot( aes( x = start_times, y=..count.. )) +
                 
                 geom_histogram( binwidth = 0.25,
-                                color="black" )+
+                                color="black",
+                                fill = "yellow" )+
     xlab( "Start time") +
-    xlab( "Frequency" )
+    ylab( "Frequency" ) +
+    ggtitle( "Start times " )
 
 ```
+
+###  Test weather conditiona
+
+In this code we draw a bat chart of the weather conditions for each day.
+
+```{r draw_bar_weather}
+
+days %>% 
+    select( weather ) %>% 
+    ggplot( aes( x = weather)) +
+    geom_bar( width = 0.25,
+              color="black",
+              fill="blue") +
+    xlab( "Weather conditions" ) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    ylab( "Frequency" ) +
+    ggtitle( "Weather condition on all days" )
+
+```
+
+
+### Compute totals, means, standard deviationa, coeffcient of varriation, skewness, and kurtosis
+
+```{r compute_parametrics}
+
+totals <- 
+    days %>% 
+        summarise( label = "Totals:",
+                   walked   = sum( walked, na.rm = TRUE),
+                   miles    = sum( miles,  na.rm = TRUE),
+                   steps    = sum( steps, na.rm = TRUE ),
+                   hours    = sum( hours, na.rm = TRUE ),
+                   mph      = NA,
+                   mpl      = NA,
+                   pace     = NA ,
+                   gain     = sum( gain, na.rm = TRUE),
+                   kcal     = sum( kcal, na.rm = TRUE),
+                   avg_hr   = NA,
+                   max_hr   = NA,
+                   breaks   = sum( breaks, na.rm = TRUE),
+                   shuffles = sum(shuffles, na.rm = TRUE ))
+        
+
+means <- 
+    days %>% 
+        summarise( label    = "Means",
+                   walked   =  NA,
+                   miles    = mean( miles,   na.rm = TRUE ),
+                   steps    = mean( steps,   na.rm = TRUE ),
+                   hours    = mean( hours,   na.rm = TRUE ),
+                   mph      = mean( mph,     na.rm = TRUE ),
+                   pace     = mean( pace,    na.rm = TRUE ),
+                   gain     = mean( gain,    na.rm = TRUE ),
+                   kcal     = mean( kcal,    na.rm = TRUE ),
+                   avg_hr   = mean( avg_hr,  na.rm  = TRUE ),
+                   max_hr   = mean( max_hr,   na.rm = TRUE ),
+                   breaks   = mean( breaks,   na.rm = TRUE ),
+                   shuffles = mean( shuffles, na.rm = TRUE ))
+                   
+ stds <-  
+     days %>% 
+        summarise( label    = "Standard deviations:",
+                   walked   =  NA,
+                   miles    = sd( miles,   na.rm = TRUE ),
+                   steps    = sd( steps,   na.rm = TRUE ),
+                   hours    = sd( hours,   na.rm = TRUE ),
+                   mph      = sd( mph,     na.rm = TRUE ),
+                   pace     = sd( pace,    na.rm = TRUE ),
+                   gain     = sd( gain,    na.rm = TRUE ),
+                   kcal     = sd( kcal,    na.rm = TRUE ),
+                   avg_hr   = sd( avg_hr,  na.rm  = TRUE ),
+                   max_hr   = sd( max_hr,   na.rm = TRUE ),
+                   breaks   = sd( breaks,   na.rm = TRUE ),
+                   shuffles = sd( shuffles, na.rm = TRUE ))
+ 
+
+label = "Ccofficient of variations:"   
+walked = NA
+miles  = stds$miles / means$miles
+steps  = stds$steps / means$steps
+hours  = stds$hours / means$hours
+mph    = stds$mph /  means$mph
+pace   = stds$pace / means$pace
+gain   = stds$ gain / means$gain
+kcal   = stds$kcal / means$kcal
+avg_hr = stds$avg_hr / means$avg_hr
+max_hr = stds$max_hr / means$max_hr
+breaks = stds$breaks / means$breaks
+shuffles = stds$shuffles / means$shuffles
+                
+cvs <- tibble( label,
+               walked,
+               miles,
+               steps,
+               hours,
+               mph,
+               pace,
+               gain,
+               avg_hr,
+               max_hr,
+               breaks,
+               shuffles )
+
+skews <- 
+    days %>% 
+        summarise( label = "Skewness:",
+                   walked = NA,
+                   miles    = skewness( miles,    na.rm = TRUE ),
+                   steps    = skewness( steps,    na.rm = TRUE ),
+                   hours    = skewness( hours,    na.rm = TRUE ),
+                   mph      = skewness( mph,      na.rm = TRUE ),
+                   pace     = skewness( pace,     na.rm = TRUE ),
+                   gain     = skewness( gain,     na.rm = TRUE ),
+                   avg_hr   = skewness( avg_hr,   na.rm = TRUE ),
+                   max_hr   = skewness( max_hr,   na.rm = TRUE ),
+                   breaks   = skewness( max_hr,   na.rm = TRUE ),
+                   shuffles = skewness( shuffles, na.rm = TRUE ))
+
+kurtosises <- 
+    days %>% 
+       summarise( label = "Kurtosis:",
+                   walked = NA,
+                   miles    = kurtosis( miles,    na.rm = TRUE ),
+                   steps    = kurtosis( steps,    na.rm = TRUE ),
+                   hours    = kurtosis( hours,    na.rm = TRUE ),
+                   mph      = kurtosis( mph,      na.rm = TRUE ),
+                   pace     = kurtosis( pace,     na.rm = TRUE ),
+                   gain     = kurtosis( gain,     na.rm = TRUE ),
+                   avg_hr   = kurtosis( avg_hr,   na.rm = TRUE ),
+                   max_hr   = kurtosis( max_hr,   na.rm = TRUE ),
+                   breaks   = kurtosis( max_hr,   na.rm = TRUE ),
+                   shuffles = kurtosis( shuffles, na.rm = TRUE )) 
+
+###############################################################################
+# compute_totals( days )
+###############################################################################
+# Compute the totals for the relevant totals for the days file.
+###############################################################################
+compute_totals <- 
+    function( days ){
+    days %>% 
+        summarise( label = "Totals:",
+                   walked   = sum( walked, na.rm = TRUE),
+                   miles    = sum( miles,  na.rm = TRUE),
+                   steps    = sum( steps, na.rm = TRUE ),
+                   hours    = sum( hours, na.rm = TRUE ),
+                   mph      = NA,
+                   mpl      = NA,
+                   pace     = NA ,
+                   gain     = sum( gain, na.rm = TRUE),
+                   kcal     = sum( kcal, na.rm = TRUE),
+                   avg_hr   = NA,
+                   max_hr   = NA,
+                   breaks   = sum( breaks, na.rm = TRUE),
+                   shuffles = sum(shuffles, na.rm = TRUE ))
+    }
+
+```
+
 
