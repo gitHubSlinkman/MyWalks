@@ -19,7 +19,12 @@ maintenance simpler.
 In the following chunk we load the required library functions for this project.
 
 ```{r load_packages}
-source( "define_functions.R" )
+source( "define_functions.R" )                   # Functions needed for MyWalks 
+source( "compute_totals.R" )                     # Compute the relevant totals
+source( "compute_means.R" )                      # Compute relevant means ...
+source( "compute_standard_deviations.R" )        # Compute standard deviations
+source( "compute_coefficient_of_variation.R" )   # Compute the coefficient of variations
+
 ```
 
 
@@ -129,71 +134,15 @@ days %>%
 
 ```{r compute_parametrics}
 
-totals <- 
-    days %>% 
-        summarise( label = "Totals:",
-                   walked   = sum( walked, na.rm = TRUE),
-                   miles    = sum( miles,  na.rm = TRUE),
-                   steps    = sum( steps, na.rm = TRUE ),
-                   hours    = sum( hours, na.rm = TRUE ),
-                   mph      = NA,
-                   mpl      = NA,
-                   pace     = NA ,
-                   gain     = sum( gain, na.rm = TRUE),
-                   kcal     = sum( kcal, na.rm = TRUE),
-                   avg_hr   = NA,
-                   max_hr   = NA,
-                   breaks   = sum( breaks, na.rm = TRUE),
-                   shuffles = sum(shuffles, na.rm = TRUE ))
-        
+totals <- compute_totals( days )
+means  <- compute_means( days ) 
+stds   <- compute_standard_deviations( days )
 
-means <- 
-    days %>% 
-        summarise( label    = "Means",
-                   walked   =  NA,
-                   miles    = mean( miles,   na.rm = TRUE ),
-                   steps    = mean( steps,   na.rm = TRUE ),
-                   hours    = mean( hours,   na.rm = TRUE ),
-                   mph      = mean( mph,     na.rm = TRUE ),
-                   pace     = mean( pace,    na.rm = TRUE ),
-                   gain     = mean( gain,    na.rm = TRUE ),
-                   kcal     = mean( kcal,    na.rm = TRUE ),
-                   avg_hr   = mean( avg_hr,  na.rm  = TRUE ),
-                   max_hr   = mean( max_hr,   na.rm = TRUE ),
-                   breaks   = mean( breaks,   na.rm = TRUE ),
-                   shuffles = mean( shuffles, na.rm = TRUE ))
                    
- stds <-  
-     days %>% 
-        summarise( label    = "Standard deviations:",
-                   walked   =  NA,
-                   miles    = sd( miles,   na.rm = TRUE ),
-                   steps    = sd( steps,   na.rm = TRUE ),
-                   hours    = sd( hours,   na.rm = TRUE ),
-                   mph      = sd( mph,     na.rm = TRUE ),
-                   pace     = sd( pace,    na.rm = TRUE ),
-                   gain     = sd( gain,    na.rm = TRUE ),
-                   kcal     = sd( kcal,    na.rm = TRUE ),
-                   avg_hr   = sd( avg_hr,  na.rm  = TRUE ),
-                   max_hr   = sd( max_hr,   na.rm = TRUE ),
-                   breaks   = sd( breaks,   na.rm = TRUE ),
-                   shuffles = sd( shuffles, na.rm = TRUE ))
+ 
  
 
-label = "Ccofficient of variations:"   
-walked = NA
-miles  = stds$miles / means$miles
-steps  = stds$steps / means$steps
-hours  = stds$hours / means$hours
-mph    = stds$mph /  means$mph
-pace   = stds$pace / means$pace
-gain   = stds$ gain / means$gain
-kcal   = stds$kcal / means$kcal
-avg_hr = stds$avg_hr / means$avg_hr
-max_hr = stds$max_hr / means$max_hr
-breaks = stds$breaks / means$breaks
-shuffles = stds$shuffles / means$shuffles
-                
+
 cvs <- tibble( label,
                walked,
                miles,
@@ -237,29 +186,7 @@ kurtosises <-
                    breaks   = kurtosis( max_hr,   na.rm = TRUE ),
                    shuffles = kurtosis( shuffles, na.rm = TRUE )) 
 
-###############################################################################
-# compute_totals( days )
-###############################################################################
-# Compute the totals for the relevant totals for the days file.
-###############################################################################
-compute_totals <- 
-    function( days ){
-    days %>% 
-        summarise( label = "Totals:",
-                   walked   = sum( walked, na.rm = TRUE),
-                   miles    = sum( miles,  na.rm = TRUE),
-                   steps    = sum( steps, na.rm = TRUE ),
-                   hours    = sum( hours, na.rm = TRUE ),
-                   mph      = NA,
-                   mpl      = NA,
-                   pace     = NA ,
-                   gain     = sum( gain, na.rm = TRUE),
-                   kcal     = sum( kcal, na.rm = TRUE),
-                   avg_hr   = NA,
-                   max_hr   = NA,
-                   breaks   = sum( breaks, na.rm = TRUE),
-                   shuffles = sum(shuffles, na.rm = TRUE ))
-    }
+
 
 ```
 
