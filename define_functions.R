@@ -2,7 +2,7 @@
 
 ###############################################################################
 # This function loads my most used packahes and sets the degault ggplo2 theme
-# to cowpolut.
+# to cowpulot.
 ###############################################################################
 
         suppressMessages( library( tidyverse ) )         # I live in the tidyverse ...
@@ -26,7 +26,7 @@
                                                          # R mathemtical exprressions ...
         suppressMessages( library( cowplot ) )           # For better looking graphs with
         
-        suppressMessages( library( e1071 ))              # Compute skewness and curtosis ...
+
         
 ###############################################################################
 # We set the defualt theme to them_cowplot to make our graphs publishable

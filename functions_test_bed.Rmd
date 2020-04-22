@@ -20,10 +20,7 @@ In the following chunk we load the required library functions for this project.
 
 ```{r load_packages}
 source( "define_functions.R" )                   # Functions needed for MyWalks 
-source( "compute_totals.R" )                     # Compute the relevant totals
-source( "compute_means.R" )                      # Compute relevant means ...
-source( "compute_standard_deviations.R" )        # Compute standard deviations
-source( "compute_coefficient_of_variation.R" )   # Compute the coefficient of variations
+source( "compute_parametrics.R")
 
 ```
 
@@ -134,57 +131,7 @@ days %>%
 
 ```{r compute_parametrics}
 
-totals <- compute_totals( days )
-means  <- compute_means( days ) 
-stds   <- compute_standard_deviations( days )
-
-                   
- 
- 
-
-
-cvs <- tibble( label,
-               walked,
-               miles,
-               steps,
-               hours,
-               mph,
-               pace,
-               gain,
-               avg_hr,
-               max_hr,
-               breaks,
-               shuffles )
-
-skews <- 
-    days %>% 
-        summarise( label = "Skewness:",
-                   walked = NA,
-                   miles    = skewness( miles,    na.rm = TRUE ),
-                   steps    = skewness( steps,    na.rm = TRUE ),
-                   hours    = skewness( hours,    na.rm = TRUE ),
-                   mph      = skewness( mph,      na.rm = TRUE ),
-                   pace     = skewness( pace,     na.rm = TRUE ),
-                   gain     = skewness( gain,     na.rm = TRUE ),
-                   avg_hr   = skewness( avg_hr,   na.rm = TRUE ),
-                   max_hr   = skewness( max_hr,   na.rm = TRUE ),
-                   breaks   = skewness( max_hr,   na.rm = TRUE ),
-                   shuffles = skewness( shuffles, na.rm = TRUE ))
-
-kurtosises <- 
-    days %>% 
-       summarise( label = "Kurtosis:",
-                   walked = NA,
-                   miles    = kurtosis( miles,    na.rm = TRUE ),
-                   steps    = kurtosis( steps,    na.rm = TRUE ),
-                   hours    = kurtosis( hours,    na.rm = TRUE ),
-                   mph      = kurtosis( mph,      na.rm = TRUE ),
-                   pace     = kurtosis( pace,     na.rm = TRUE ),
-                   gain     = kurtosis( gain,     na.rm = TRUE ),
-                   avg_hr   = kurtosis( avg_hr,   na.rm = TRUE ),
-                   max_hr   = kurtosis( max_hr,   na.rm = TRUE ),
-                   breaks   = kurtosis( max_hr,   na.rm = TRUE ),
-                   shuffles = kurtosis( shuffles, na.rm = TRUE )) 
+compute_parametrics( days )
 
 
 
