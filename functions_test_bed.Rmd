@@ -19,7 +19,9 @@ maintenance simpler.
 In the following chunk we load the required library functions for this project.
 
 ```{r load_packages}
-source( "define_functions.R" )                   # Functions needed for MyWalks 
+
+
+source('~/R-Projects/MyWalks/functions/load_packages.R')
 source( "compute_parametrics.R")
 
 ```
@@ -131,7 +133,27 @@ days %>%
 
 ```{r compute_parametrics}
 
-compute_parametrics( days )
+###############################################################################
+# We compute the parametric statistics for the importnat variables.  These
+# include the totals (where they nmake sense), the means, standard deviations,
+# skewness and huetosis.
+###############################################################################
+
+parametrics <- compute_parametrics( days ) 
+parametrics
+
+integer_columns <- c( 2 )
+decimal_columns_0 <- c( 4 )
+decimal_columns_2 <- c( 3 )
+
+parametrics %>%
+    flextable() %>% 
+        width( j = 1, 2.0 ) %>%
+        width( j = 4, 1.5 ) %>% 
+        colformat_int( j = integer_columns ) %>% 
+        colformat_num( j = decimal_columns_0 ) %>% 
+        colformat_num( j = decimal_columns_2 ) 
+ 
 
 
 
