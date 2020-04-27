@@ -7,10 +7,9 @@
 # relevant data in the days tibble.
 ##############################################################################
 
-library( tidyverse )                             # I live in the tidy verse ...
-
-source( "compute_totals.R" )                     # Compute the relevant totals
-source( "compute_means.R" )                      # Compute relevant means ...
+library( tidyverse )                            
+source('~/R-Projects/MyWalks/functions/compute_totals.R')
+source('~/R-Projects/MyWalks/functions/compute_means.R')
 source( "compute_standard_deviations.R" )        # Compute standard deviations
 source( "compute_coefficient_of_variation.R" )   # Compute the ccoef of var.
 source( "compute_skew.R" )                       # Compute the skewness ...
