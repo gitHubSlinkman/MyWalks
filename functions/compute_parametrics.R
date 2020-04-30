@@ -10,10 +10,10 @@
 library( tidyverse )                            
 source('~/R-Projects/MyWalks/functions/compute_totals.R')
 source('~/R-Projects/MyWalks/functions/compute_means.R')
-source( "compute_standard_deviations.R" )        # Compute standard deviations
-source( "compute_coefficient_of_variation.R" )   # Compute the ccoef of var.
-source( "compute_skew.R" )                       # Compute the skewness ...
-source( "compute_kurtosis.R" )                   # Compute the kutosis ...
+source("~/R-Projects/MyWalks/functions/compute_standard_deviations.R" )  
+source('~/R-Projects/MyWalks/functions/compute_skew.R')
+source('~/R-Projects/MyWalks/functions/compute_kurtosis.R')
+
 
 compute_parametrics <- 
     function( days ){

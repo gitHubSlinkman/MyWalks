@@ -20,9 +20,20 @@ In the following chunk we load the required library functions for this project.
 
 ```{r load_packages}
 
+###############################################################################
+# Load required R-packkages ...
+###############################################################################
 
-source('~/R-Projects/MyWalks/functions/load_packages.R')
-source( "compute_parametrics.R")
+ source('~/R-Projects/MyWalks/functions/load_packages.R')
+
+
+###############################################################################
+# load our defined functions ...
+###############################################################################
+
+source('~/R-Projects/MyWalks/functions/get_day_routes.R')
+source('~/R-Projects/MyWalks/functions/draw_barchart.R')
+source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
 
 ```
 
@@ -32,15 +43,41 @@ source( "compute_parametrics.R")
 The **get_days()** function should return a tibble of my walking data saved on a Microsoft Excel spreadsheet called **days.xlsx**.  
 
 ```{r test_get_days}
-days <- get_days()     # Test get days ...
-days                   # Should return a tibble of the days walks ...
+day_routes <- get_day_routes() # Test get days ...
+day_routes                     # Returna a tibble of the day_routes ...
 ```
 
 
 ### plot_bar_walks()
 
 ```{r test_plot_bar_walks}
-plot_bar_walks( days ) 
+
+walked <-
+    day_routes %>% 
+        pull( "walked" )
+
+n <- sum( walked )
+
+df <- 
+    tibble( walked ) %>%
+       mutate( walked  = ifelse( walked == 0, 
+                                 "No", 
+                                 "Yes" ))
+           
+df %>%
+    ggplot( aes( x = variable )) + 
+        geom_bar( binwidth = 0.5,
+                  color = "yellow",
+                  fill  = "Yellow" ) +
+        stat_bin( aes( label=..count..),
+                       vjust=-1, 
+                       geom="text", 
+                       position="identity" ) +
+        expand_limits( y = n + 10 ) +
+        xlab( "Walked?" ) +
+        ylab( "Freqiency" )
+        
+
 ```
 
 ### Hardware-Software_user error
@@ -51,7 +88,7 @@ In this section we determine all the error that lead to data loss.
 
 frequincies = seq( from  = 0,                    # Define y-scales
                    to = 32, 
-                   by = 1 )
+                   by = 2 )
 
 days %>%
     filter( walked == 1 & 
