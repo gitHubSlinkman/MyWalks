@@ -62,22 +62,16 @@ df <-
     tibble( walked ) %>%
        mutate( walked  = ifelse( walked == 0, 
                                  "No", 
-                                 "Yes" ))
-           
-df %>%
-    ggplot( aes( x = variable )) + 
-        geom_bar( binwidth = 0.5,
-                  color = "yellow",
-                  fill  = "Yellow" ) +
-        stat_bin( aes( label=..count..),
-                       vjust=-1, 
-                       geom="text", 
-                       position="identity" ) +
-        expand_limits( y = n + 10 ) +
-        xlab( "Walked?" ) +
-        ylab( "Freqiency" )
-        
+                                 "Yes" ))  %>% 
+        group_by( walked ) %>% 
+            summarise( frequency = n() )
 
+y_max <- max( df$frequency ) + 5
+
+p <- ggplot( df, aes( x = walked, y = frequency))
+
+p <-  p + geom_bar( stat = "identity" )
+p
 ```
 
 ### Hardware-Software_user error
@@ -106,7 +100,7 @@ days %>%
          scale_y_continuous( "Errors", 
                               breaks = frequincies,
                               label  = frequincies ) +
-         ggtitle( "Errors that reult in lost data")
+         ggtitle( "Errors that reult in lost data" )
 ```
 
 
