@@ -32,10 +32,18 @@ In the following chunk we load the required library functions for this project.
 ###############################################################################
 
 source('~/R-Projects/MyWalks/functions/get_day_routes.R')
-source('~/R-Projects/MyWalks/functions/draw_barchart.R')
+source('~/R-Projects/MyWalks/functions/convert_hhmm_to_decimal.R')
+source('~/R-Projects/MyWalks/functions/plot_distribution.R')
 source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
 
 ```
+
+
+### Set cowplot to be  the  default theme
+```{r set_owplot}
+theme_set( theme_cowplot())
+```
+
 
 
 ### get_days()  test
@@ -52,26 +60,29 @@ day_routes                     # Returna a tibble of the day_routes ...
 
 ```{r test_plot_bar_walks}
 
-walked <-
+tbl <-
     day_routes %>% 
-        pull( "walked" )
+        select( walked ) 
+            
 
-n <- sum( walked )
+n <- sum( tbl$walked )
 
-df <- 
-    tibble( walked ) %>%
-       mutate( walked  = ifelse( walked == 0, 
-                                 "No", 
-                                 "Yes" ))  %>% 
-        group_by( walked ) %>% 
-            summarise( frequency = n() )
 
-y_max <- max( df$frequency ) + 5
-
-p <- ggplot( df, aes( x = walked, y = frequency))
-
-p <-  p + geom_bar( stat = "identity" )
-p
+tbl %>% 
+    mutate( walked = ifelse( walked == 0,
+                                     "No",
+                                     "Yes" )) %>% 
+    ggplot( aes(x = walked )) +
+geom_bar( width = 0.5,
+          color= "black",
+          fill ="yellow" ) +
+geom_text(stat='count', aes(label=..count..), vjust=-1) +
+    expand_limits( y = n +5 ) +
+    xlab( "Walked?")+ 
+    ylab( "Frequency" ) +
+    ggtitle( "Walks not made and ,made" ) +
+    theme_bw()
+ 
 ```
 
 ### Hardware-Software_user error
@@ -80,11 +91,7 @@ In this section we determine all the error that lead to data loss.
 
 ```{r list errors}
 
-frequincies = seq( from  = 0,                    # Define y-scales
-                   to = 32, 
-                   by = 2 )
-
-days %>%
+day_routes %>%
     filter( walked == 1 & 
             gps_failure == 1 ) %>% 
     select( id,
@@ -92,22 +99,35 @@ days %>%
             walked,
             gps_failure,
             failure_reason ) %>% 
+    
     ggplot( aes( x = failure_reason )) +
          geom_bar( width = 0.25,
-                   color = "red",
+                   color = "black",
                    fill= "red" ) +
          xlab( "Errors" ) +
-         scale_y_continuous( "Errors", 
-                              breaks = frequincies,
-                              label  = frequincies ) +
-         ggtitle( "Errors that reult in lost data" )
+         ylab( "Frequencies" ) +
+         ggtitle( "Errors that reult in lost data" ) +
+        theme_bw()
 ```
 
 
 ### plot_bar_missed_reasons() test
 
 ```{r test_bar_missied_reasons}
-plot_bar_missed_reasons( days )
+
+day_routes %>% 
+    filter( walked == 0 ) %>% 
+    select( missed_reason ) %>% 
+    
+    ggplot( aes( x = missed_reason )) +
+        geom_bar( color = "black",
+                  fill = "red",
+                  na.rm = TRUE ) +
+        xlab( "Missed reaon") +
+        ylab( "Frequency" ) +
+        ggtitle( "Reasons for missing walks") +
+        coord_flip()
+
 ```
 
 ### test_convert_hhmm to_decimal
@@ -115,76 +135,29 @@ plot_bar_missed_reasons( days )
 We are going to covert from hh:mm to hh.dd.
 
 ```{r test_convert_hhmm to decimal }
-date_times <- 
-    days %>% 
-        filter( walked == 1 ) %>% 
-            pull( date_time )
-
-date_times <- as.POSIXct( date_times )
-
-start_times <- convert_hhmm_to_decimal( date_times )
-
-start_times <- start_times[ start_times > 0 ]
-
-
-
-tibble( start_times ) %>% 
-    ggplot( aes( x = start_times, y=..count.. )) +
-                
-                geom_histogram( binwidth = 0.25,
-                                color="black",
-                                fill = "yellow" )+
-    xlab( "Start time") +
-    ylab( "Frequency" ) +
-    ggtitle( "Start times " )
-
-```
-
-###  Test weather conditiona
-
-In this code we draw a bat chart of the weather conditions for each day.
-
-```{r draw_bar_weather}
-
-days %>% 
-    select( weather ) %>% 
-    ggplot( aes( x = weather)) +
-    geom_bar( width = 0.25,
-              color="black",
-              fill="blue") +
-    xlab( "Weather conditions" ) +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-    ylab( "Frequency" ) +
-    ggtitle( "Weather condition on all days" )
-
-```
-
-
-### Compute totals, means, standard deviationa, coeffcient of varriation, skewness, and kurtosis
-
-```{r compute_parametrics}
 
 ###############################################################################
-# We compute the parametric statistics for the importnat variables.  These
-# include the totals (where they nmake sense), the means, standard deviations,
-# skewness and huetosis.
+# Below we extract the start times and element observations when the start time
+# was not record in day_routes
 ###############################################################################
 
-parametrics <- compute_parametrics( days ) 
-parametrics
-
-integer_columns <- c( 2 )
-decimal_columns_0 <- c( 4 )
-decimal_columns_2 <- c( 3 )
-
-parametrics %>%
-    flextable() %>% 
-        width( j = 1, 2.0 ) %>%
-        width( j = 4, 1.5 ) %>% 
-        colformat_int( j = integer_columns ) %>% 
-        colformat_num( j = decimal_columns_0 ) %>% 
-        colformat_num( j = decimal_columns_2 ) 
+start_times <-                                 # Extract start times from 
+    convert_hhmm_to_decimal( day_routes )      # routes ....
  
+ start_times <- start_times[ start_times > 0 ] # Eliminate observations when
+                                               # zero start_times ...
+ plot_distribution( start_times,
+                    "Walk started times",
+                    "Walks started times" )
+ 
+```
+
+###  Test weather conditions
+
+In this code we draw a bar chart of the weather conditions for each day.
+
+```{r draw_barchart_of_weather}
+
 
 
 
