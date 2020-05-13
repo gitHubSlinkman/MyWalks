@@ -73,15 +73,15 @@ tbl %>%
                                      "No",
                                      "Yes" )) %>% 
     ggplot( aes(x = walked )) +
-geom_bar( width = 0.5,
-          color= "black",
-          fill ="yellow" ) +
-geom_text(stat='count', aes(label=..count..), vjust=-1) +
-    expand_limits( y = n +5 ) +
-    xlab( "Walked?")+ 
-    ylab( "Frequency" ) +
-    ggtitle( "Walks not made and ,made" ) +
-    theme_bw()
+        geom_bar( width = 0.5,
+                  color = "black",
+                  fill  = "yellow" ) +
+     geom_text(stat='count', aes(label=..count..), vjust=-1) +
+        geom_text(stat='count', aes(label=..count..), vjust=-1) +
+        xlab( "Walked?")+ 
+        ylab( "Frequency" ) +
+        ggtitle( "Walks not made and ,made" ) +
+        theme_bw()
  
 ```
 
@@ -158,9 +158,90 @@ In this code we draw a bar chart of the weather conditions for each day.
 
 ```{r draw_barchart_of_weather}
 
+###############################################################################
+# In thiis code chunk we draw a bar chart of the weather conditions.
+###############################################################################
 
 
+###############################################################################
+# We tbulate the sky condition to find the weather condition that occurs most
+# often.
+###############################################################################
+
+tabulation <-                         # Tabulate the sky conditions ...
+    day_routes %>%                    # from the day_routes
+        group_by( sky ) %>%           # group by sky
+            mutate( frequency = n() ) # and cont occurences ...   
+    
+frequencies <-                        # Get the frequences from the
+    tabulation %>%                    # tabulation ...
+        pull( frequency )
+
+max_y = max( frequencies ) + 8        # Add rrom for frequency labels ...          
+
+
+day_routes %>%                        # Draw bar chart of sky conditions ...                     
+    ggplot( aes( x = sky )) +
+        geom_bar( color="black",
+                  fill = "blue" ) +
+        geom_text( stat='count', 
+                   aes(label=..count..), 
+                   vjust=-1) +
+        expand_limits( y = max_y ) +
+    xlab( "Weatther" ) +
+    ylab( "Frequency" )  +
+    ggtitle( "Weather conditions") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+```
+
+### Plot the distribyution walk temoeratures
+
+```{r plot_walk_termperatures}
+
+temps <- 
+    day_routes  %>% 
+    pull( temp )
+
+plot_distribution( temps,
+                "Walling tempatures (Fahrenheit)",
+                "Walking Temperatures Distribution" )
 
 ```
 
+### Plot the distribution of relative humidity
 
+```{r plot_distribution_humidity}
+
+###############################################################################
+# Plot the histogram and density plot od the relrive humidity.
+###############################################################################
+
+rh <-                                 
+    day_routes %>% 
+        pull( rh )
+
+plot_distribution( rh,
+                   "Relative humidity",
+                   "Relative Hunidity Distribution")
+
+```
+
+### Draw scatter plot of relative humidity versus walk temperature
+
+```{r draw_scatter_plot_of rh_versus_temp}
+
+day_routes %>%
+    filter( !is.na(temp) & 
+            !is.na(rh) & 
+                !is.na( conditions ))  %>% 
+    
+        ggplot( aes( x = temp, y = rh, color = conditions  )) +
+            geom_point()
+        
+    
+```
+
+
+
+    
