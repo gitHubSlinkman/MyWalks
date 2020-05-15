@@ -31,7 +31,8 @@ In the following chunk we load the required library functions for this project.
 # load our defined functions ...
 ###############################################################################
 
-source('~/R-Projects/MyWalks/functions/get_day_routes.R')
+source('~/R-Projects/MyWalks/functions/get_day_routes.R') 
+source('~/R-Projects/MyWalks/functions/find_max_frequency.R')
 source('~/R-Projects/MyWalks/functions/convert_hhmm_to_decimal.R')
 source('~/R-Projects/MyWalks/functions/plot_distribution.R')
 source('~/R-Projects/MyWalks/functions/plot_qq_norm.R')
@@ -181,7 +182,7 @@ frequencies <-                        # Get the frequences from the
 max_y = max( frequencies ) + 8        # Add rrom for frequency labels ...          
 
 
-day_routes %>%                        # Draw bar chart of sky conditions ...                     
+day_routes %>%                        # Draw bar chart of sky conditions                   
     ggplot( aes( x = sky )) +
         geom_bar( color="black",
                   fill = "blue" ) +
@@ -243,6 +244,22 @@ day_routes %>%
             geom_point( size = 2 )
         
 ```
+## Shoes walked in
+We draw a bar plot of the shoes used.
+
+```{r draw_bar_plot_shoes}
+
+day_routes %>% 
+    filter( walked == 1) %>% 
+    
+        ggplot( aes( x = shoes )) +
+            geom_bar( color = "black",
+                      fill  = "green",
+                      width = 0.5 )
+
+```
+
+
 
 
 ## Miles walked
