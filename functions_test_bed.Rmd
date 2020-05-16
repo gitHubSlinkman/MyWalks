@@ -63,17 +63,22 @@ day_routes                     # Returna a tibble of the day_routes ...
 
 ```{r test_plot_bar_walks}
 
-walked <-
-    day_routes %>% 
+walked <-                              # Extract walked from
+    day_routes %>%                     # day_routes
         select( walked )
 
-walked = ifelse( walked == 0,
-                 "Did not walks",
+walked = ifelse( walked == 0,          # Convert walked codes from binary
+                 "Did not walk",      # to character for bar chart ...
                  "Walked")
+
+scale <- seq( from = 0,                # Create breaks and label scales ...
+              to = 375, 
+              by = 10 )
             
 plot_bar_chart( walked,
                 variable_name = "Walked?",
-                plot_title = "Days walked and not walked" )
+                plot_title = "Days walked and not walked",
+                frequency_scale = scale )
 ```
 
 ### Hardware-Software_user error
@@ -81,24 +86,22 @@ plot_bar_chart( walked,
 In this section we determine all the error that lead to data loss.
 
 ```{r list errors}
+failure_reason <- 
+    day_routes %>%
+     filter( walked == 1 & 
+             gps_failure == 1 ) %>% 
+    select( failure_reason )
 
-day_routes %>%
-    filter( walked == 1 & 
-            gps_failure == 1 ) %>% 
-    select( id,
-            date_time,
-            walked,
-            gps_failure,
-            failure_reason ) %>% 
+scale <- seq( from = 0, to = 8, by = 2 )
+
+plot_bar_chart( failure_reason,
+                variable_name = "Failure reason",
+                plot_title = "Reasons for data loss",
+                bar_width = 0.25,
+                fill_color = "red", 
+                frequency_scale = scale )   
     
-    ggplot( aes( x = failure_reason )) +
-         geom_bar( width = 0.25,
-                   color = "black",
-                   fill= "red" ) +
-         xlab( "Errors" ) +
-         ylab( "Frequencies" ) +
-         ggtitle( "Errors that reult in lost data" ) +
-        theme_bw()
+    
 ```
 
 
@@ -106,18 +109,26 @@ day_routes %>%
 
 ```{r test_bar_missied_reasons}
 
-day_routes %>% 
-    filter( walked == 0 ) %>% 
-    select( missed_reason ) %>% 
+scale = seq( from = 0, to = 64, by = 10)
+
+missed_reason <- 
+    day_routes %>% 
+        filter( ( !is.na( missed_reason )) &  
+                ( walked == 0 )) %>% 
+        select( missed_reason )
+
+plot_bar_chart( missed_reason,
+                variable_name = "Reason",
+                plot_title = "Reasons for not walking",
+                bar_width = 0.25,
+                frequency_scale = scale ) +
+    coord_flip()
+
+   
     
-    ggplot( aes( x = missed_reason )) +
-        geom_bar( color = "black",
-                  fill = "red",
-                  na.rm = TRUE ) +
-        xlab( "Missed reaon") +
-        ylab( "Frequency" ) +
-        ggtitle( "Reasons for missing walks") +
-        coord_flip()
+    
+   
+        
 
 ```
 
@@ -127,10 +138,9 @@ We are going to covert from hh:mm to hh.dd.
 
 ```{r test_convert_hhmm to decimal }
 
-###############################################################################
-# Below we extract the start times and element observations when the start time
-# was not record in day_routes
-###############################################################################
+###########################################################################
+# Below we extract the start times and element observations when the start # time was not record in day_routes
+##########################################################################
 
 start_times <-                                 # Extract start times from 
     convert_hhmm_to_decimal( day_routes )      # routes ....
@@ -171,7 +181,10 @@ frequencies <-                        # Get the frequences from the
 max_y = max( frequencies ) + 8        # Add rrom for frequency labels ...          
 
 
-day_routes %>%                        # Draw bar chart of sky conditions                   
+day_routes %>%                        # Draw bar chart of sky conditions
+    filter( !is.na( sky )) %>% 
+        select( sky )
+    
     ggplot( aes( x = sky )) +
         geom_bar( color="black",
                   fill = "blue" ) +

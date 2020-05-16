@@ -85,3 +85,4 @@ id,date_time,walked,missed_reason,sky,temp,rh,conditions,shoes,route,miles,start
 617,5/13/20 11:53,1,,Cloudy,73,76,Bad,Skechers,Four Parks,5.64,313,12562,12249,1.57,,,3.60,1,5.64,16.65,217,624,78,109,16.19,16.10,16.45,18.10,16.69,16.22,,,,5,0,Garman vivoactive 3,Connect,0,
 618,5/14/20 12:02,1,,Mostly Cloudy / Windy,85,55,Good,RBX,River Legacy North East,6.01,1116,14151,13035,1.58,1.85,0.27,3.80,1,6.01,15.72,92,1206,133,169,15.14,15.14,15.45,16.30,16.13,16.09,15.79,,,6,0,,,,
 619,5/15/20 11:38,1,,Cloudy,81,62,Bad,Skechers,Fish Creek Linear Park,7.53,1129,17488,16539,2.00,2.37,0.37,3.77,1,7.53,15.92,371,983,107,139,15.40,15.31,15.20,16.08,71.60,16.33,16.71,15.79,,7,0,Garman vivoactive 3,Connect,0,
+620,5/16/20 11:53,0,Heavy rain,Cloudy,68,87,Bad,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

@@ -7,7 +7,10 @@ plot_bar_chart <-
     function( variable,
               frequency_scale = NULL,
               variable_name = NULL,
-              plot_title = NULL ){
+              plot_title = NULL,
+              bar_width = NULL,
+              fill_color = "green" )
+        {
 
               ################################################################
               # We remove missing values from the variable data.
@@ -21,7 +24,7 @@ plot_bar_chart <-
               # them being partially visoble.
               ###############################################################
               
-              max_frequency <- find_max_frequency( variable )
+               max_frequency <- find_max_frequency( variable )
               
               
               ##############################################################
@@ -31,9 +34,9 @@ plot_bar_chart <-
               
               tibble( variable ) %>% 
                   ggplot( aes( x = variable )) +
-                  geom_bar( width = 0.5,
+                  geom_bar( width = bar_width,
                             color = "black",
-                            fill  = "green" ) +
+                            fill  = fill_color ) +
                   geom_text(stat='count', 
                             aes(label=..count..), 
                             vjust=-1) +

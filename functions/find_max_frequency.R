@@ -27,9 +27,6 @@ find_max_frequency <-
         ######################################################################
         # Determine the meaximum frequency and return
         ######################################################################
-        max_frequency <- 
-            tabulation %>% 
-             summarise( n = max( frequency ) )
         
-        max_frequency
+        max( tabulation$frequency )
     }
