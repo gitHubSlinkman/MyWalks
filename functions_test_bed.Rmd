@@ -20,16 +20,16 @@ In the following chunk we load the required library functions for this project.
 
 ```{r load_packages}
 
-###############################################################################
+###########################################################################
 # Load required R-packkages ...
-###############################################################################
+###########################################################################
 
  source('~/R-Projects/MyWalks/functions/load_packages.R')
 
 
-###############################################################################
+###########################################################################
 # load our defined functions ...
-###############################################################################
+##########################################################################
 
 source('~/R-Projects/MyWalks/functions/get_day_routes.R') 
 source('~/R-Projects/MyWalks/functions/find_max_frequency.R')
@@ -37,6 +37,8 @@ source('~/R-Projects/MyWalks/functions/plot_bar_chart.R')
 source('~/R-Projects/MyWalks/functions/convert_hhmm_to_decimal.R')
 source('~/R-Projects/MyWalks/functions/plot_distribution.R')
 source('~/R-Projects/MyWalks/functions/plot_qq_norm.R')
+source('~/R-Projects/MyWalks/functions/diagnose_linearity.R')
+source('~/R-Projects/MyWalks/functions/diagnose_heteroskedasticity.R')
 source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
 
 ```
@@ -79,6 +81,7 @@ plot_bar_chart( walked,
                 variable_name = "Walked?",
                 plot_title = "Days walked and not walked",
                 frequency_scale = scale )
+                
 ```
 
 ### Hardware-Software_user error
@@ -109,26 +112,17 @@ plot_bar_chart( failure_reason,
 
 ```{r test_bar_missied_reasons}
 
-scale = seq( from = 0, to = 64, by = 10)
-
 missed_reason <- 
     day_routes %>% 
-        filter( ( !is.na( missed_reason )) &  
-                ( walked == 0 )) %>% 
-        select( missed_reason )
+        filter( walked == 0 ) %>% 
+            pull( missed_reason )
 
-plot_bar_chart( missed_reason,
-                variable_name = "Reason",
-                plot_title = "Reasons for not walking",
-                bar_width = 0.25,
-                frequency_scale = scale ) +
-    coord_flip()
+    plot_bar_chart( missed_reason, 
+                    "Reasons for missing g walk",
+                    "Distribution of reasons for missing walk" )
+ 
 
-   
     
-    
-   
-        
 
 ```
 
@@ -147,9 +141,10 @@ start_times <-                                 # Extract start times from
  
  start_times <- start_times[ start_times > 0 ] # Eliminate observations when
                                                # zero start_times ...
- plot_distribution( start_times,
-                    "Walk started times",
-                    "Walks started times" )
+ plot_distribution( 
+     start_times,
+     "Walk started times",
+     "Distribution of walks starting times times" )
  
 ```
 
@@ -159,47 +154,58 @@ In this code we draw a bar chart of the weather conditions for each day.
 
 ```{r draw_barchart_of_weather}
 
-###############################################################################
+###########################################################################
 # In thiis code chunk we draw a bar chart of the weather conditions.
-###############################################################################
+###########################################################################
 
 
-###############################################################################
-# We tbulate the sky condition to find the weather condition that occurs most
-# often.
-###############################################################################
+###########################################################################
+# We tbulate the sky condition to find the weather condition that occurs
+# most often.  This will be a flipped barchart with lots of categories.
+# Therefore we not use the function and will code it here.
+###########################################################################
 
-tabulation <-                         # Tabulate the sky conditions ...
-    day_routes %>%                    # from the day_routes
-        group_by( sky ) %>%           # group by sky
-            mutate( frequency = n() ) # and cont occurences ...   
+###########################################################################
+# Exctract the sky variable.
+###########################################################################
+
+variable <- 
+    day_routes %>%                        
+        filter( !is.na( sky )) %>% 
+            arrange( desc( sky )) %>% 
+                select( sky ) 
+            
+###########################################################################
+# Form a tibble and  to pass to ggplot.
+###########################################################################
+
+df <- tibble( variable )
+
+############################################################################ Determine maximum frequency to allow us to add snapce for numerical
+# frequencies to the right of the bars.
+###########################################################################
+
+max_frequency <- find_max_frequency( df )
+
+############################################################################ Build tibble and send to ggplot.
+###########################################################################
+
+plot_bar_chart( variable,
+                "Weather conditions",
+                "Distribution of weather conditions" ) +
+    theme(axis.text.x = 
+              element_text(angle = 45, 
+                           vjust = 1,
+                           hjust=1))
+
+
+   
     
-frequencies <-                        # Get the frequences from the
-    tabulation %>%                    # tabulation ...
-        pull( frequency )
 
-max_y = max( frequencies ) + 8        # Add rrom for frequency labels ...          
-
-
-day_routes %>%                        # Draw bar chart of sky conditions
-    filter( !is.na( sky )) %>% 
-        select( sky )
-    
-    ggplot( aes( x = sky )) +
-        geom_bar( color="black",
-                  fill = "blue" ) +
-        geom_text( stat='count', 
-                   aes(label=..count..), 
-                   vjust=-1) +
-        expand_limits( y = max_y ) +
-    xlab( "Weatther" ) +
-    ylab( "Frequency" )  +
-    ggtitle( "Weather conditions") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
     
 ```
 
-### Plot the distribyution walk temoeratures
+### Plot the distribution walk temperatures
 
 ```{r plot_walk_termperatures}
 
@@ -208,7 +214,7 @@ temps <-
     pull( temp )
 
 plot_distribution( temps,
-                "Walling tempatures (Fahrenheit)",
+                "Walling temperatures (Fahrenheit)",
                 "Walking Temperatures Distribution" )
 
 ```
@@ -227,7 +233,7 @@ rh <-
 
 plot_distribution( rh,
                    "Relative humidity",
-                   "Relative Hunidity Distribution")
+                   "Relative Humidity Distribution")
 
 ```
 
@@ -275,7 +281,7 @@ miles <-
 
 plot_distribution( miles,
                    "Miles walked",
-                   "Distributionn of miles walked" ) 
+                   "Distribution of miles walked" ) 
 
 plot_qq_norm( miles,
               variable_name = "miles walked",
@@ -284,4 +290,101 @@ plot_qq_norm( miles,
 
 ```
 
+## Distribution of steps (000's) walked 
+
+```{r plot_distibutiin_of_ksteps}
+
+variable <- 
+   day_routes %>% 
+        filter( walked == 1 ) %>% 
+            pull( steps )
+
+plot_distribution( variable,
+                   variable_name = "Steps walked",
+                   plot_title = "Distribution of steps walked" )
+
+plot_qq_norm( variable,
+              variable_name = "Thousand steps walked",
+              plot_title = "Normal QQ plot of thousand steps walked")  
+              
+
+```
+
+plot_qq_norm( variable,
+              variable_name = "Thousand steps walked",
+              plot_title = "Normal QQ plot of thousand steps walked")  
+              
+              
+### Investigation of the relationship between $miles$ and $steps$  
+
+We start with a scatterplot of the steps versus the miles walked.
+
+```{r draw_scatterplot_steps_versus_miles}
+
+walks <- 
+    day_routes %>% 
+        filter( walked == 1) %>% 
+        filter( !is.na( miles )) %>% 
+        filter( !is.na( steps )) %>% 
+            select( date_time,
+                    route,
+                    miles,
+                    steps )
     
+
+walks
+
+ggplot( walks,
+        aes( x = miles,
+             y = steps )) +
+    geom_point( na.rm = TRUE )  +
+    geom_smooth( method = "lm",
+                 na.rm = TRUE,
+                 se = FALSE ) +
+    geom_smooth( mehtod = "loess",
+                 color = "green",
+                 se = FALSE )
+    
+```
+
+```{r fit_slr_model}
+
+slr <- lm( steps ~ miles,
+           data = walks )
+summary( slr )
+
+
+
+```
+ 
+## Diagnostic checks
+
+This section performs graphical diagnostic checks.
+
+### Graphical check for linearity
+
+```{r define_assess_linearity}
+
+###########################################################################
+# The function called below draws a scaterplot of the residuals versus
+# fitted values.  Its major purpose is to check the linearity assumption
+# although it can be used to discover potential outliers and # heteroskedasticity. 
+###########################################################################
+
+diagnose_linearity( slr )
+
+```
+
+### Diagnosing heteroskedasticity
+
+```{r diagnose_heteroskedasticity}
+
+###########################################################################
+# The function called below draws a scaterplot of the residuals versus
+# fitted values.  Its major purpose is to check the linearity assumption
+# although it can be used to discover potential outliers and # heteroskedasticity. 
+
+```
+
+
+              

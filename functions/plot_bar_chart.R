@@ -6,10 +6,10 @@
 plot_bar_chart <- 
     function( variable,
               frequency_scale = NULL,
-              variable_name = NULL,
-              plot_title = NULL,
-              bar_width = NULL,
-              fill_color = "green" )
+              variable_name   = NULL,
+              plot_title      = NULL,
+              bar_width       = NULL,
+              fill_color      = "green" )
         {
 
               ################################################################
@@ -31,23 +31,16 @@ plot_bar_chart <-
               # Create a tibble and pass the tibble to ggplot ro create 
               # bar chart.
               ##############################################################
-              
-              tibble( variable ) %>% 
-                  ggplot( aes( x = variable )) +
-                  geom_bar( width = bar_width,
-                            color = "black",
-                            fill  = fill_color ) +
-                  geom_text(stat='count', 
-                            aes(label=..count..), 
-                            vjust=-1) +
-                  expand_limits( y = max_frequency + 10 ) +
-                  scale_y_continuous( "Frequency",
-                                      breaks = frequency_scale,
-                                      labels = frequency_scale ) +
-                  xlab(  variable_name ) +                
-                         ylab( "Frequency" ) +
-                  ggtitle( plot_title ) +
-                  theme_cowplot()
-             
         
+              tibble( variable ) %>% 
+                   ggplot( aes( x = variable )) +
+                      geom_bar( color = "black",
+                                fill = "green" ) +
+                      geom_text( stat = 'count',
+                                 aes(label =..count.., 
+                                     vjust = -0.2)) +
+                      expand_limits( y = max_frequency + 10 ) +
+                      xlab( variable_name ) +
+                      ylab( "Frequency" ) +
+                      ggtitle( plot_title )
     }
