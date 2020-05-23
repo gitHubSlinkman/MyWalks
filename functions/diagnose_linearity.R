@@ -13,6 +13,9 @@
 #'
 #' @examples             
 #' 
+
+source('~/R-Projects/MyWalks/functions/plot_qq_norm.R')
+
 diagnose_linearity <- 
     function( fitted_model ){
         yhat <- fitted( fitted_model )
@@ -25,7 +28,8 @@ diagnose_linearity <-
                         color = "black" ) +
             geom_smooth( method = "loess",
                          color = "green") +
-            xlab( expression( hat( y[1]) ) ) +
-            ylab( expression( hat( e[1]))) +
+            xlab( expression( hat( y )) ) +
+            ylab( expression( hat( e ))) +
             ggtitle( "Diagnosing the linearity assumptoion")
-    }
+            }
+

@@ -39,6 +39,7 @@ source('~/R-Projects/MyWalks/functions/plot_distribution.R')
 source('~/R-Projects/MyWalks/functions/plot_qq_norm.R')
 source('~/R-Projects/MyWalks/functions/diagnose_linearity.R')
 source('~/R-Projects/MyWalks/functions/diagnose_heteroskedasticity.R')
+source('~/R-Projects/MyWalks/functions/compute_diagnostics.R')
 source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
 
 ```
@@ -326,7 +327,8 @@ walks <-
         filter( walked == 1) %>% 
         filter( !is.na( miles )) %>% 
         filter( !is.na( steps )) %>% 
-            select( date_time,
+            select( id,
+                    date_time,
                     route,
                     miles,
                     steps )
@@ -348,6 +350,20 @@ ggplot( walks,
 ```
 
 ```{r fit_slr_model}
+
+###########################################################################
+# Wee will only use data where both the the miles and steps are both 
+# preseent in the data.
+###########################################################################
+
+is.present <- function( x ){
+    !is.na( x )
+}
+
+walks <- 
+    walks %>% 
+        filter( is.present( miles ) &
+                is.present( steps )) 
 
 slr <- lm( steps ~ miles,
            data = walks )
@@ -380,11 +396,73 @@ diagnose_linearity( slr )
 ```{r diagnose_heteroskedasticity}
 
 ###########################################################################
-# The function called below draws a scaterplot of the residuals versus
-# fitted values.  Its major purpose is to check the linearity assumption
-# although it can be used to discover potential outliers and # heteroskedasticity. 
+# The function called is used to draw a scatterplot of the square root of
+# the aboslute value of the residuals.  If the variance is approxumately
+# The smoothed line should be roughly horizontal.  Any other shape 
+# indicates that the variance is not homoskedastic.
+###########################################################################
+
+diagnose_heteroskedasticity( slr )
 
 ```
+
+## Normal Quantile-Quantile plot pf the residuals
+
+This plot is used to assess the normality of the residuals which are the estimators of the underlying error terms.
+
+If the quantile-qantile plot is within the simulated error bounds then we can't conclude that the residuals are not normally distributed.
+
+A normal quantile-quantile plots the observed data quantiles versus the quantiles for a standard normal distribution.  If the sample data is drawn from a normal distribution then the intercept value of the line is an estimate of $\mu$ and the slope of the line is an estimated of the standard deviation $\sigma$.
+
+If the plot gives a straight line then we find no evidence on non-normality.  
+
+If the line is not straight then we find evidence of non-normality. If the quantile-quantile plot strays outside the simulated error bound then we conclude that the residuals and probably the error terms are not normally distributed.
+
+The noemal quantile-quantile plot can also be used to detect heteroskedasticity and outliers.
+
+```{r assess_non-normality}
+
+plot_qq_norm( variable = residuals( slr ),
+              variable_name = "Residuals",
+              plot_title = "Normal QQ plot" )
+```
+
+
+### Analysis of diagnostic plots  
+
+There are several observations that may be either outliers or influential observations.  R provides tools to access statistics to help us evaluate the results of our regression.
+
+
+### Outliers, Influence measures, and other  diagnostics
+
+```{r compute_hat_values}
+
+###########################################################################
+
+############################################################################ Create diagnostoc repoert and display it.  We first obtsin the id of
+# the sample data an
+###########################################################################
+
+data <- 
+    walks %>% 
+        filter( id )
+        select( date_time,
+                route,
+                miles,
+                steps )
+
+    
+                
+###########################################################################
+# We compute the obaservation diagnostics for every obswervation ...
+###########################################################################
+
+
+diagnostics <- 
+    compute_diagnostics( id = date_time, 
+                         slr )
+```
+
 
 
               
