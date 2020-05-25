@@ -470,7 +470,7 @@ We started by computing rhe regression diagnostics below.
 
 ```{r compute_regression_diagnostics}
 
-compute_diagnostics( fit )
+compute_diagnostics( id, fit )
 ```
 
 

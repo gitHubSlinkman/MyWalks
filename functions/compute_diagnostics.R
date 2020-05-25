@@ -28,13 +28,24 @@ compute_diagnostics <-
             temp <- id
          
         ####################################################################
-        # Build the diagnostics tibble from the fitted_model_function
+        # Build the diagnostics tibble from the fitted_model_function. Note
+        # that the last tariables will be used latter when we evauate the
+        # diagnostocs measures.  It is more more convenient to add them
+        # here then create them latter
         ####################################################################
         
-            tibble( id             = temp,
-                    rstudent       = rstudent( fitted_model ),
-                    hats           = hatvalues( fitted_model ),
-                    covratio       = covratio( fitted_model ),
-                    dffits         = dffits(  fitted_model ),
-                    cooks_distance = cooks.distance( fitted_model ))
-    }
+        id             = temp
+        rstudent       = rstudent( fitted_model )
+        hats           = hatvalues( fitted_model )
+        covratio       = covratio( fitted_model )
+        dffits         = dffits(  fitted_model )
+        d2 = cooks.distance( fitted_model )
+        
+        
+            tibble( id,
+                    rstudent,
+                    hats,         
+                    covratio,
+                    dffits,
+                    d2 ) 
+            }
