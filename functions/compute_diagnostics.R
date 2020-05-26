@@ -13,20 +13,8 @@
 #' @export
 #'
 compute_diagnostics <- 
-    function( id = NULL, 
-              fitted_model )
+    function( fitted_model )
     {
-        ####################################################################
-        # Id the id has a null value we generate integer values to serve as
-        # observation identification.
-        ####################################################################
-        
-        if( is.null(id) ){
-            n  <- length(residuals( fitted_model ))
-            temp <- 1:n
-        } else
-            temp <- id
-         
         ####################################################################
         # Build the diagnostics tibble from the fitted_model_function. Note
         # that the last tariables will be used latter when we evauate the
@@ -34,7 +22,6 @@ compute_diagnostics <-
         # here then create them latter
         ####################################################################
         
-        id             = temp
         rstudent       = rstudent( fitted_model )
         hats           = hatvalues( fitted_model )
         covratio       = covratio( fitted_model )
@@ -42,8 +29,7 @@ compute_diagnostics <-
         d2 = cooks.distance( fitted_model )
         
         
-            tibble( id,
-                    rstudent,
+            tibble( rstudent,
                     hats,         
                     covratio,
                     dffits,

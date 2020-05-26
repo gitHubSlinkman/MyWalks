@@ -257,13 +257,18 @@ We draw a bar plot of the shoes used.
 
 ```{r draw_bar_plot_shoes}
 
-day_routes %>% 
-    filter( walked == 1) %>% 
+walks <-
+    day_routes %>% 
+    filter( walked == 1)
     
-        ggplot( aes( x = shoes )) +
-            geom_bar( color = "black",
-                      fill  = "green",
-                      width = 0.5 )
+shoes <- 
+    walks %>% 
+        pull( shoes )
+
+plot_bar_chart( shoes,
+                "Shoes worn",
+                "Distribution of shoes worn during walk ")
+        
 
 ```
 
@@ -321,21 +326,15 @@ We start with a scatterplot of the steps versus the miles walked.
 
 ```{r draw_scatterplot_steps_versus_miles}
 
-walks <- 
-    day_routes %>% 
-        filter( walked == 1) %>% 
-        filter( !is.na( miles )) %>% 
-        filter( !is.na( steps )) %>% 
-            select( id,
-                    date_time,
-                    route,
-                    miles,
-                    steps )
+complete_data  <-  
+    walks %>% 
+        filter( is.present( miles ) &
+                is.present( steps )   )
     
 
-walks
 
-ggplot( walks,
+
+ggplot( complete_data,
         aes( x = miles,
              y = steps )) +
     geom_point( na.rm = TRUE )  +
@@ -354,7 +353,7 @@ ggplot( walks,
 ```{r fit_fitted_model_model}
 
 ###########################################################################
-# Wee will only use data where both the the miles and steps are both 
+# We will only use data where both the the miles and steps are both 
 # preseent in the data.
 ###########################################################################
 
@@ -362,13 +361,8 @@ is.present <- function( x ){
     !is.na( x )
 }
 
-walks <- 
-    walks %>% 
-        filter( is.present( miles ) &
-                is.present( steps )) 
-
 fit <- lm( steps ~ miles,
-           data = walks )
+           data = complete_data )
 
 glance( fit ) %>% 
     select( r.squared,
@@ -444,7 +438,7 @@ diagnose_heteroskedasticity( fit )
 
 This plot is used to assess the normality of the residuals which are the estimators of the underlying error terms.
 
-If the quantile-qantile plot is within the simulated error bounds then we can't conclude that the residuals are not normally distributed.
+If the quantile-quantile plot is within the simulated error bounds then we can't conclude that the residuals are not normally distributed.
 
 A normal quantile-quantile plots the observed data quantiles versus the quantiles for a standard normal distribution.  If the sample data is drawn from a normal distribution then the intercept value of the line is an estimate of $\mu$ and the slope of the line is an estimated of the standard deviation $\sigma$.
 
@@ -452,7 +446,7 @@ If the plot gives a straight line then we find no evidence on non-normality.
 
 If the line is not straight then we find evidence of non-normality. If the quantile-quantile plot strays outside the simulated error bound then we conclude that the residuals and probably the error terms are not normally distributed.
 
-The noemal quantile-quantile plot can also be used to detect heteroskedasticity and outliers.
+The normal quantile-quantile plot can also be used to detect heteroskedasticity and outliers.
 
 ```{r assess_non-normality}
 
@@ -462,16 +456,86 @@ plot_qq_norm( variable = residuals( fit ),
 ```
 
 
-### ANumerical diagnostics 
+### Numerical diagnostics 
 
 There are several observations that may be either outliers or influential observations.  R provides tools to access statistics to help us evaluate the results of our regression.
 
-We started by computing rhe regression diagnostics below.
+We started by computing the regression diagnostics below.
 
 ```{r compute_regression_diagnostics}
 
-compute_diagnostics( id, fit )
+diagnostics <- compute_diagnostics( fit )
+
+diagnostics
 ```
+
+### Residual outliers
+
+```{r look for outliers}
+
+############################################################################ We computer the observational level critical value foee the hypothesis  
+# test than an residual is an outler.  We use the family level Bonferonni
+# test to do this.  We compute the Bonferroni critical values below.
+###########################################################################
+
+n <- dim( walks )[1]
+family_alpha    <-  0.05
+obs_alpha       <- family_alpha / ( 2 * n )
+tcv <- abs( qt( obs_alpha, n - 2 ))
+
+
+############################################################################ We want to inclode the case number of all observations so we can refer
+# back to any outliers we find.
+###########################################################################
+
+case <- 
+    complete_data %>% 
+        select( case ) 
+
+appended_diagnostics <- 
+    bind_cols( case, diagnostics )
+appended_diagnostics
+
+
+###########################################################################
+# When the absolute value of the studentized residual is greater than
+# the critical value we remove those observations.
+###########################################################################
+
+deleted  <-
+    appended_diagnostics %>% 
+        filter( abs( rstudent ) > tcv )
+deleted
+
+
+###########################################################################
+# We keep the observations that passed muster for the outlier test below.
+###########################################################################
+passed <- setdiff( appended_diagnostics, deleted )
+
+
+############################################################################ We apped a resson to deleted so we know why it was removed for the data
+# used to fit the model.
+###########################################################################
+
+m <- dim( deleted )[1]
+reason <- rep( "Outlier", m )
+
+deleted <- 
+    deleted %>% 
+    add_column( reason )
+
+deleted
+   
+```
+
+### Hat values ( $h_{}ii$)
+Hat values measure the potential influence of an observation on the estimated.  The larger a hat value is, the more influence it potentially has on the estimate of the regression coefficients.  Will do not remove observations from the data set based on the hat values alone.
+
+
+### Covariance ratio deletion statistic
+
+The covariance ration measures the he change in the estimate of the design ,atrix $\mathbf{X^tX)}^{-1}$ covariance matrix.  If this chnages substanitially it implies that the observation differes substantially from the other observations in the predictor variable p-dimensional space.
 
 
 
