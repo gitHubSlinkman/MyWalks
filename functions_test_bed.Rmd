@@ -471,71 +471,18 @@ diagnostics
 
 ### Residual outliers
 
-```{r look for outliers}
+```{r build_dainostic report}
 
-############################################################################ We computer the observational level critical value foee the hypothesis  
-# test than an residual is an outler.  We use the family level Bonferonni
-# test to do this.  We compute the Bonferroni critical values below.
-###########################################################################
+##########################################################################
+# Jpoin walk and diagnostiocs by by case nubmber.
+##########################################################################
 
-n <- dim( walks )[1]
-family_alpha    <-  0.05
-obs_alpha       <- family_alpha / ( 2 * n )
-tcv <- abs( qt( obs_alpha, n - 2 ))
+join_left( walks,
+            daignostics,
+            by = "case")
 
 
-############################################################################ We want to inclode the case number of all observations so we can refer
-# back to any outliers we find.
-###########################################################################
 
-case <- 
-    complete_data %>% 
-        select( case ) 
-
-appended_diagnostics <- 
-    bind_cols( case, diagnostics )
-appended_diagnostics
-
-
-###########################################################################
-# When the absolute value of the studentized residual is greater than
-# the critical value we remove those observations.
-###########################################################################
-
-deleted  <-
-    appended_diagnostics %>% 
-        filter( abs( rstudent ) > tcv )
-deleted
-
-
-###########################################################################
-# We keep the observations that passed muster for the outlier test below.
-###########################################################################
-passed <- setdiff( appended_diagnostics, deleted )
-
-
-############################################################################ We apped a resson to deleted so we know why it was removed for the data
-# used to fit the model.
-###########################################################################
-
-m <- dim( deleted )[1]
-reason <- rep( "Outlier", m )
-
-deleted <- 
-    deleted %>% 
-    add_column( reason )
-
-deleted
-   
-```
-
-### Hat values ( $h_{}ii$)
-Hat values measure the potential influence of an observation on the estimated.  The larger a hat value is, the more influence it potentially has on the estimate of the regression coefficients.  Will do not remove observations from the data set based on the hat values alone.
-
-
-### Covariance ratio deletion statistic
-
-The covariance ration measures the he change in the estimate of the design ,atrix $\mathbf{X^tX)}^{-1}$ covariance matrix.  If this chnages substanitially it implies that the observation differes substantially from the other observations in the predictor variable p-dimensional space.
 
 
 
