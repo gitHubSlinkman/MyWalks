@@ -466,7 +466,6 @@ We started by computing the regression diagnostics below.
 
 diagnostics <- compute_diagnostics( fit )
 
-diagnostics
 ```
 
 ### Residual outliers
@@ -477,9 +476,93 @@ diagnostics
 # Jpoin walk and diagnostiocs by by case nubmber.
 ##########################################################################
 
-join_left( walks,
-            daignostics,
-            by = "case")
+source <- 
+        complete_data %>% 
+            mutate( walked_date <- as_date( date_time))
+                
+
+diagnostic_report <- 
+    bind_cols( source,
+                diagnostics )
+
+source <-         
+    complete_data %>% 
+        mutate( walked_date = as_date( date_time)) %>% 
+        select( case,
+                walked_date,
+                route,
+                miles,
+                steps )
+    
+report <- bind_cols( source,
+                     diagnostics )
+
+###########################################################################
+# Specify the sample sample size(n), the number of predictor variables(p), 
+# the model segrees of freedom(dfm), and the degrees of freedom for 
+# error (dfe).
+###########################################################################
+
+n   <- dim( complete_data )[1]
+p   <- 2
+dfm <- 2
+dfe <- n - 2
+
+###########################################################################
+# We set the parameters used to identify the unfluential observations, the
+# outliers in the residuals, and the highly influential data points.
+###########################################################################
+
+RSTUDENT   <-  3.00                         # Criteria for outliers ...
+HATVALUES  <-  3.00 * sqrt( p / n  )        # Criteria for high hat 
+                                            # values
+COVRATIO   <-  c( 1 - 3 * p / n,            # Criteria of covariance  
+                  1 + 3 * p / n )           # ratio
+DFBETAS    <- 3 / sqrt( n )                 # Criteria for fir deletion
+                                            # statistic
+D2         <- 6 / n                         # Criteria dor Cooks 
+                                            # distance measure  
+
+
+report %>% 
+    flextable() %>% 
+        width( j = 2,    width = 1.00 ) %>% 
+        width( j = 3,    width = 2.00 ) %>%
+        width( j = 6:10, width = 1.00 ) %>% 
+    colformat_num( j = 4, digits = 2 ) %>% 
+    colformat_num( j = 5, digits = 3 ) %>% 
+    colformat_num( j = 6:10, digits = 4 ) %>% 
+    set_header_labels( case        = "Obs",
+                       walked_date = "Date",
+                       route       = "Route",
+                       miles       = "Miles",
+                       steps       = "Steps(k)",
+                       rstudent    = "RStudent",
+                       hats        = "Hats",
+                       covratio    = "Covariance\nratio",
+                       dffits      = "DFFITS", 
+                       d2          = "Cooks\ndistance") %>% 
+    align( i = 1, 
+           j = 1:10, 
+           align = "left", part = "header") %>%
+    color( ~ abs( rstudent ) > RSTUDENT,
+            ~ rstudent , color = "red" ) %>%  
+    bold( ~ abs( rstudent ) > RSTUDENT,
+          ~ rstudent, bold = TRUE ) %>% 
+    color( ~ hats > HATVALUES,
+           ~ hats, color = "organge ") %>% 
+     bold( ~ hats > HATVALUES,
+          ~ hats, bold = TRUE ) %>% 
+    color( ~ covratio > COVRATIO,
+           ~ covratio, color = "blue" ) %>% 
+    bold( ~ covratio > COVRATIO,
+          ~ covratio, bold = TRUE ) %>%
+    theme_box()
+                      
+   
+        
+       
+```
 
 
 
