@@ -40,6 +40,7 @@ source('~/R-Projects/MyWalks/functions/diagnose_linearity.R' )
 source('~/R-Projects/MyWalks/functions/diagnose_heteroskedasticity.R')
 source('~/R-Projects/MyWalks/functions/compute_diagnostics.R')
 source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
+source('~/R-Projects/MyWalks/functions/report_glance.R')
 
 ```
 
@@ -364,24 +365,9 @@ is.present <- function( x ){
 fit <- lm( steps ~ miles,
            data = complete_data )
 
-glance( fit ) %>% 
-    select( r.squared,
-            sigma,
-            statistic,
-            p.value,
-            df,
-            df.residual ) %>% 
-                flextable() %>% 
-                    width( j = 1:6, 1.00 ) %>% 
-                    colformat_num( j = 1:4,
-                                   digits = 4 ) %>% 
-                    set_header_labels( 
-                        r.squared   = "R-squared",
-                        sigma       = "Estimated\nsigma",
-                        statistic   = "F-statistic",
-                        p.value     = "p-value",
-                        df          = "Model\ndf",
-                        df.residual = "df\nresiduals" )
+report_glance( fit )
+
+
 ```
  
 ### Regression coefficient summary 
@@ -488,7 +474,7 @@ diagnostic_report <-
 source <-         
     complete_data %>% 
         mutate( walked_date = as_date( date_time)) %>% 
-        select( case,
+        select( obs,
                 walked_date,
                 route,
                 miles,
@@ -532,7 +518,7 @@ report %>%
     colformat_num( j = 4, digits = 2 ) %>% 
     colformat_num( j = 5, digits = 3 ) %>% 
     colformat_num( j = 6:10, digits = 4 ) %>% 
-    set_header_labels( case        = "Obs",
+    set_header_labels( obs         = "Obs",
                        walked_date = "Date",
                        route       = "Route",
                        miles       = "Miles",
@@ -573,7 +559,43 @@ report %>%
 ```
 
 
+### Remove outliers and pathological influential observarion
+
+```{r remove outliers_and_pathologicsl_infliential_obervations}
+
+obs <- 
+    complete_data %>% 
+        pull( obs )
+observations <- tibble( obs )
+    
+obs <- c( 541, 615, 626 )
+deletions <- 
+    tibble( obs )
+
+cleansed_obs <- 
+    dplyr::setdiff( observations, deletions )
+
+cleansed_data <- 
+    left_join( cleansed_obs,
+               complete_data,
+               by = "obs" )
 
 
 
+```
+
+### Refit model with clean data
+
+```{r refit_model}
+
+###########################################################################
+# Refit data modle with fut data 
+###########################################################################
+
+fit2 <- lm( steps ~ miles,
+            data = cleansed_data )
+
+report_glance( fit2 )
+
+```
 
