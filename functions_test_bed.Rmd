@@ -40,7 +40,8 @@ source('~/R-Projects/MyWalks/functions/diagnose_linearity.R' )
 source('~/R-Projects/MyWalks/functions/diagnose_heteroskedasticity.R')
 source('~/R-Projects/MyWalks/functions/compute_diagnostics.R')
 source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
-source('~/R-Projects/MyWalks/functions/report_glance.R')
+source('~/R-Projects/MyWalks/functions/report_fit_summary.R')
+source('~/R-Projects/MyWalks/functions/report_fit_coefficients.R')
 
 ```
 
@@ -134,7 +135,7 @@ We are going to covert from hh:mm to hh.dd.
 ```{r test_convert_hhmm to decimal }
 
 ###########################################################################
-# Below we extract the start times and element observations when the start # time was not record in day_routes
+# Below we extract the start times and element observations when the start # time was not record in day_routes.
 ##########################################################################
 
 start_times <-                                 # Extract start times from 
@@ -362,28 +363,20 @@ is.present <- function( x ){
     !is.na( x )
 }
 
-fit <- lm( steps ~ miles,
+fit1 <- lm( steps ~ miles,
            data = complete_data )
 
-report_glance( fit )
+models <- ( fit1 )
+
+report_fit_summary( fit1 )
 
 
 ```
  
 ### Regression coefficient summary 
+```{r report_regression_coefficients}
 
-```{r make sunnari se_regression_coefficients}
-
-tidy( fit ) %>% 
-    flextable() %>% 
-        width( j = 1:5, 1.00 ) %>% 
-        colformat_num( j = 2:5,
-                       digits = 4 )  %>% 
-        set_header_labels( term      = "Term",
-                           estimate  = "Estimated\ncoefficient",
-                           std.error = "Standard\nerror",
-                           statistic = "t statistic",
-                           p.value   = "p-value" )
+report_fit_coefficients( fit1 )
 
 ```
 
@@ -401,7 +394,7 @@ This section performs graphical diagnostic checks.
 # although it can be used to discover potential outliers and # heteroskedasticity. 
 ###########################################################################
 
-diagnose_linearity( fit )
+diagnose_linearity( fit1 )
 
 ```
 
@@ -416,7 +409,7 @@ diagnose_linearity( fit )
 # indicates that the variance is not homoskedastic.
 ###########################################################################
 
-diagnose_heteroskedasticity( fit )
+diagnose_heteroskedasticity( fit1 )
 
 ```
 
@@ -436,7 +429,7 @@ The normal quantile-quantile plot can also be used to detect heteroskedasticity 
 
 ```{r assess_non-normality}
 
-plot_qq_norm( variable = residuals( fit ),
+plot_qq_norm( variable = residuals( fit1 ),
               variable_name = "Residuals",
               plot_title = "Normal QQ plot" )
 ```
@@ -450,7 +443,7 @@ We started by computing the regression diagnostics below.
 
 ```{r compute_regression_diagnostics}
 
-diagnostics <- compute_diagnostics( fit )
+diagnostics <- compute_diagnostics( fit1 )
 
 ```
 
@@ -595,7 +588,20 @@ cleansed_data <-
 fit2 <- lm( steps ~ miles,
             data = cleansed_data )
 
-report_glance( fit2 )
+models <- c( models, fit2 )
+
+report_fit_summary( fit2 )
+
+report_fit_coefficients( fit2 )
 
 ```
 
+#### Diagnostplots
+
+```{r diagnose_fit2 }
+diagnose_linearity( fit2 )
+diagnose_heteroskedasticity( fit2 )
+plot_qq_norm( variable = residuals( fit2 ),
+              variable_name = "Residuals",
+              plot_title = "Normal QQ plot: fit2" )
+```
