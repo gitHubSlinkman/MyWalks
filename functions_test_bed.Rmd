@@ -42,6 +42,7 @@ source('~/R-Projects/MyWalks/functions/compute_diagnostics.R')
 source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
 source('~/R-Projects/MyWalks/functions/report_fit_summary.R')
 source('~/R-Projects/MyWalks/functions/report_fit_coefficients.R')
+source('~/R-Projects/MyWalks/functions/report_diagnostics.R')
 
 ```
 
@@ -255,6 +256,7 @@ day_routes %>%
         
 ```
 ## Shoes walked in
+  
 We draw a bar plot of the shoes used.
 
 ```{r draw_bar_plot_shoes}
@@ -443,165 +445,23 @@ We started by computing the regression diagnostics below.
 
 ```{r compute_regression_diagnostics}
 
-diagnostics <- compute_diagnostics( fit1 )
+########################################################################
+# Compute the standard diagobstics for linear regression.  We pass 
+# the case ientifier so we can ties the diagnostics back to the orginal
+# data.
+#########################################################################
 
-```
-
-### Residual outliers
-
-```{r build_dainostic report}
-
-##########################################################################
-# Jpoin walk and diagnostiocs by by case nubmber.
-##########################################################################
-
-source <- 
-        complete_data %>% 
-            mutate( walked_date <- as_date( date_time))
-                
-
-diagnostic_report <- 
-    bind_cols( source,
-                diagnostics )
-
-source <-         
-    complete_data %>% 
-        mutate( walked_date = as_date( date_time)) %>% 
-        select( obs,
-                walked_date,
-                route,
-                miles,
-                steps )
-    
-report <- bind_cols( source,
-                     diagnostics )
-
-###########################################################################
-# Specify the sample sample size(n), the number of predictor variables(p), 
-# the model segrees of freedom(dfm), and the degrees of freedom for 
-# error (dfe).
-###########################################################################
-
-n   <- dim( complete_data )[1]
-p   <- 2
-dfm <- 2
-dfe <- n - 2
-
-###########################################################################
-# We set the parameters used to identify the unfluential observations, the
-# outliers in the residuals, and the highly influential data points.
-###########################################################################
-
-RSTUDENT   <-  3.00                         # Criteria for outliers ...
-HATVALUES  <-  3.00 * sqrt( p / n  )        # Criteria for high hat 
-                                            # values
-COVRATIO   <-  c( 1 - 3 * p / n,            # Criteria of covariance  
-                  1 + 3 * p / n )           # ratio
-DFFITS    <- 3 / sqrt( n )                  # Criteria for fir deletion
-                                            # statistic
-D2         <- 9 / n                         # Criteria dor Cooks 
-                                            # distance measure  
-
-
-report %>% 
-    flextable() %>% 
-        width( j = 2,    width = 1.00 ) %>% 
-        width( j = 3,    width = 2.00 ) %>%
-        width( j = 6:10, width = 1.00 ) %>% 
-    colformat_num( j = 4, digits = 2 ) %>% 
-    colformat_num( j = 5, digits = 3 ) %>% 
-    colformat_num( j = 6:10, digits = 4 ) %>% 
-    set_header_labels( obs         = "Obs",
-                       walked_date = "Date",
-                       route       = "Route",
-                       miles       = "Miles",
-                       steps       = "Steps(k)",
-                       rstudent    = "RStudent",
-                       hats        = "Hats",
-                       covratio    = "Covariance\nratio",
-                       dffits      = "DFFITS", 
-                       d2          = "Cooks\ndistance") %>% 
-    align( i = 1, 
-           j = 1:10, 
-           align = "left", part = "header") %>%
-    color( ~ abs( rstudent ) > RSTUDENT,
-            ~ rstudent , color = "red" ) %>%  
-    bold( ~ abs( rstudent ) > RSTUDENT,
-          ~ rstudent, bold = TRUE ) %>% 
-    color( ~ hats > HATVALUES,
-           ~ hats, color = "organge ") %>% 
-     bold( ~ hats > HATVALUES,
-          ~ hats, bold = TRUE ) %>% 
-    color( ~ covratio > COVRATIO,
-           ~ covratio, color = "blue" ) %>% 
-    bold( ~ covratio > COVRATIO[1] | covratio > COVRATIO[2],
-          ~ covratio, bold = TRUE ) %>%
-    color( ~ dffits > DFFITS,
-           ~ dffits, color = "red" ) %>% 
-    bold( ~ dffits > DFFITS,
-          ~ dffits, bold = TRUE ) %>%
-    color( ~ d2 > D2,
-           ~ dffits, color = "red" ) %>% 
-    bold( ~ d2 > D2,
-          ~ dffits, bold = TRUE ) %>%
-    theme_box()
-                      
-   
-        
-       
-```
-
-
-### Remove outliers and pathological influential observarion
-
-```{r remove outliers_and_pathologicsl_infliential_obervations}
-
-obs <- 
-    complete_data %>% 
+obs <- complete_data %>% 
         pull( obs )
-observations <- tibble( obs )
-    
-obs <- c( 541, 615, 626 )
-deletions <- 
-    tibble( obs )
 
-cleansed_obs <- 
-    dplyr::setdiff( observations, deletions )
-
-cleansed_data <- 
-    left_join( cleansed_obs,
-               complete_data,
-               by = "obs" )
+diagnostics <- compute_diagnostics( id = obs,
+                                    fit1 )
 
 
 
 ```
 
-### Refit model with clean data
-
-```{r refit_model}
-
-###########################################################################
-# Refit data modle with fut data 
-###########################################################################
-
-fit2 <- lm( steps ~ miles,
-            data = cleansed_data )
-
-models <- c( models, fit2 )
-
-report_fit_summary( fit2 )
-
-report_fit_coefficients( fit2 )
-
 ```
 
-#### Diagnostplots
 
-```{r diagnose_fit2 }
-diagnose_linearity( fit2 )
-diagnose_heteroskedasticity( fit2 )
-plot_qq_norm( variable = residuals( fit2 ),
-              variable_name = "Residuals",
-              plot_title = "Normal QQ plot: fit2" )
-```
+#
