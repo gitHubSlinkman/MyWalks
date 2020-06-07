@@ -1,0 +1,657 @@
+/* 
+ * Custom Jquery for this theme
+ */
+// calcualtor
+ 
+
+    
+  jQuery(window).load(function() {
+        var value = jQuery('#location_geo').val();
+        my_function('','',value);
+        //jQuery("#linkId").attr("href", "https://app.displayr.com/SignUp");
+      
+
+       
+  });
+   
+   function my_function(dhis,type,value) {
+   		c = dhis.value;
+
+        if(dhis !='' && type != "" && value == ""){
+        	var url = jQuery('#location_geo').val();
+        	var value = jQuery('#location_geo').val();
+        }
+         var value = jQuery('#location_geo').val();
+        //alert(value);
+        switch (value) {
+        	//AUD
+        	case 'AU':
+        	//alert('AU');
+        	//	jQuery('.tax-text').hide();
+                var currency = 'AUD';
+                var symbol = '$';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 3629;
+                var server = 0.60;
+                var dash = 1.20;
+                var static = 1000;
+                var textBox3 = 1200;
+        	break;
+
+        	case 'CX':
+        		//jQuery('.tax-text').hide();
+                var currency = 'AUD';
+                var symbol = '$';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 3629;
+                var server = 0.60;
+                var dash = 1.20;
+                var static = 1000;
+                var textBox3 = 1200;
+        	break;
+
+        	case 'NF':
+        		//jQuery('.tax-text').hide();
+                var currency = 'AUD';
+                var symbol = '$';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 3629;
+                var server = 0.60;
+                var dash = 1.20;
+                var static = 1000;
+                var textBox3 = 1200;
+        	break;
+
+        	case 'KI':
+        	//	jQuery('.tax-text').hide();
+                var currency = 'AUD';
+                var symbol = '$';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 3629;
+                var server = 0.60;
+                var dash = 1.20;
+                var static = 1000;
+                var textBox3 = 1200;
+        	break;
+
+        	case 'NR':
+        		//jQuery('.tax-text').hide();
+                var currency = 'AUD';
+                var symbol = '$';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 3629;
+                var server = 0.60;
+                var dash = 1.20;
+                var static = 1000;
+                var textBox3 = 1200;
+        	break;
+
+        	case 'TV':
+        		//jQuery('.tax-text').hide();
+                var currency = 'AUD';
+                var symbol = '$';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 3629;
+                var server = 0.60;
+                var dash = 1.20;
+                var static = 1000;
+                var textBox3 = 1200;
+        	break;
+        	//NZD
+        	case 'NZ':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'NZD';
+                var symbol = '$';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 3599;
+                var server = 0.75;
+                var dash = 1.50;
+                var static = 1000;
+                var textBox3 = 1500;
+        	break;
+        	//GBP
+        	case 'GB':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'GBP';
+                var symbol = '£';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 1899;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'IM':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'GBP';
+                var symbol = '£';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 1899;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'JE':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'GBP';
+                var symbol = '£';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 1899;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'GG':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'GBP';
+                var symbol = '£';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 1899;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'GS':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'GBP';
+                var symbol = '£';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 1899;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'IO':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'GBP';
+                var symbol = '£';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 1899;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	//Euro
+        	case 'AD':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'AT':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        	 	var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'BE':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'CY':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'EE':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'FI':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'FR':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'DE':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'GR':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'IE':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'IT':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'LU':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'MT':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'MC':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'ME':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'NL':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'PT':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'SM':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'SK':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'SI':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'ES':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+        	case 'VA':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+        	case 'EU':
+                jQuery('.tax-text').replaceWith( "*Tax not Included" );
+        		var currency = 'EUR';
+                var symbol = '€';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2099;
+                var server = 0.40;
+                var dash = 0.80;
+                var static = 1000;
+                var textBox3 = 800;
+        	break;
+
+           
+            default:
+            	jQuery('.tax-text').replaceWith( "*Tax not Included" );
+            	var currency = 'USD';
+                var symbol = '$';
+                var hour = 'hrs';
+                var dis = '';
+                var ini = 2399;
+                var server = 0.50;
+                var dash = 1.00;
+                var static = 1000;
+                var textBox3 = 1000;
+            
+        }
+        if(dhis=='' && type == "" && value != ""){
+
+        	jQuery("#two").val(static);
+            var c_static = addCommas(static);
+           jQuery(".server_total").html(c_static +' '+ hour );
+            jQuery("#textBox1").val(ini);
+            var c_ini = addCommas(ini);
+            jQuery(".prof_price").html(symbol + c_ini);
+            jQuery("#textBox2").val(0);
+            jQuery(".server_price").html(symbol + 0);
+            jQuery("#textBox3").val(textBox3);
+            var c_dash = addCommas(textBox3);
+            jQuery(".dash_price").html(symbol + c_dash);
+            var a1 = jQuery("#textBox1").val();
+            var b1 = jQuery("#textBox2").val();
+            var c1 = jQuery("#textBox3").val();
+            jQuery('.static_server_t').html(symbol + server);
+            jQuery('.static_dash_t').html(symbol + dash);
+            jQuery('.static_price').html(symbol + c_ini);
+            var final = parseFloat(a1)+parseFloat(b1)+parseFloat(c1);
+            var limitv = final.toFixed(2);
+
+            jQuery("#total").val(final); 
+
+            var c_final = addCommas(limitv);
+            jQuery('.f_total').html(symbol + currency + c_final +'*');
+            var current_page = addCommas(ini);
+            jQuery('.current_price').html(currency +' '+ current_page);
+            // URl query string
+            ar1 = jQuery(".ar1").val();
+            ar2 = jQuery(".ar2").val();
+            ar3 = jQuery(".ar3").val();
+            var nl_url ="https://app.displayr.com/SignUp/WebPurchase?users="+ar1+"&edits="+ar2+"&privates="+ar3;
+           jQuery("#linkId").attr("href", nl_url);
+
+        }else{
+        	var value = jQuery('#location_geo').val();
+        	jQuery("#two").val(static);
+        	// Discount percentage
+            if(type=="prof"){
+                if(c >= 5 && c<=9){
+                    dis = 10;
+                }
+                else if(c >= 10 && c<=19){
+                    dis = 20;
+                }
+                else if(c >=20){
+                    dis = 30;
+                }
+                else{
+                    dis = 0;
+                }
+              //  alert( dis);
+              jQuery('.ar1').val(c);
+                jQuery('.percent').val(dis);
+                var disr = jQuery('.percent').val();
+                if(dis !=0){
+                   jQuery(".discount").html('Includes '+ dis +'% <br/>volume discount');
+                   jQuery(".expire-date").addClass("discount_text");
+                }
+                else{
+                    jQuery(".discount").html('');
+                }
+            }
+            if(type=="prof"){
+                // Discount Calculation
+                //alert('correct');
+               // alert(ini);
+               // alert(c);
+              
+                var total_ammount = parseInt(ini) * parseInt(c);
+                //alert(total_ammount);
+                var poin_dis = parseInt(disr)/100;
+                //alert(poin_dis);
+                var total_discount = parseFloat(poin_dis) * parseFloat(total_ammount);
+                //alert(total_discount);
+                var total_remaining = parseInt(total_ammount) - parseFloat(total_discount);
+                jQuery("#textBox1").val(total_remaining);
+                var limit = total_remaining.toFixed(2);
+                var c_total_remaining = addCommas(limit);
+                jQuery('.prof_price').html(symbol + c_total_remaining);
+
+            }
+            else if(type=="server"){
+            //	alert(2);
+                var serv = parseFloat(c) + parseFloat(static); 
+//alert(2.1);
+                jQuery("#server_total").val(serv);
+                //alert(2.2);
+                var c_serv = addCommas(serv);
+            // alert(2.3);
+                jQuery(".server_total").html(c_serv +' '+ hour );
+                  // alert(2.4);
+                var server_time = jQuery("#server_total").val();
+                  // alert(2.5);
+             //   alert(server_time);
+                var server_time_ammount = parseFloat(c) * parseFloat(server); 
+                  // alert(2.6);
+                jQuery("#textBox2").val(server_time_ammount);
+                  // alert(2.7);
+                var c_server_time_ammount = addCommas(server_time_ammount);
+                 //  alert(2.8);
+
+                jQuery('.server_price').html(symbol + c_server_time_ammount);
+                //   alert(2.9);
+                 jQuery('.ar2').val(c);
+            }
+            else{
+            	
+                var private_dash = parseFloat(c) * parseFloat(dash);
+                jQuery("#three").val(private_dash);
+                jQuery("#textBox3").val(private_dash);
+                var c_private_dash = addCommas(private_dash);
+                jQuery('.dash_price').html(symbol + c_private_dash);
+                 jQuery('.ar3').val(c);
+            }
+            a1 = jQuery("#textBox1").val();
+            b1 = jQuery("#textBox2").val();
+            c1 = jQuery("#textBox3").val();
+
+
+            ar1 = jQuery(".ar1").val();
+            ar2 = jQuery(".ar2").val();
+            ar3 = jQuery(".ar3").val();
+            //jQuery('.current_price').html(currency + ini);
+            var final = parseFloat(a1)+parseFloat(b1)+parseFloat(c1);
+            jQuery("#total").val(final); 
+            var t_limit = final.toFixed(2);
+            var c_final = addCommas(t_limit);
+            jQuery('.f_total').html(symbol + currency + c_final+'*');
+
+            var nl_url ="https://app.displayr.com/SignUp/WebPurchase?users="+ar1+"&edits="+ar2+"&privates="+ar3;
+           jQuery("#linkId").attr("href", nl_url);
+        }
+
+   }
+function addCommas(nStr){
+     nStr += '';
+     var x = nStr.split('.');
+     var x1 = x[0];
+     var x2 = x.length > 1 ? '.' + x[1] : '';
+     var rgx = /(\d+)(\d{3})/;
+     while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + ',' + '$2');
+     }
+     return x1 + x2;
+    }
