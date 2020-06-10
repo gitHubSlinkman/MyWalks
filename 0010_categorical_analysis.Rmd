@@ -1,0 +1,90 @@
+---
+title: "My Walks Categotical Analaysis"
+author: "adopted by Craig W. Slinkman"
+date: "6/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This RMarkdown document draws bar ccharts of the categorical data for variables in the MyWalks.
+
+## Loading the required packages
+
+We by loading the R-packages that we need for analyzing the data.
+
+```{r load_packages}
+
+###########################################################################
+# Load required R-packages ...
+###########################################################################
+
+ source('~/R-Projects/MyWalks/functions/load_packages.R')
+
+```
+## Loading the required functions.
+
+We need to load the function that are needed to draw the bar charts.  I have written a script to load mu most used packages.
+
+```{r load_functions}
+source('~/R-Projects/MyWalks/functions/get_day_routes.R') 
+source('~/R-Projects/MyWalks/functions/find_max_frequency.R')
+source('~/R-Projects/MyWalks/functions/plot_bar_chart.R')
+```
+
+## Load the data 
+We read the day_routes file from this projects data directory.
+
+```{r read_data}
+day_routes <- get_day_routes() # Test get days ...
+day_routes                     # Display day_routes tibble ...
+```
+  
+## Set the cowplot theme to be default
+
+```{r set_cowplot_to_de_default}
+theme_set( theme_cowplot())
+```
+
+
+## Plot number of days not walked and days walked
+
+```{r plot_walks}
+
+walked <-                              # Extract walked from
+    day_routes %>%                     # day_routes
+        select( walked )
+
+walked = ifelse( walked == 0,          # Convert walked codes from binary
+                 "Did not walk",      # to character for bar chart ...
+                 "Walked")
+
+scale <- seq( from = 0,                # Create breaks and label scales ...
+              to = 375, 
+              by = 10 )
+            
+plot_bar_chart( walked,
+                variable_name = "Walked?",
+                plot_title = "Days walked and not walked",
+                frequency_scale = scale )
+```
+
+## Plot of reasons for missing walks
+
+```{r plot_missed_reasons}
+
+missed_reason <- 
+    day_routes %>% 
+        filter( walked == 0 ) %>% 
+            pull( missed_reason )
+
+    plot_bar_chart( missed_reason, 
+                    "Reasons for missing g walk",
+                    "Distribution of reasons for missing walk" )
+    
+```
+
+## Weather Conditions
+

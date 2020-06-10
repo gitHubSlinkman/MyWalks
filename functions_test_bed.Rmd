@@ -64,7 +64,8 @@ day_routes                     # Returna a tibble of the day_routes ...
 ```
 
 
-### plot_bar_walks()
+## Plot walks made and not made  
+
 
 ```{r test_plot_bar_walks}
 
@@ -91,21 +92,8 @@ plot_bar_chart( walked,
 
 In this section we determine all the error that lead to data loss.
 
-```{r list errors}
-failure_reason <- 
-    day_routes %>%
-     filter( walked == 1 & 
-             gps_failure == 1 ) %>% 
-    select( failure_reason )
+```{r list errorsresons_for missing_walks}
 
-scale <- seq( from = 0, to = 8, by = 2 )
-
-plot_bar_chart( failure_reason,
-                variable_name = "Failure reason",
-                plot_title = "Reasons for data loss",
-                bar_width = 0.25,
-                fill_color = "red", 
-                frequency_scale = scale )   
     
     
 ```
@@ -451,17 +439,106 @@ We started by computing the regression diagnostics below.
 # data.
 #########################################################################
 
-obs <- complete_data %>% 
-        pull( obs )
+id <- complete_data %>% 
+        pull( id )
 
-diagnostics <- compute_diagnostics( id = obs,
+diagnostics <- compute_diagnostics( id = id,
                                     fit1 )
 
+###########################################################################
+# Build a combined table of the completed data and the regression 
+# diagnostics by a natural join.
+###########################################################################
 
+complete_data_diagnostics <- 
+  inner_join( complete_data, 
+              diagnostics,
+              by = "id" )
+
+report_diagnostics( diagnotics )
 
 ```
 
+## Set cases with outliers and significant dffits to $NA$
+
+We se the cases with significant $residuals$ and high $dffit$ and Cook's distiace to NA.  The creireia we will use are:
+
+* For residuals we will use the Bonferroni family leval of 0.01
+* For dffits we will use a value of $3\ sqrt{p/n}$ 
+* For Cook's distance we will use a value of $9/n$.
+
+```{r find_bad_data_obervations}
+
+###########################################################################
+# Compute the critical value for a 1% level of significance
+##########################################################################
+
+n   <- length( residuals( fit1 ))
+p   <- length( coefficients( fit1 ))
+dfe <- n - p
+tcv <- abs( qt( 0.01 / (2 * n ), dfe ))
+
+
+###########################################################################
+# We detected all observations where the studentized rsiduals is greater
+# than 1% critical value of the Bonferroni Student's t distribution.
+###########################################################################
+
+detected_outliers <- 
+  diagnostics %>% 
+    filter( rstudent > tcv ) %>% 
+      select( id ) 
+
+##########################################################################
+# Flag type of bad data.
+##########################################################################
+
+m <- dim(  detected_outliers )[1]
+type <- rep( "outlier", m )
+
+detected_outliers <- 
+  detected_outliers %>% 
+    add_column( type )
+
+criteria <- 3 * sqrt( p / n )
+
+
+##########################################################################
+# Find observations where the dffits exceeds three times the standard
+# of the mean function.
+##########################################################################
+
+detected_dffits <- 
+  diagnostics %>% 
+    filter( abs( dffits ) > criteria ) %>% 
+      select( id )
+m <- dim(  detected_dffits )[1]
+type <- rep( "dffits", m )
+
+detected_dffits <- 
+  detected_dffits %>% 
+    add_column( type )
+
+
+#########################################################################
+# Find observations where Cook's distance exceeds 9 divided by 
+# the sample size
+#########################################################################
+
+criteria <- 9 / n
+
+detected_Cooks <- 
+  diagnostics %>% 
+    filter( d2  > criteria ) %>% 
+      select( id )
+
+m <- dim(  detected_cooks )[1]
+type <- rep( "cooks", m )
+
+
+    
+  
+
 ```
 
 
-#
