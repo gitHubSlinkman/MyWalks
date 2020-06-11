@@ -88,3 +88,41 @@ missed_reason <-
 
 ## Weather Conditions
 
+```{r plot_sky_conditions}
+
+sky_conditions <-
+  day_routes %>% 
+    pull( sky_conditions )
+    
+plot_bar_chart( sky_conditions,
+                "sky conditions",
+                "Distribution of sky conditions") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))                
+                
+direction_wind <- 
+  day_routes %>% 
+    pull( direction_wind )
+    
+plot_bar_chart( direction_wind,
+                "Wind direction",
+                "Distribution of wind direction" )
+
+
+```
+
+## Routes walked
+
+```{r plot_routes_walked}
+
+route <-
+  day_routes %>% 
+    filter( walked == 1 ) %>% 
+      pull( route )
+
+plot_bar_chart( route,
+                    "Route",
+                    "Distribution of routes walked" ) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))  
+
+```
+

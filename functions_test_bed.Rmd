@@ -527,7 +527,7 @@ detected_dffits <-
 
 criteria <- 9 / n
 
-detected_Cooks <- 
+detected_cooks <- 
   diagnostics %>% 
     filter( d2  > criteria ) %>% 
       select( id )
@@ -535,10 +535,92 @@ detected_Cooks <-
 m <- dim(  detected_cooks )[1]
 type <- rep( "cooks", m )
 
+detected_cooks <- 
+  detected_cooks %>% 
+    add_column( type )
 
-    
+detected_bad_data <- 
+  bind_rows(detected_outliers,
+            detected_dffits,
+            detected_cooks )
+
+to_be_set_na <- 
+  detected_bad_data %>% 
+    distinct( id )
   
+to_be_set_na
+
+dirty_data <- 
+  inner_join( complete_data,
+              to_be_set_na,
+        by = "id" )
+dirty_data
+
+clean_data <- 
+  complete_data %>% 
+    filter( id != 615 )
+  
+steps <- 
+  dirty_data %>% 
+    pull( steps )
+
+steps <- na_if( steps, steps )
+steps
+
+
+cleansed_data <- 
+  dirty_data %>% 
+    select( id:end_steps, hours:type) %>% 
+      add_column( steps, .after = "end_steps" )
+
+clean_data <- bind_rows( clean_data,
+                         cleansed_data ) %>% 
+                            arrange( id )
 
 ```
 
+## Fit model with cleansed_data
+
+```{r fit_model_with cleansed_data}
+
+###########################################################################
+# Fit the model with the cleansed data and report it.
+###########################################################################
+
+fit2 <- lm( steps ~ miles,
+            data = clean_data )
+
+report_fit_coefficients( fit2 )
+
+report_fit_summary( fit2 )
+
+```
+
+### Model 2 Diagnostoc plots
+
+```{r diagnose_fit2}
+
+
+diagnose_linearity( fit2 )
+
+```
+
+### Diagnose heteroskedasticity
+
+```{r}
+
+diagnose_heteroskedasticity( fit2 )
+
+
+```
+
+### Diagnosing normality
+
+```{r diagnosing_normality_fit2}
+
+plot_qq_norm( variable = residuals( fit1 ),
+              variable_name = "Residuals",
+              plot_title = "Normal QQ plot" )
+
+```
 
