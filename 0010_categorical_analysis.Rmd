@@ -125,4 +125,31 @@ plot_bar_chart( route,
   theme(axis.text.x = element_text(angle = 90, hjust = 1))  
 
 ```
+Walking conditions
+
+```{r plot_walking_conditions}
+
+walking_conditions <-
+  day_routes %>% 
+    pull( walking_conditions )
+    
+ plot_bar_chart( walking_conditions,
+                 "Walking conditions",
+                 "Distribution of walking conditions") 
+
+```
+
+## Distribution of shoes worn
+
+```{r plot_shoes}
+
+shoes <- 
+  day_routes %>%
+    pull( shoes )
+
+plot_bar_chart( shoes,
+                "Shoes",
+                "Distribution of shoes" )
+
+```
 
