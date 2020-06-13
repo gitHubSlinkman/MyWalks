@@ -1,0 +1,39 @@
+---
+title: "0010_plan_walks"
+author: "adopted by Craig W. Slinkman"
+date: "6/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose of this R-Markdown document
+
+The puepose of this document is to plan the next walk.  It is cone by sorting the active walks by the last date that a route was walked.
+
+## Load required_oackages
+
+```{r load_packages}
+
+source('~/R-Projects/MyWalks/functions/load_packages.R')
+
+```
+
+## SMake cowplot as the deafault graphics theme  
+
+```{r}
+
+theme_set( theme_cowplot())
+
+```
+
+## L0ad required_functions 
+
+```{r}
+
+source('~/R-Projects/MyWalks/functions/get_day_routes.R')
+
+```
+
