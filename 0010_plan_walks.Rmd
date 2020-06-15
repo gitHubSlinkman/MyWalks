@@ -29,11 +29,48 @@ theme_set( theme_cowplot())
 
 ```
 
-## L0ad required_functions 
+## Load required_functions 
 
-```{r}
+```{r get_all_day_routes}
 
 source('~/R-Projects/MyWalks/functions/get_day_routes.R')
 
 ```
+
+## Get all day_routes
+
+```{r}
+
+all_day_routes <- get_day_routes()
+all_day_routes
+
+```
+
+## Keep only days where a walked occured 
+
+```{r}
+only_walks <-
+    all_day_routes %>% 
+        filter( walked == 1 )
+        only_walks
+```
+
+
+```{r}
+only_walks
+
+```
+
+only_walks <-
+    all_day_routes %>% 
+        filter( walked == 1 )
+        only_walks
+only_walks
+
+## Find all the walks with an activr route
+
+We filter out routes that are not active routes.
+
+
+
 
