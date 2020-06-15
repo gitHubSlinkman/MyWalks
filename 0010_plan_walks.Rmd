@@ -57,20 +57,48 @@ only_walks <-
 
 
 ```{r}
-only_walks
-
-```
-
 only_walks <-
     all_day_routes %>% 
         filter( walked == 1 )
         only_walks
 only_walks
 
+```
+
+
 ## Find all the walks with an activr route
 
-We filter out routes that are not active routes.
+We filter out routes that are not active routes. We then find
+
+```{r keep_active_routes_only}
+
+active_route_walks <- 
+    only_walks %>% 
+        filter( active == 1)
+
+```
 
 
+## extract the date from the date_time object
 
+```{r extract_date}
+
+active_route_walks <- 
+    active_route_walks %>% 
+        mutate( date <- date( date_time ) )
+    
+
+```
+
+## Group by route and find last walk withing each group  
+
+```{r group_by_route_and find last_walk}
+
+last_date_walked <- 
+    active_route_walks %>% 
+        group_by( route ) %>% 
+            summarise( last_walked = max( date ))
+           
+last_date_walked
+```
 
