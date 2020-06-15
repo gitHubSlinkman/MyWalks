@@ -79,16 +79,7 @@ active_route_walks <-
 ```
 
 
-## extract the date from the date_time object
-
-```{r extract_date}
-
-active_route_walks <- 
-    active_route_walks %>% 
-        mutate( date <- date( date_time ) )
-    
-
-```
+## Extrct the last time walked for each route
 
 ## Group by route and find last walk withing each group  
 
@@ -97,8 +88,16 @@ active_route_walks <-
 last_date_walked <- 
     active_route_walks %>% 
         group_by( route ) %>% 
-            summarise( last_walked = max( date ))
+            arrange( route, date_time ) %>% 
+                slice_max( date_time )
            
-last_date_walked
+last_date_walked %>%
+    mutate( date = as.Date( date_time )) %>% 
+    arrange( date ) %>% 
+        select( route, date ) %>%
+            flextable() %>% 
+                width( j = 1, 3 ) %>% 
+                width( j = 2, 3 )
+        
 ```
 
