@@ -11,25 +11,35 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Purpose of this R-Markdown document
 
-The puepose of this document is to plan the next walk.  It is cone by sorting the active walks by the last date that a route was walked.
+The purpose of this document is to plan the next walk.  It is cone by sorting the active walks by the last date that a route was walked.
 
 ## Load required_oackages
 
+We load the packages I use most.  These are found in the $MyWalks$ function library.
+
 ```{r load_packages}
+
+###########################################################################
+# We load the packages used by MyWalks.  This is a source file in the 
+# Mywalks function sub-directory.
+###########################################################################
 
 source('~/R-Projects/MyWalks/functions/load_packages.R')
 
+
 ```
 
-## SMake cowplot as the deafault graphics theme  
+## Make cowplot as the deafault graphics theme  
 
-```{r}
+```{r set+cowplot}
 
 theme_set( theme_cowplot())
 
 ```
 
 ## Load required_functions 
+
+We now load the required functions.
 
 ```{r get_all_day_routes}
 
@@ -38,6 +48,10 @@ source('~/R-Projects/MyWalks/functions/get_day_routes.R')
 ```
 
 ## Get all day_routes
+
+###########################################################################
+# We load the functions that are required for this R-Markdown document.
+###########################################################################
 
 ```{r}
 
@@ -48,29 +62,25 @@ all_day_routes
 
 ## Keep only days where a walked occured 
 
-```{r}
+```{r filyter_out_non_walking_days}
+
+###########################################################################
+# Keep only days when a walk occurred.
+###########################################################################
+
 only_walks <-
     all_day_routes %>% 
         filter( walked == 1 )
-        only_walks
 ```
-
-
-```{r}
-only_walks <-
-    all_day_routes %>% 
-        filter( walked == 1 )
-        only_walks
-only_walks
-
-```
-
 
 ## Find all the walks with an activr route
 
 We filter out routes that are not active routes. We then find
 
 ```{r keep_active_routes_only}
+###########################################################################
+# Filter out all walks that are not active.
+###########################################################################
 
 active_route_walks <- 
     only_walks %>% 
@@ -79,17 +89,30 @@ active_route_walks <-
 ```
 
 
-## Extrct the last time walked for each route
 
-## Group by route and find last walk withing each group  
 
 ```{r group_by_route_and find last_walk}
+
+###########################################################################
+# Select the walks within each route that have the maximum (latest) walk
+# date.
+###########################################################################
 
 last_date_walked <- 
     active_route_walks %>% 
         group_by( route ) %>% 
             arrange( route, date_time ) %>% 
                 slice_max( date_time )
+
+###########################################################################
+# For each active route compute the mean distance and mean time to walk.
+###########################################################################
+
+
+
+###########################################################################
+# Prepare the data for the flextable report.
+###########################################################################
            
 last_date_walked %>%
     mutate( date = as.Date( date_time )) %>% 
