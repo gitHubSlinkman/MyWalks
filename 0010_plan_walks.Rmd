@@ -13,10 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The purpose of this document is to plan the next walk.  It is cone by sorting the active walks by the last date that a route was walked.
 
-## Load required_oackages
-
-We load the packages I use most.  These are found in the $MyWalks$ function library.
-
 ```{r load_packages}
 
 ###########################################################################
@@ -26,22 +22,14 @@ We load the packages I use most.  These are found in the $MyWalks$ function libr
 
 source('~/R-Projects/MyWalks/functions/load_packages.R')
 
-
-```
-
-## Make cowplot as the deafault graphics theme  
-
-```{r set+cowplot}
+############################################################################ We set the default graphical output to cowplot foe professional and
+# publishable-ready graphical output.
+###########################################################################
 
 theme_set( theme_cowplot())
 
-```
-
-## Load required_functions 
-
-We now load the required functions.
-
-```{r get_all_day_routes}
+]##########################################################################
+# We load the fubnctions we need to 
 
 source('~/R-Projects/MyWalks/functions/get_day_routes.R')
 

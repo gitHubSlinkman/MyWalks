@@ -1,0 +1,55 @@
+---
+title: "Last 007 days walks"
+author: "adopted by Craig W. Slinkman"
+date: "6/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+the R-Markdown documnt lists the last 7 days walk activity and provides a summary of the last 7 days.
+
+```{r load_packages}
+source('~/R-Projects/MyWalks/functions/load_packages.R')
+```
+
+```{r set_cowplot_to_defefault_theme}
+theme_set( theme_cowplot )
+```
+
+```{r define_functions}
+source('~/R-Projects/MyWalks/functions/get_day_routes.R')
+source('~/R-Projects/MyWalks/functions/keep_walks_by_age.R')
+```
+
+```{r read_data}
+all_walks <- get_day_routes()
+```
+
+```{r keep_the_last_007_days_data}
+last_007_days_walks <-    
+    all_walks  %>%  
+        keep_walks_by_age( all_walks, 7 )
+
+    last_007_days_walks %>% 
+        flextable()
+        
+
+
+```
+
+```{r list_selected_walks_data}
+last_seven_days_walks %>% 
+    mutate( formatted_date <- format(  date_time, 
+                                       "%y-%m-%d" ),
+            week_day       <- wday( date_time, 
+                                    label = TRUE, 
+                                    abbr = TRUE )) 
+    
+            
+
+```
+
