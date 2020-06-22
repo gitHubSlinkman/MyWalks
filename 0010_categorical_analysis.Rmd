@@ -136,7 +136,6 @@ walking_conditions <-
  plot_bar_chart( walking_conditions,
                  "Walking conditions",
                  "Distribution of walking conditions") 
-
 ```
 
 ## Distribution of shoes worn

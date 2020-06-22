@@ -36,13 +36,13 @@ all_walks <- get_day_routes()
 # Determine the date of the first walk to be analysed.
 ############################################################################
 
-first_date <- as.Date( now()) - 7
+first_date <- date( now()) - 7
 
 ############################################################################# Add plain date and chr_day for reporting.
 ############################################################################
 
 
-last_007_days_walks <-    
+temp_tibble <-    
     all_walks  %>% 
         mutate( date = date( date_time ),
                 chr_day = wday( date_time,
@@ -58,31 +58,80 @@ last_007_days_walks <-
 ############################################################################
 
 last_007_days_walks <- 
-    last_007_days_walks %>% 
-        filter( date >= first_date ) %>% 
-            arrange( desc( date_time  )) %>% 
-                select( date_time,
-                        chr_day,
-                        walked,
-                        miles,
-                        hours,
-                        mph )
+    temp_tibble %>% 
+        filter( date > first_date ) %>% 
+            arrange( desc( date_time  ))
+                
 
 last_007_days_walks               
             
-          
+summary <- compute_parametrics( last_007_days_walks )
+
+
+
+summary %>% 
+    flextable() %>% 
+    width( j = 1, 1.5 ) %>% 
+    colformat_int( j = 2,
+                   na_str = " " )
         
 
 
 ```
 
 ```{r list_selected_walks_data}
-last_007_days_walks %>% 
-    mutate( formatted_date <- format(  date_time, 
-                                       "%y-%m-%d" ),
-            week_day       <- wday( date_time, 
-                                    label = TRUE, 
-                                    abbr = TRUE )) 
+
+
+last_007_days_walks <- 
+    last_007_days_walks %>% 
+        mutate( formatted_date <- format(  date_time, 
+                                           "%y-%m-%d" ),
+                week_day       <- wday( date_time, 
+                                        label = TRUE, 
+                                        abbr  = TRUE )) 
+
+############################################################################ Get the tibble column names.  We then substitute the last two column
+# names to those we will use in the report.
+###########################################################################
+
+
+vnames <- names( last_007_days_walks )
+p      <- length( vnames )
+vanmes[ p - 1]  <- formatted_date
+vnames[p]       
+
+
+
+
+        select( formated_date,
+                week_day,
+                walked,
+                route,
+                miles,
+                steps,
+                hours,
+                mph,
+                pace,
+                gain,
+                kcal,
+                avg_hr,
+                max_hr,
+                breaks,
+                shuffles ) %>%
+        flextable() %>% 
+            width( j = 1, 1.0 ) %>% 
+            width( j = 3, 2.5 ) %>% 
+        colformat_int( j =c( 2, 11, 12, 13, 14 )) %>% 
+        colformat_num( j = c( 4, 6:8 ),
+                       digits = 2 ) %>% 
+        colformat_num( j = c( 5, 10 ),
+                       digits = 3,
+                    na_str = "" ) %>% 
+        set_header_labels( date = "Date" ) %>% 
+        theme_zebra()
+            
+            
+       
     
             
 

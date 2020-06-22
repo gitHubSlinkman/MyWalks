@@ -28,8 +28,9 @@ source('~/R-Projects/MyWalks/functions/load_packages.R')
 
 theme_set( theme_cowplot())
 
-]##########################################################################
-# We load the fubnctions we need to 
+###########################################################################
+# We load the functions we need to plan the walks.
+###########################################################################
 
 source('~/R-Projects/MyWalks/functions/get_day_routes.R')
 
