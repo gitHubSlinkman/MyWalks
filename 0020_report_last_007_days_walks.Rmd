@@ -73,7 +73,10 @@ summary %>%
     flextable() %>% 
     width( j = 1, 1.5 ) %>% 
     colformat_int( j = 2,
-                   na_str = " " )
+                   na_str = " " )  %>% 
+    col_format_num( j = 3:7,
+                    digits = 2,
+                    na_str = "" )
         
 
 
@@ -85,10 +88,8 @@ summary %>%
 last_007_days_walks <- 
     last_007_days_walks %>% 
         mutate( formatted_date <- format(  date_time, 
-                                           "%y-%m-%d" ),
-                week_day       <- wday( date_time, 
-                                        label = TRUE, 
-                                        abbr  = TRUE )) 
+                                           "%y-%m-%d" ))
+        
 
 ############################################################################ Get the tibble column names.  We then substitute the last two column
 # names to those we will use in the report.
@@ -97,14 +98,13 @@ last_007_days_walks <-
 
 vnames <- names( last_007_days_walks )
 p      <- length( vnames )
-vanmes[ p - 1]  <- formatted_date
-vnames[p]       
+vnames[ p ]  <- "date"
 
 
 
-
-        select( formated_date,
-                week_day,
+last_007_days_walks %>%
+        select( date,
+                chr_day,
                 walked,
                 route,
                 miles,
@@ -130,10 +130,15 @@ vnames[p]
         set_header_labels( date = "Date" ) %>% 
         theme_zebra()
             
-            
-       
-    
-            
+```
+
+
+## Summary report
+
+```{r report summary}
+
+summary %>% 
+    flextable()
 
 ```
 
