@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This RMarkdown document draws bar ccharts of the categorical data for variables in the MyWalks.
+This RMarkdown document draws bar charts of the categorical data for variables in the MyWalks.
 
 ## Loading the required packages
 
