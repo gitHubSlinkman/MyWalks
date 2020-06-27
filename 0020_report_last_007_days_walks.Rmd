@@ -6,17 +6,32 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## R Markdown
-the R-Markdown documnt lists the last 7 days walk activity and provides a summary of the last 7 days.
+the R-Markdown document lists the last 7 days walk activity and provides a summary of the last 7 days.
 
-```{r load_packages}
-source('~/R-Projects/MyWalks/functions/load_packages.R')
-```
+```{r load_packages, echo=FALSE}
 
-```{r set_cowplot_to_defefault_theme}
+###########################################################################
+# We load necessary packages to supply needed functionality.
+###########################################################################
+
+suppressMessages(library(tidyverse))   # I live in the tidyverse ...
+suppressMessages(library(readxl))      # To read an xlsx spreadsheet ...
+suppressMessages(library(lubridate))   # For advanced date processing ...
+suppressMessages(require(flextable))   # For reporting ...
+suppressMessages(require(cowplot))     # For professional plots ...
+```   
+
+
+
+```{r set_cowplot_to_default_theme}
+
+###########################################################################
+# We make cowplot the default theme for this document.
+###########################################################################
 theme_set( theme_cowplot )
 ```
 
@@ -39,8 +54,7 @@ all_walks <- get_day_routes()
 first_date <- date( now()) - 7
 
 ############################################################################# Add plain date and chr_day for reporting.
-############################################################################
-
+###########################################################################
 
 temp_tibble <-    
     all_walks  %>% 
@@ -60,85 +74,75 @@ temp_tibble <-
 last_007_days_walks <- 
     temp_tibble %>% 
         filter( date > first_date ) %>% 
-            arrange( desc( date_time  ))
-                
+            arrange( desc( date_time  )) 
+                    
+```
 
-last_007_days_walks               
-            
+```{r summarize_last_007_days_walks}
+
+############################################################################
+# We compute the totals (when they make sense), the means, the standard
+# deviations, the coefficient of variation, the skewness, and the kurosis
+# of the basic walking statistics for the last 7 days walks.
+###########################################################################
+
 summary <- compute_parametrics( last_007_days_walks )
+```
 
+## Last seven days walks 
 
+```{r list_last_007_days}
+
+   last_007_days_walks %>%
+            select( walked,
+                    date,
+                    missed_reason,
+                    route,
+                    miles,
+                    steps,
+                    hours,
+                    pace,
+                    gain,
+                    kcal,
+                    avg_hr,
+                    max_hr,
+                    breaks,
+                    shuffles ) %>% 
+                flextable() %>% 
+                    width( j = c( 2, 4), 1.50 ) %>% 
+                    width( j = 3, 2.50 ) %>% 
+                    colformat_num( j = 5:8,
+                                   digits = 2,
+                                   na_str = "" ) %>% 
+                    colformat_num( j = c( 9, 10:14 ),
+                                   digits = 0,
+                                   na_str = "" ) %>% 
+                   colformat_num(  j = 9, 
+                                   digits = 3,
+                                   na_str = "" ) %>% 
+                set_header_labels( "Walked" = "walks") %>% 
+                theme_zebra()
+                   
+
+```
+
+### Summary report
+
+```{r}
+
+###########################################################################
+# We create print the summary report here using flextable.
+###########################################################################
 
 summary %>% 
     flextable() %>% 
-    width( j = 1, 1.5 ) %>% 
-    colformat_int( j = 2,
-                   na_str = " " )  %>% 
-    col_format_num( j = 3:7,
-                    digits = 2,
-                    na_str = "" )
-        
-
-
-```
-
-```{r list_selected_walks_data}
-
-
-last_007_days_walks <- 
-    last_007_days_walks %>% 
-        mutate( formatted_date <- format(  date_time, 
-                                           "%y-%m-%d" ))
-        
-
-############################################################################ Get the tibble column names.  We then substitute the last two column
-# names to those we will use in the report.
-###########################################################################
-
-
-vnames <- names( last_007_days_walks )
-p      <- length( vnames )
-vnames[ p ]  <- "date"
-
-
-
-last_007_days_walks %>%
-        select( date,
-                chr_day,
-                walked,
-                route,
-                miles,
-                steps,
-                hours,
-                mph,
-                pace,
-                gain,
-                kcal,
-                avg_hr,
-                max_hr,
-                breaks,
-                shuffles ) %>%
-        flextable() %>% 
-            width( j = 1, 1.0 ) %>% 
-            width( j = 3, 2.5 ) %>% 
-        colformat_int( j =c( 2, 11, 12, 13, 14 )) %>% 
-        colformat_num( j = c( 4, 6:8 ),
-                       digits = 2 ) %>% 
-        colformat_num( j = c( 5, 10 ),
-                       digits = 3,
-                    na_str = "" ) %>% 
-        set_header_labels( date = "Date" ) %>% 
-        theme_zebra()
-            
-```
-
-
-## Summary report
-
-```{r report summary}
-
-summary %>% 
-    flextable()
-
+        width( j = 1, 2.0 ) %>% 
+        colformat_int( j = 2,
+                       na_str = "" ) %>% 
+        colformat_num( j = 3:13,
+                       digits = 2,
+                       na_str = "" ) 
+      
+                      
 ```
 
