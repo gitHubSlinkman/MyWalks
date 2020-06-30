@@ -94,8 +94,8 @@ summary <- compute_parametrics( last_007_days_walks )
 ```{r list_last_007_days}
 
    last_007_days_walks %>%
-            select( walked,
-                    date,
+            select( date,
+                    walked,
                     missed_reason,
                     route,
                     miles,
@@ -109,19 +109,34 @@ summary <- compute_parametrics( last_007_days_walks )
                     breaks,
                     shuffles ) %>% 
                 flextable() %>% 
+                    width( j = 1, 1.00 ) %>% 
                     width( j = c( 2, 4), 1.50 ) %>% 
                     width( j = 3, 2.50 ) %>% 
-                    colformat_num( j = 5:8,
+                    colformat_num( j = c( 5:8 ),
                                    digits = 2,
                                    na_str = "" ) %>% 
-                    colformat_num( j = c( 9, 10:14 ),
+                    colformat_num( j = c( 9, 10:13 ),
                                    digits = 0,
                                    na_str = "" ) %>% 
-                   colformat_num(  j = 9, 
+                   colformat_num(  j =10, 
                                    digits = 3,
                                    na_str = "" ) %>% 
-                set_header_labels( "Walked" = "walks") %>% 
+                set_header_labels( date           = "Date",
+                                    walked        = "Walked",
+                                    missed_reason = "Missed reason",
+                                   route          = "Route",
+                                   miles          = "Miles",
+                                   steps          = "Steps(k)",
+                                   hours          = "Hours",
+                                   pace           = "Pace",
+                                   gain           = "Gain",
+                                   kcal           = "KCal",
+                                   avg_hr         = "Mean\nHr",
+                                   max_hr         = "Max\nHR",
+                                   breaks         = "Breaks",
+                                   shuffles       = "Shuffles" ) %>%  
                 theme_zebra()
+  
                    
 
 ```
@@ -141,7 +156,22 @@ summary %>%
                        na_str = "" ) %>% 
         colformat_num( j = 3:13,
                        digits = 2,
-                       na_str = "" ) 
+                       na_str = "" ) %>% 
+        set_header_labels( label    = "Statistics",
+                           walked   = "Walks",
+                           miles    = "Miles",
+                           steps    = "Steps(k)",
+                           hours    = "Hours",
+                           mph      = "MPH",
+                           pace     = "Pace",
+                           gain     = "Gain",
+                           kcal     = "KCal",
+                           avg_hr   = "Mean\nhr",
+                           max_hr   = "Maximum\nhr",
+                           breaks   = "Breaks",
+                           shuffles = "Shuffles") %>% 
+        theme_zebra() %>% 
+        autofit()
       
                       
 ```
