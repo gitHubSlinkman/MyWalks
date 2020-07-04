@@ -39,6 +39,7 @@ theme_set( theme_cowplot )
 source('~/R-Projects/MyWalks/functions/get_day_routes.R')
 source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
 source('~/R-Projects/MyWalks/functions/report_summary.R')
+source('~/R-Projects/MyWalks/functions/summarise_zones.R')
 ```
 
 ```{r read_data}
@@ -160,14 +161,15 @@ report_summary(summary)
 
 ```{r compute_zones}
 
+summary <- summarize_zones( last_007_days_walks )
 
-tbl_temp <- 
-  last_007_days_walks %>%
-    select( id,
-            date_time,
-            route,
-            zone1:zone5 ) %>% 
-              filter( complete.cases(.) )
+
+
+
+
+
+
+
     
    
   
