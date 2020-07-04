@@ -31,7 +31,7 @@ get_day_routes <-
         #######################################################################
         # There is an error in the spreadsheet that I don't seem to be able to
         # fix.  The column for the variable gain was turned from numeric to 
-        # charachters.  Therefor I convert the charaicacter variables to 
+        # characters.  Therefor I convert the character variables to 
         # numeric values here.
         #######################################################################
         
