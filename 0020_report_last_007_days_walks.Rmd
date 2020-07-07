@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## RIntroduction
+## Introduction
 This R-Markdown document lists the last 7 days walk activity and provides a summary of the last 7 days.
 
 ```{r load_packages, echo=FALSE}
@@ -22,6 +22,7 @@ suppressMessages(library(tidyverse))   # I live in the tidyverse ...
 suppressMessages(library(tidyr))       # For additional data wrangling ...
 suppressMessages(library(readxl))      # To read an xlsx spreadsheet ...
 suppressMessages(library(lubridate))   # For advanced date processing ...
+suppressMessages(library(formattable)) # To display formatted tibbles ...
 suppressMessages(require(flextable))   # For reporting ...
 suppressMessages(require(cowplot))     # For professional plots ...
 ```   
@@ -158,11 +159,20 @@ Note: The walks are sorted in reverse chronlogical order.
 report_summary(summary)
 ```
 
-### Zone minutes report
+### Zone minutes barchart
 
 ```{r compute_zones}
 
 summary <- summarize_zones( last_007_days_walks )
+
+formattable( summary )
+formattable( summary, 
+             align = c("l", rep("r", NCOL( summary ) - 1)))
+
+
+# summary %>%
+#   ggplot( aes( x=range, y=hours )) +
+#     geom_bar( stat="identity" )
 
 
 

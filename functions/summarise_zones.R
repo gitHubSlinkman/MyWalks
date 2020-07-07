@@ -38,7 +38,7 @@ summarize_zones <-
                 group_by( zone ) %>% 
                 summarise( hours = sum( minutes ) / 60 )
         
-        zone_label <- 
+        range <- 
             c(  "< 88",
                 "89 - 103",
                 "104 - 118",
@@ -46,9 +46,8 @@ summarize_zones <-
                 "> 130")
         
         add_column( summary,
-                    zone_label ) %>% 
-            select(  zone,
-                     zone_label,
+                    range ) %>% 
+            select(  range,
                      hours )
     }
 
