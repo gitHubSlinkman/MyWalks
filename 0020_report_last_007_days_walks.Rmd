@@ -165,16 +165,17 @@ report_summary(summary)
 
 summary <- summarize_zones( last_007_days_walks )
 
-formattable( summary )
-formattable( summary, 
-             align = c("l", rep("r", NCOL( summary ) - 1)))
-
-
-# summary %>%
-#   ggplot( aes( x=range, y=hours )) +
-#     geom_bar( stat="identity" )
-
-
+  summary %>% 
+    mutate( percent = round( 100 * hours / sum(hours),  2 )) %>% 
+      flextable() %>% 
+        width( j = 1, 1.00 ) %>% 
+        colformat_num( j = 2:3,
+                       digits = 2 ) %>% 
+        set_column_header( range = "Heart beats\nrnage",
+                           hours = "Hours in\nzone",
+                           percent = "Percent hours\ninzone" )
+                           
+  
 
 
 
