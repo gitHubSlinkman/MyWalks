@@ -4,9 +4,7 @@
 ###############################################################################
 
 plot_value_bar_chart <- 
-    function( x_variable,
-              y_variable,
-              y_scale         = NULL,
+    function(
               x_variable_name = NULL,
               y_variable_name = NULL,
               plot_title      = NULL,
@@ -14,11 +12,11 @@ plot_value_bar_chart <-
               fill_color      = "green" )
         {
               ##############################################################
-              # Create dataframe-ribble object to pass to ggplot from 
+              # Create dataframe-tibble object to pass to ggplot from 
               # x_variable and y_variable.
               ##############################################################
         
-              this_tibble <- tibble( x_value, y_vslue )
+              this_tibble <- tibble( x_value, y_value )
 
               ################################################################
               # We remove missing values from the variable data.

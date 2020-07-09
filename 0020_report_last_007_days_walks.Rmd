@@ -161,6 +161,8 @@ report_summary(summary)
 
 ### Zone minutes barchart
 
+This barchart shows the number of beats in each heart rate zone.
+
 ```{r compute_zones}
 
 summary <- summarize_zones( last_007_days_walks )
@@ -171,9 +173,9 @@ summary <- summarize_zones( last_007_days_walks )
         width( j = 1, 1.00 ) %>% 
         colformat_num( j = 2:3,
                        digits = 2 ) %>% 
-        set_column_header( range = "Heart beats\nrnage",
-                           hours = "Hours in\nzone",
-                           percent = "Percent hours\ninzone" )
+        set_header_labels( range   = "Heart beats\nrange",
+                           hours   = "Hours in\nzone",
+                           percent = "Percent hours\nin zone" )
                            
   
 
@@ -186,5 +188,22 @@ summary <- summarize_zones( last_007_days_walks )
    
   
 
+```
+
+### PLot Hear rate zones
+
+```{r plot_heart_rate_zones}
+
+range <- 
+  summary %>% 
+    pull( range )
+
+range
+
+  hours <- 
+    summary %>% 
+      pull( hours )
+
+  hours
 ```
 
