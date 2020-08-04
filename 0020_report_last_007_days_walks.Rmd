@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = FALSE)
 This R-Markdown document lists the last 7 days walk activity and provides a summary of the last 7 days.
 
 ```{r load_packages, echo=FALSE}
-
 ###########################################################################
 # We load necessary packages to supply needed functionality.
 ###########################################################################
@@ -25,8 +24,8 @@ suppressMessages(library(lubridate))   # For advanced date processing ...
 suppressMessages(library(formattable)) # To display formatted tibbles ...
 suppressMessages(require(flextable))   # For reporting ...
 suppressMessages(require(cowplot))     # For professional plots ...
-```   
-
+suppressMessages(require(ggpubr))      # For proefessional plots ...
+```
 
 
 ```{r set_cowplot_to_default_theme}
@@ -38,10 +37,10 @@ theme_set( theme_cowplot )
 ```
 
 ```{r define_functions}
-source('~/R-Projects/MyWalks/functions/get_day_routes.R')
-source('~/R-Projects/MyWalks/functions/compute_parametrics.R')
-source('~/R-Projects/MyWalks/functions/report_summary.R')
-source('~/R-Projects/MyWalks/functions/summarise_zones.R')
+source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
+source('D:/R-Projects/MyWalks/functions/compute_parametrics.R')
+source('D:/R-Projects/MyWalks/functions/report_summary.R')
+source('D:/R-Projects/MyWalks/functions/summarise_zones.R')
 ```
 
 ```{r read_data}
@@ -118,7 +117,7 @@ Note: The walks are sorted in reverse chronlogical order.
                 flextable() %>% 
                     width( j = 1, 1.00 ) %>% 
                     width( j = c( 2, 4), 1.50 ) %>% 
-                    width( j = 3, 2.50 ) %>% 
+                    width( j =4, 2.50 ) %>% 
                     colformat_num( j = c( 5:8 ),
                                    digits = 2,
                                    na_str = "" ) %>% 
@@ -190,20 +189,5 @@ summary <- summarize_zones( last_007_days_walks )
 
 ```
 
-### PLot Hear rate zones
 
-```{r plot_heart_rate_zones}
-
-range <- 
-  summary %>% 
-    pull( range )
-
-range
-
-  hours <- 
-    summary %>% 
-      pull( hours )
-
-  hours
-```
 

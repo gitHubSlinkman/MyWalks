@@ -22,7 +22,7 @@ get_day_routes <-
         #######################################################################
         
         fp <-                                           # Build file path ...
-            file.path( '~/R-Projects/MyWalks/data',
+            file.path( 'D:/R-Projects/MyWalks/data',
                        'days.xlsx')
         
         days <- read_excel( fp )                       # Read days.xlsx  ...
@@ -44,7 +44,7 @@ get_day_routes <-
         #######################################################################
         
         fp <-                                           # Build file path ...
-            file.path( '~/R-Projects/MyWalks/data',
+            file.path( 'D:/R-Projects/MyWalks/data',
                        'routes.xlsx' )
         routes <- read_excel( fp )
         
@@ -79,7 +79,7 @@ get_day_routes <-
          days <- 
             days %>% 
                mutate( steps = steps / 1000,
-                        kcal = kcal / 1000 )
+                    kcal = cal / 1000 )
         
         #######################################################################
         # We return the tibble to the calling programs'

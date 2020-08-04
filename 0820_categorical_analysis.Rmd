@@ -17,11 +17,14 @@ We by loading the R-packages that we need for analyzing the data.
 
 ```{r load_packages}
 
-###########################################################################
+###############################################################################
 # Load required R-packages ...
-###########################################################################
+###############################################################################
 
- source('~/R-Projects/MyWalks/functions/load_packages.R')
+require( tidyverse )                      # I live in the tidyverse ...
+require( readxl )                         # To read xlsx spreadsheets ...
+require( lubridate )                      # For advanced datse processing ...
+require( cowplot )                        # For professional plots ...
 
 ```
 ## Loading the required functions.
@@ -29,9 +32,9 @@ We by loading the R-packages that we need for analyzing the data.
 We need to load the function that are needed to draw the bar charts.  I have written a script to load mu most used packages.
 
 ```{r load_functions}
-source('~/R-Projects/MyWalks/functions/get_day_routes.R') 
-source('~/R-Projects/MyWalks/functions/find_max_frequency.R')
-source('~/R-Projects/MyWalks/functions/plot_bar_chart.R')
+source('D:/R-Projects/MyWalks/functions/get_day_routes.R') 
+source('D:/R-Projects/MyWalks/functions/find_max_frequency.R')
+source('D:/R-Projects/MyWalks/functions/plot_bar_chart.R')
 ```
 
 ## Load the data 
@@ -81,8 +84,9 @@ missed_reason <-
             pull( missed_reason )
 
     plot_bar_chart( missed_reason, 
-                    "Reasons for missing g walk",
-                    "Distribution of reasons for missing walk" )
+                    "Reasons",
+                    "Distribution of reasons for missing walk" ) +
+                    theme(axis.text.x = element_text(angle = 45, hjust = 1))
     
 ```
 
@@ -104,8 +108,7 @@ direction_wind <-
     pull( direction_wind )
     
 plot_bar_chart( direction_wind,
-                "Wind direction",
-                "Distribution of wind direction" )
+                "Wind direction" )
 
 
 ```

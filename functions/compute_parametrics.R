@@ -8,12 +8,12 @@
 ##############################################################################
 
 library( tidyverse )                            
-source('~/R-Projects/MyWalks/functions/compute_totals.R')
-source('~/R-Projects/MyWalks/functions/compute_means.R')
-source("~/R-Projects/MyWalks/functions/compute_standard_deviations.R" )
-source('~/R-Projects/MyWalks/functions/compute_coefficient_of_variation.R')
-source('~/R-Projects/MyWalks/functions/compute_skew.R')
-source('~/R-Projects/MyWalks/functions/compute_kurtosis.R')
+source('D:/R-Projects/MyWalks/functions/compute_totals.R')
+source('D:/R-Projects/MyWalks/functions/compute_means.R')
+source("D:/R-Projects/MyWalks/functions/compute_standard_deviations.R" )
+source('D:/R-Projects/MyWalks/functions/compute_coefficient_of_variation.R')
+source('D:/R-Projects/MyWalks/functions/compute_skew.R')
+source('D:/R-Projects/MyWalks/functions/compute_kurtosis.R')
 
 
 compute_parametrics <- 
@@ -22,15 +22,10 @@ compute_parametrics <-
         totals <- compute_totals( days )
         means  <- compute_means( days ) 
         stds   <- compute_standard_deviations( days )
-        covs   <- compute_coefficient_of_variation( means, stds )
-        skews  <- compute_skewness( days )
-        kurtosis <- compute_kurtosis( days )                  
+                      
         
         
         bind_rows( totals, 
                    means, 
-                   stds, 
-                   covs, 
-                   skews,
-                   kurtosis )
+                   stds )
     }
