@@ -176,7 +176,10 @@ summary <- summarize_zones( last_007_days_walks )
                            hours   = "Hours in\nzone",
                            percent = "Percent hours\nin zone" )
                            
-  
+  #  ggplot( summary, 
+  #        aes( x = range,
+  #             y = hours )) +
+  #  geom_bar(stat = 'identity' )
 
 
 
