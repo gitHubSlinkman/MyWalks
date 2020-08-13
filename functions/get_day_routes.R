@@ -9,6 +9,10 @@
 ###############################################################################
 
 
+require(tidyverse)              # I live in the tidyverse ...
+require(readxl)                 # To read Microsft Excell spreadshets ...
+require(lubridate)              # For advnced date/time processing ....
+
 
 ##############################################################################
 # get_days( ) function
@@ -59,10 +63,19 @@ get_day_routes <-
                        keep = FALSE )
         
         #######################################################################
-        # We add erived data files to the days tibble.  We make thew follwing
-        # data conversions:
+        # We add derived data fields to the days tibble.  We make the
+        # following data conversions:
+        #   1. We convert the variable sky_conditions to a factor.
         #   1. Convert Excel data and time POSIXct data and tine.
         #######################################################################  
+        
+        
+        #######################################################################
+        # Change sky_conditions to ordered factor
+        #######################################################################
+        
+        days$sky_conditions <- factor( days$sky_conditions,
+                                       level )
         
         days <- 
             days %>% 
@@ -71,8 +84,9 @@ get_day_routes <-
         tz( days$date_time ) <- Sys.timezone( location = TRUE )
         
         
+        
         #######################################################################
-        # Because the variables steps and kcal can become very larke we divide
+        # Because the variables steps and kcal can become very large we divide
         # each of this quantities by 1000.
         #######################################################################
         
