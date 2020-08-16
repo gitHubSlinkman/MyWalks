@@ -9,21 +9,29 @@
 ###############################################################################
 
 
+###############################################################################
+# We load the requiredpackages ...
+###############################################################################
+
 require(tidyverse)              # I live in the tidyverse ...
 require(readxl)                 # To read Microsft Excell spreadshets ...
 require(lubridate)              # For advnced date/time processing ....
 
 
-##############################################################################
+###############################################################################
+# Load the required functions.
+###############################################################################
+
+source('D:/R-Projects/MyWalks/functions/get_sky_conditions_factors.R')
+source('D:/R-Projects/MyWalks/functions/get_compass_factors.R')
+
+###############################################################################
 # get_days( ) function
-##############################################################################
+###############################################################################
 
 get_day_routes <- 
     function()
     {
-        #######################################################################
-        # We read the days.xlsx file in the followiung two statements.
-        #######################################################################
         
         fp <-                                           # Build file path ...
             file.path( 'D:/R-Projects/MyWalks/data',
@@ -43,14 +51,17 @@ get_day_routes <-
         
         
         #######################################################################
-        # The routes file contains information concerning the route that does
-        # not change from route to route.  We rera it now.
+        # The routes file contains information contains route data that does
+        # not change fromwa;l towalk.  We rera it now.
         #######################################################################
         
         fp <-                                           # Build file path ...
             file.path( 'D:/R-Projects/MyWalks/data',
                        'routes.xlsx' )
         routes <- read_excel( fp )
+        
+        #######################################################################
+        # Because 
         
         #######################################################################
         # We perform a left join on the days and routes tibbles.
@@ -66,16 +77,32 @@ get_day_routes <-
         # We add derived data fields to the days tibble.  We make the
         # following data conversions:
         #   1. We convert the variable sky_conditions to a factor.
+        #   2. We convert the widirection to an ordered factor.
         #   1. Convert Excel data and time POSIXct data and tine.
         #######################################################################  
         
+    
         
         #######################################################################
         # Change sky_conditions to ordered factor
         #######################################################################
         
+        sky_factors <- get_sky_conditions_factors()
+        
         days$sky_conditions <- factor( days$sky_conditions,
-                                       level )
+                                       levels = sky_factors,
+                                       ordered = TRUE )
+        
+        
+        #######################################################################
+        # Change the direction_wind to an ordered factor.
+        #######################################################################
+        
+        compass_factors <- get_compass_factors()
+        
+        days$direction_wind <- factor( days$direction_wind,
+                                       levels = compass_factors,
+                                       ordered = TRUE )
         
         days <- 
             days %>% 

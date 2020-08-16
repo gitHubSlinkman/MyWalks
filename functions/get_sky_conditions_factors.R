@@ -1,19 +1,16 @@
-# get_sky_conditioins_levels.R
+# get_sky_conditions_factors.R
 
 require(tidyverse)
 
-make_sky_conitions_factor <- 
+get_sky_conditions_factors <- 
     function(  sky_conditions ){
         
         #######################################################################
         # Read factor names from data directory
         #######################################################################
         
-        URL                <-  "data/conditions.xlsx"  # Get ordered 
-        ordered_conditions <- read_xlsx( URL )         # conditions ...
-        
-        
-        
-        
+        fp  <- file.path( "D:/R-Projects/MyWalks",
+                          "data/sky.xlsx"  )
+        read_xlsx( fp )       
     }
     
