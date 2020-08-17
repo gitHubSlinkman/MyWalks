@@ -23,6 +23,6 @@ compute_standard_deviations <-
                        avg_hr   = sd( avg_hr,  na.rm  = TRUE ),
                        max_hr   = sd( max_hr,   na.rm = TRUE ),
                        breaks   = sd( breaks,   na.rm = TRUE ),
-                       shuffles = sd( shuffles, na.rm = TRUE ))
+                       stumbles = sd( stumbles, na.rm = TRUE ))
         
     }

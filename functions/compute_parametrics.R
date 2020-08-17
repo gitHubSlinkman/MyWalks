@@ -1,11 +1,10 @@
-# compute_parametrics.R
+# compute_parametric.R
 ###############################################################################
-# Function: compute_parameteric( days )
+# Function: compute_parametrics( days )
 ###############################################################################
-# This function compute the parmatric totals, the means, the standard
-# deviations, the coefficient of variation, the skewness, and rhe kurtotsis of
-# relevant data in the days tibble.
-##############################################################################
+# This function compute the parametric totals, the means, the standard
+# deviations, the coefficient of variation.
+###############################################################################
 
 library( tidyverse )                            
 source('D:/R-Projects/MyWalks/functions/compute_totals.R')

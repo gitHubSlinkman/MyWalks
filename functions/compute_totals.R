@@ -18,5 +18,5 @@ compute_totals <-
                        avg_hr   = NA,
                        max_hr   = NA,
                        breaks   = sum( breaks,  na.rm = TRUE ),
-                       shuffles = sum(shuffles, na.rm = TRUE ))
+                       stumbles = sum(stumbles, na.rm = TRUE ))
     }

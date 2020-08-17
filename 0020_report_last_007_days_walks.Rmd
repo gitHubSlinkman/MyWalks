@@ -113,7 +113,7 @@ Note: The walks are sorted in reverse chronlogical order.
                     avg_hr,
                     max_hr,
                     breaks,
-                    shuffles ) %>% 
+                    stumbles ) %>% 
                 flextable() %>% 
                     width( j = 1, 1.00 ) %>% 
                     width( j = c( 2, 4), 1.50 ) %>% 
@@ -127,20 +127,20 @@ Note: The walks are sorted in reverse chronlogical order.
                    colformat_num(  j =10, 
                                    digits = 3,
                                    na_str = "" ) %>% 
-                set_header_labels( date           = "Date",
-                                    walked        = "Walked",
-                                    missed_reason = "Missed reason",
-                                   route          = "Route",
-                                   miles          = "Miles",
-                                   steps          = "Steps(k)",
-                                   hours          = "Hours",
-                                   pace           = "Pace",
-                                   gain           = "Gain",
-                                   kcal           = "KCal",
-                                   avg_hr         = "Mean\nHr",
-                                   max_hr         = "Max\nHR",
-                                   breaks         = "Breaks",
-                                   shuffles       = "Shuffles" ) %>%  
+                set_header_labels( date            = "Date",
+                                    walked         = "Walked",
+                                    missed_reason  = "Missed reason",
+                                    route          = "Route",
+                                    miles          = "Miles",
+                                    steps          = "Steps(k)",
+                                    hours          = "Hours",
+                                    pace           = "Pace",
+                                    gain           = "Gain",
+                                    kcal           = "KCal",
+                                    avg_hr         = "Mean\nHr",
+                                    max_hr         = "Max\nHR",
+                                    breaks         = "Breaks",
+                                    stumbles       = "Stumbles" ) %>%
                 theme_zebra()
   
                    
