@@ -17,23 +17,23 @@ The purpose of this document is to plan the next walk.  It is cone by sorting th
 
 ###########################################################################
 # We load the packages used by MyWalks.  This is a source file in the 
-# Mywalks function sub-directory.
+# MyWalks function sub-directory.
 ###########################################################################
 
-source('~/R-Projects/MyWalks/functions/load_packages.R')
+require(tidyverse)                      # I live in the tidyverse ...
+require(flextable)                      # For professional tables ...
+```
 
-############################################################################ We set the default graphical output to cowplot foe professional and
-# publishable-ready graphical output.
-###########################################################################
+## We load the required functions ...
 
-theme_set( theme_cowplot())
+These are functions we have written to provide reusable functionality.
 
+```{r load_functions}
 ###########################################################################
 # We load the functions we need to plan the walks.
 ###########################################################################
 
-source('~/R-Projects/MyWalks/functions/get_day_routes.R')
-
+source("D:/R-Projects/MyWalks/functions/get_day_routes.R")
 ```
 
 ## Get all day_routes
@@ -78,6 +78,10 @@ active_route_walks <-
 ```
 
 
+## Display walk schedule
+
+
+
 
 
 ```{r group_by_route_and find last_walk}
@@ -86,8 +90,7 @@ active_route_walks <-
 # Select the walks within each route that have the maximum (latest) walk
 # date.
 ###########################################################################
-
-last_date_walked <- 
+schedule <- 
     active_route_walks %>% 
         group_by( route ) %>% 
             arrange( route, date_time ) %>% 
@@ -103,7 +106,7 @@ last_date_walked <-
 # Prepare the data for the flextable report.
 ###########################################################################
            
-last_date_walked %>%
+schedule %>%
     mutate( date = as.Date( date_time )) %>% 
     arrange( date ) %>% 
         select( route, date ) %>%

@@ -1,6 +1,6 @@
 # get_day_routes.R
 ###############################################################################
-# Function get_days
+# Function get_day_routes
 ###############################################################################
 # This function reads the <Icrosoft Excel spread shets days.xlsx and 
 # routes xlsx and left joins the two tibbles on roues.  The date and time
