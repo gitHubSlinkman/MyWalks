@@ -10,9 +10,6 @@ library( tidyverse )
 source('D:/R-Projects/MyWalks/functions/compute_totals.R')
 source('D:/R-Projects/MyWalks/functions/compute_means.R')
 source("D:/R-Projects/MyWalks/functions/compute_standard_deviations.R" )
-source('D:/R-Projects/MyWalks/functions/compute_coefficient_of_variation.R')
-source('D:/R-Projects/MyWalks/functions/compute_skew.R')
-source('D:/R-Projects/MyWalks/functions/compute_kurtosis.R')
 
 
 compute_parametrics <- 
