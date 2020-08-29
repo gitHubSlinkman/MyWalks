@@ -41,10 +41,12 @@ The data files are stored in the data sub-directory of this project.  They are d
 
 The first is called days which contains data about daily walks.  The second file is data about the routes walked. 
 
-We use a relational left-joinon the route  to create a single file. 
+We use a relational left-join the route  to create a single file. 
 
 ### Data fields
 
+source('D:/R-Projects/MyWalks/functions/get_day_routes.R')```{r get_day_routes}
+```
 
 ###  Reading the files
 

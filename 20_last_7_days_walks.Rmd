@@ -1,0 +1,14 @@
+---
+title: "20_Last 7 Days Walks"
+author: " by Craig Slinkman"
+date: "8/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This doucument summerizes the last seven days walks.
