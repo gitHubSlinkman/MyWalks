@@ -9,6 +9,77 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Loading R-packages
 
-This doucument summerizes the last seven days walks.
+This document summarizes the last seven days walks.  We start be loading the required R-packages.  We do this below:
+
+```{r load_packages}
+require( tidyverse )                    # I live in the tidyverse ...
+require( lubridate )                    # For advanced date processing ...
+require( readxl )                       # To read an xlsx file ...
+require( cowplot )                      # For superior graphics ...
+require( flextable )                    # For professional looking tables ...
+```
+
+For those wh0 do not know the the R-function [require](https://www.rdocumentation.org/packages/SciViews/versions/0.8-8/topics/Require) is equivalent to the R-function [library()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) the only difference is that the **require()** returns a return code that indicates that the whether or not was successfully loaded.  A value of **FALSE** indicates a failure to load while a value of **TRUE** indicates a successful loading. 
+
+## Loading functions
+
+Here we loaded the user-written functions needed to perform the various analyses needed to equate this document.
+ source('D:/R-Projects/MyWalks/functions/plot_walk_frequency.R')
+```{r load_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days.R')
+source('D:/R-Projects/MyWalks/functions/tabulate_walks.R')
+source('D:/R-Projects/MyWalks/functions/plot_walk_frequency.R')
+source('D:/R-Projects/MyWalks/functions/display_activities.R')
+```
+
+## Change the graphics theme 
+
+```{r set_theme_to_cowplot}
+theme_set(  theme_set(theme_cowplot()))      
+```
+
+
+
+## Read the data 
+
+In this code chunk re read the data from the spreadsheets Libre spreadsheets **days.xlsx** and **routes.xlsx**.  We then joint the spreadsheets and perform calculations needed to compiute derived data.
+
+```{r get_day_routes}
+all_day_routes <- get_day_routes()
+```
+
+## Report file status  
+
+We count the numnber walks in the file, the number of walks, the number of days that had no walks, and the total number of rows in the file.
+
+```{r plot_walks_and_no_walks}
+
+###############################################################################
+# Count the number of days walked and the number of dats not walked
+###############################################################################
+
+tabulation <- tabulate_walks( all_day_routes )
+```
+  
+  
+### Display tabulation of walking activities for all days
+
+```{r display_activities_all}
+display_activities( tabulation )
+```
+
+### Display bar chart of all activities on the file  
+
+```{r plot_all_actvities}
+plot_walk_frequency( tabulation[1:2,] )
+```
+
+
+
+
+
+
+
