@@ -83,3 +83,72 @@ plot_walk_frequency( tabulation[1:2,] )
 
 
 
+
+## Keep only_last_7_days_walks
+
+In this section we keep only the activities for the last seven days.  We filter out all other days.  
+
+```{r keep_last_7_days}
+last_007_days <- 
+    filter_by_days( all_day_routes, 7 )
+last_007_days
+```
+
+### For simplicity in writting our report we wxtract the variables we are going to disolat in our report.  I call these the promary variables.  
+
+```{r kkep_promary_variables}
+primary_variables <- 
+    last_007_days %>% 
+       select( date_time,
+               walked,
+               missed_reason,
+               injury,
+               shoes,
+               route,
+               miles,
+               steps,
+               hours,
+               mph,
+               pace,
+               gain,
+               cal,
+               avg_hr,
+               max_hr,
+               breaks,
+               stumbles,
+               falls,
+               gps_failure,
+               failure_reason )
+```
+
+## Drawing a bar chart of the reasons for missing walks
+
+```{r draw_bar_chart_of_missed_reasons}
+
+################################################################################
+# We extract the variable and remove NA's.
+################################################################################
+
+missed_reason <- 
+  primary_variables %>% 
+    pull( missed_reason )
+
+missed_reason <- missed_reason[!is.na(missed_reason)]
+
+################################################################################
+# Draw frequency bar-chart.
+################################################################################
+
+tibble( missed_reason ) %>% 
+  ggplot( aes( x = missed_reason) ) +
+    geom_bar( color =" black",
+              fill = "green ",
+              width = 0.25 )
+
+```
+
+
+
+
+
+
