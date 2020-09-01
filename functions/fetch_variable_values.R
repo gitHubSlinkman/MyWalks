@@ -20,6 +20,7 @@ fetch_variable_values <-
     {
         position <- find_column_position( data, variable_name )
         
-        return( data[, position ])
+        data %>% 
+            pull( position )
 
     }
