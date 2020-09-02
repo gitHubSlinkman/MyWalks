@@ -48,5 +48,7 @@ values
 values <- remove_na( values )
 values
 
-
+plot_frequency_bar_chart( values, 
+                          x_axis_label  =  "Missed reasons",
+                          title  =  "Reasons for missing walks" )
 
