@@ -5,7 +5,7 @@ tabulate_walks <-
     {
         walks   <- sum( day_routes$walked )
         nowalks <- dim( day_routes)[1] - walks
-        Activity <- c( "Activity","No walks", "Walks" )
+        Activity <- c(  "No walks", "Walks", "Totals" )
         Frequency <- c( nowalks, walks, nowalks + walks )
         tibble( Activity, Frequency  )
     }

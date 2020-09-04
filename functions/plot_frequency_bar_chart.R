@@ -1,7 +1,7 @@
 # plot_frequency_bar_chart.R
 
 require( tidyverse )                     # I live in the tidyverse ...
-require(cowplot)                         # For professionalk quality graphics ...
+require(cowplot)                         # For professional quality graphics ...
 
 
 plot_frequency_bar_chart <- 
@@ -30,10 +30,9 @@ plot_frequency_bar_chart <-
         
         #######################################################################
         # Find max frequency.
+        
         ######################################################################
         ymax <- tabulation$frequency[1]
-        
-                  
            
         ggplot( tbl, aes( x = variable )) +
             geom_bar( color = "black",

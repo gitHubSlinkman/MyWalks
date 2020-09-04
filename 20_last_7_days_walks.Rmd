@@ -57,8 +57,8 @@ We count the numnber walks in the file, the number of walks, the number of days 
 
 ```{r plot_walks_and_no_walks}
 
-###############################################################################
-# Count the number of days walked and the number of dats not walked
+#############################################################################
+# Count the number of days walked and the number of days not walked
 ###############################################################################
 
 tabulation <- tabulate_walks( all_day_routes )
@@ -74,7 +74,6 @@ display_activities( tabulation )
 ### Display bar chart of all activities on the file  
 
 ```{r plot_all_actvities}
-plot_walk_frequency( tabulation[1:2,] )
 ```
 
 
@@ -125,22 +124,27 @@ primary_variables <-
 
 ```{r draw_bar_chart_of_missed_reasons}
 
-################################################################################
+#############################################################################
 # We extract the variable and remove NA's.
-################################################################################
+#############################################################################
 
 missed_reason <- 
   primary_variables %>% 
     pull( missed_reason )
 
+#############################################################################
+# Remove missing values 
+#############################################################################
+
 missed_reason <- missed_reason[!is.na(missed_reason)]
 
-################################################################################
-# Draw frequency bar-chart.
-################################################################################
+
+#############################################################################
+# Draw frequency bar-char
+#############################################################################
 
 tibble( missed_reason ) %>% 
-  ggplot( aes( x = missed_reason) ) +
+  ggplot( aes( x = missed_reason ) ) +
     geom_bar( color =" black",
               fill = "green ",
               width = 0.25 )
