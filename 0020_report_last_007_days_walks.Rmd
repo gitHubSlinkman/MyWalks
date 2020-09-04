@@ -113,12 +113,13 @@ Note: The walks are sorted in reverse chronlogical order.
                     avg_hr,
                     max_hr,
                     breaks,
-                    stumbles ) %>% 
-                flextable() %>% 
-                    width( j = 1, 1.00 ) %>% 
-                    width( j = c( 2, 4), 1.50 ) %>% 
-                    width( j =4, 2.50 ) %>% 
-                    colformat_num( j = c( 5:8 ),
+                    stumbles, 
+                    falls ) %>% 
+                      flextable() %>% 
+                        width( j = 1, 1.00 ) %>% 
+                        width( j = c( 2, 4), 1.50 ) %>% 
+                        width( j =4, 2.50 ) %>% 
+                        colformat_num( j = c( 5:8 ),
                                    digits = 2,
                                    na_str = "" ) %>% 
                     colformat_num( j = c( 9, 10:13 ),
@@ -140,11 +141,9 @@ Note: The walks are sorted in reverse chronlogical order.
                                     avg_hr         = "Mean\nHr",
                                     max_hr         = "Max\nHR",
                                     breaks         = "Breaks",
-                                    stumbles       = "Stumbles" ) %>%
+                                    stumbles       = "Stumbles",
+                                    falls          = "Falls" ) %>%
                 theme_zebra()
-  
-                   
-
 ```
 
 ### Summary report

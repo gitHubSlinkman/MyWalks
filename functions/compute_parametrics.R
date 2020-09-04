@@ -19,8 +19,6 @@ compute_parametrics <-
         means  <- compute_means( days ) 
         stds   <- compute_standard_deviations( days )
                       
-        
-        
         bind_rows( totals, 
                    means, 
                    stds )

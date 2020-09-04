@@ -20,5 +20,6 @@ compute_means <-
                        avg_hr   = mean( avg_hr,  na.rm  = TRUE ),
                        max_hr   = mean( max_hr,   na.rm = TRUE ),
                        breaks   = mean( breaks,   na.rm = TRUE ),
-                      stumbles = mean ( stumbles, na.rm = TRUE ))
+                       stumbles = mean( stumbles, na.rm = TRUE ),
+                       falls    = mean( falls,    na.rm = TRUE ))
     }
