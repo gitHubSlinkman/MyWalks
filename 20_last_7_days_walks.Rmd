@@ -31,8 +31,10 @@ Here we loaded the user-written functions needed to perform the various analyses
 source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
 source('D:/R-Projects/MyWalks/functions/filter_by_days.R')
 source('D:/R-Projects/MyWalks/functions/tabulate_walks.R')
-source('D:/R-Projects/MyWalks/functions/plot_walk_frequency.R')
 source('D:/R-Projects/MyWalks/functions/display_activities.R')
+source('D:/R-Projects/MyWalks/functions/plot_bar_chart.R')
+source('D:/R-Projects/MyWalks/functions/plot_bar_chart.R')
+source('D:/R-Projects/MyWalks/functions/plot_walk_frequency.R')
 ```
 
 ## Change the graphics theme 
@@ -68,12 +70,41 @@ tabulation <- tabulate_walks( all_day_routes )
 ### Display tabulation of walking activities for all days
 
 ```{r display_activities_all}
+###############################################################################
+# Display wno walks, walks and totals.
+###############################################################################
+
 display_activities( tabulation )
 ```
 
 ### Display bar chart of all activities on the file  
 
 ```{r plot_all_actvities}
+################################################################################
+# Remove totals row because we do not plot the totals.
+################################################################################
+
+tabulation <- tabulation[1:2,]
+ymax       <- max( tabulation$Frequency )
+
+
+###############################################################################
+# Plot frequency bar chart
+###############################################################################
+
+ggplot( tabulation,
+        aes( x = Activity, y = Frequency )) +
+  geom_col( color = "black",
+            fill = "green" ) +
+  geom_text( aes( label = Frequency ),
+             vjust = -0.3,
+             size = 3.5 ) +
+  xlab( "Days" ) +
+  ylim( c( 0, ymax)) +
+  ggtitle( "Walks not made and made" ) +
+  theme_cowplot()
+  
+  
 ```
 
 
@@ -130,12 +161,8 @@ primary_variables <-
 
 missed_reason <- 
   primary_variables %>% 
-    pull( missed_reason )
-
-#############################################################################
-# Remove missing values 
-#############################################################################
-
+    pull( missed_reason ) 
+ 
 missed_reason <- missed_reason[!is.na(missed_reason)]
 
 
@@ -143,11 +170,10 @@ missed_reason <- missed_reason[!is.na(missed_reason)]
 # Draw frequency bar-char
 #############################################################################
 
-tibble( missed_reason ) %>% 
-  ggplot( aes( x = missed_reason ) ) +
-    geom_bar( color =" black",
-              fill = "green ",
-              width = 0.25 )
+plot_bar_chart( missed,
+                "Reasons for missing walk",
+                "Resons for missoing walk ")
+
 
 ```
 

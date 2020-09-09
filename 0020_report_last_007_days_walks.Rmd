@@ -38,6 +38,8 @@ theme_set( theme_cowplot )
 
 ```{r define_functions}
 source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
+source('D:/R-Projects/MyWalks/functions/find_max_frequency.R')
+source('D:/R-Projects/MyWalks/functions/plot_bar_chart.R')
 source('D:/R-Projects/MyWalks/functions/compute_parametrics.R')
 source('D:/R-Projects/MyWalks/functions/report_summary.R')
 source('D:/R-Projects/MyWalks/functions/summarise_zones.R')
@@ -80,6 +82,29 @@ last_007_days_walks <-
                     
 ```
 
+### Plot days activites
+
+```{r plot_days_activities}
+
+walked <-                              # Extract walked from
+    last_007_days_walks %>%            # day_routes
+        pull( walked )
+
+Activity <-  ifelse( walked == 0,          # Convert walked codes from binary
+                     "No walk",            # to character for bar chart ...
+                      "Walked" )
+
+scale <- seq( from = 0,                # Create breaks and label scales ...
+              to = 375, 
+              by = 10 )
+
+            
+
+
+```
+
+
+
 ```{r summarize_last_007_days_walks}
 
 ############################################################################
@@ -93,7 +118,7 @@ summary <- compute_parametrics( last_007_days_walks )
 
 ## Last seven days walks 
 
-Note: The walks are sorted in reverse chronlogical order.  
+Note: The walks are sorted in reverse chronological order.  
 
 
 
@@ -148,7 +173,7 @@ Note: The walks are sorted in reverse chronlogical order.
 
 ### Summary report
 
-```{r}
+```{r_days_activties}
 
 ###########################################################################
 # We create print the summary report here using flextable.
