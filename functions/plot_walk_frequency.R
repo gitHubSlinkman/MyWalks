@@ -25,5 +25,4 @@ plot_walk_frequency <-
             ggtitle( "Frequency of walks made and not made" ) +
             expand_limits( y = ymax + 10 ) +
             theme_cowplot()  
-        
     }

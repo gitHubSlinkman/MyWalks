@@ -1,12 +1,17 @@
 # tabulate_walks.R
 
+###############################################################################
+# required packages
+###############################################################################
 tabulate_walks <- 
-    function( day_routes )
+    function(day_walks )
     {
-        walks   <- sum( day_routes$walked )
-        nowalks <- dim( day_routes)[1] - walks
-        Activity <- c(  "No walks", "Walks", "Totals" )
-        Frequency <- c( nowalks, walks, nowalks + walks )
-        tibble( Activity, Frequency  )
-    }
+        #######################################################################
+        # We recode the zero-one walked variable to "No"/"Yes" strings
+        #######################################################################
         
+        temp <- 
+            
+            
+            
+    }

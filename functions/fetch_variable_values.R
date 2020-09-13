@@ -24,3 +24,4 @@ fetch_variable_values <-
             pull( position )
 
     }
+
