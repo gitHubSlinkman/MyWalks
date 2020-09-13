@@ -4,14 +4,10 @@
 # required packages
 ###############################################################################
 tabulate_walks <- 
-    function(day_walks )
+    function( tbbl )
     {
-        #######################################################################
-        # We recode the zero-one walked variable to "No"/"Yes" strings
-        #######################################################################
-        
-        temp <- 
-            
-            
-            
+       tbbl %>% 
+            group_by( Walked ) %>% 
+                summarise( Frequency = n(),
+                           .groups = "keep" )
     }
