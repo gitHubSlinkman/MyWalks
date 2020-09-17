@@ -38,8 +38,7 @@ theme_set( theme_cowplot )
 
 ```{r define_functions}
 source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
-source('D:/R-Projects/MyWalks/functions/find_max_frequency.R')
-source('D:/R-Projects/MyWalks/functions/plot_bar_chart.R')
+source('D:/R-Projects/MyWalks/functions/plot_walk_frequency.R')
 source('D:/R-Projects/MyWalks/functions/compute_parametrics.R')
 source('D:/R-Projects/MyWalks/functions/report_summary.R')
 source('D:/R-Projects/MyWalks/functions/summarise_zones.R')
@@ -82,24 +81,11 @@ last_007_days_walks <-
                     
 ```
 
-### Plot days activites
+## Plot days activites
 
 ```{r plot_days_activities}
 
-walked <-                              # Extract walked from
-    last_007_days_walks %>%            # day_routes
-        pull( walked )
-
-Activity <-  ifelse( walked == 0,          # Convert walked codes from binary
-                     "No walk",            # to character for bar chart ...
-                      "Walked" )
-
-scale <- seq( from = 0,                # Create breaks and label scales ...
-              to = 375, 
-              by = 10 )
-
-            
-
+plot_walk_frequency( last_007_days_walks )
 
 ```
 

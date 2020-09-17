@@ -1,0 +1,83 @@
+---
+title: 'Test: compute_walk_history'
+author: "by Craig Slinkman"
+date: "9/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Purpose of thos document
+
+This is an R Markdown document tests the **Mywalk's function compute_walk_history**.
+
+## Load required packages
+
+```{r load_packages}
+require(tidyverse)            # I live in the tidyverse ...
+require( knitr )              # To specify file.path in RMarkdown ... 
+require(lubridate)            # For advanced data processing ...           
+```
+
+## Initialize working directory
+
+```{r set_working_directory}
+
+dp <- file.path( "D:/R-Projects",  # Build global MyWalk's directory path ...
+                 "MyWalks" )        
+                 
+opts_knit$set(root.dir = dp )           # Set root directory for all chaunks ...           
+
+```
+
+## Load required functions
+
+```{r load_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days.R')
+```
+
+## Load the day_routes tibble 
+
+```{r get_day_routes}
+all_day_routes <- get_day_routes()
+all_day_routes
+
+last_090_days <- filter_by_days(all_day_routes, 90 )
+last_090_days
+```
+
+## Build schdeule tibble for test
+
+```{r build_schedule_tibble}
+
+route  <-c( "Four Parks",
+            "Green Oaks - Little Road",
+            "South Rush Creek Linear Park",
+            "Fish Creek Linear Park",
+            "River Legacy North East",
+            "Southwest Nature Preserve",
+            "Enchanted Lakes" )
+route
+            
+last_walked <- c( ymd(20200902),
+                  ymd(20200904),
+                  ymd(20200907),
+                  ymd(20200908),
+                  ymd(20200910),
+                  ymd(20200912),
+                  ymd(20200913)) 
+
+routes <- tibble( route, 
+                  last_walked )
+routes
+
+routes <- left_join( routes,
+                     all_day_routes,
+                     by=route )
+
+```
+
+
+

@@ -29,7 +29,6 @@ day_routes <- get_day_routes()
 
 plot_walk_frequency( day_routes )
 
-
 ```
 
 

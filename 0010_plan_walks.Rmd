@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Purpose of this R-Markdown document
@@ -20,15 +20,12 @@ The purpose of this document is to plan the next walk.  It is cone by sorting th
 # MyWalks function sub-directory.
 ###########################################################################
 
-require(tidyverse)                      # I live in the tidyverse ...
-require(flextable)                      # For professional tables ...
+suppressMessages( require(tidyverse))       # I live in the tidyverse ...
+suppressMessages( require(flextable))       # For professional tables ...
 ```
 
-## We load the required functions ...
 
-These are functions we have written to provide reusable functionality.
-
-```{r load_functions}
+```{r load_functions, echo=FALSE }
 ###########################################################################
 # We load the functions we need to plan the walks.
 ###########################################################################
@@ -36,22 +33,20 @@ These are functions we have written to provide reusable functionality.
 source("D:/R-Projects/MyWalks/functions/get_day_routes.R")
 ```
 
-## Get all day_routes
 
+
+
+```{r}
 ###########################################################################
 # We load the functions that are required for this R-Markdown document.
 ###########################################################################
 
-```{r}
-
 all_day_routes <- get_day_routes()
-all_day_routes
 
 ```
 
-## Keep only days where a walked occured 
 
-```{r filyter_out_non_walking_days}
+```{r filyter_out_non_walking_days, echo=FALSE}
 
 ###########################################################################
 # Keep only days when a walk occurred.
@@ -62,9 +57,6 @@ only_walks <-
         filter( walked == 1 )
 ```
 
-## Find all the walks with an activr route
-
-We filter out routes that are not active routes. We then find
 
 ```{r keep_active_routes_only}
 ###########################################################################
@@ -80,9 +72,8 @@ active_route_walks <-
 
 ## Display walk schedule
 
-
-
-
+The walks schedule displays the desired walking schedule in reverse order]
+with the oldest walks being listed first.  
 
 ```{r group_by_route_and find last_walk}
 

@@ -39,6 +39,8 @@ plot_walk_frequency <-
         Walked <- factor( values, 
                           ordered = TRUE, 
                           levels = c("Yes", "No" ))
+        
+        
         ########################################################################
         # We build a tibble of the categorical variable and count the number of
         # walks and no walks.
@@ -51,16 +53,11 @@ plot_walk_frequency <-
         max_y <- max( tabulation$Frequency )
         max_y <- 10* ceiling( max_y /10 )
         
-        ggplot( tabulation,
-                aes( x = Walked, y = Frequency)) +
-            geom_col( width = 0.75,
-                      color = "green",
-                      fill = "green") +
-            geom_text( stat='identity', 
-                       aes(label = Frequency ), 
-                       vjust= -0.2 ) +
-            expand_limits( y = max_y ) +
-            ggtitle( "Days walked and not walked" ) +
-            theme_cowplot()    
+        p1 <-    
+            tabulation %>% 
+                ggplot( aes( x = Walked, y = Frequency ))
         
+        p1 <- p1 + geom_col()
+         
+        p1  
     }

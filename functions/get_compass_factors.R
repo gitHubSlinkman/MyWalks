@@ -5,12 +5,13 @@
 ###############################################################################
 
 library(tidyverse)                   # I live in the tidyverse ...
-library(readxl)                      # Tidvverse packache to reac Excel ...
-library(lubridate)                   # For advanced date processing ...
+library(readxl)                      # Tidyverse package to read Excel ...
 
 get_compass_factors <- 
     function(){
-        fp <- "data/compass.xlsx" 
+        fp <- file.path( getwd(),
+                         "data",
+                         "compass.xlsx") 
         read_xlsx(fp)
     }
 
