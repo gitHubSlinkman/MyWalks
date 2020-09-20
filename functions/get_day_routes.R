@@ -76,12 +76,12 @@ get_day_routes <-
         #######################################################################
         # We add derived data fields to the days tibble.  We make the
         # following data conversions:
+        #   1. We convert the numeric walked to an ordered factor.
         #   1. We convert the variable sky_conditions to a factor.
         #   2. We convert the widirection to an ordered factor.
         #   1. Convert Excel data and time POSIXct data and tine.
         #######################################################################  
         
-    
         
         #######################################################################
         # Change sky_conditions to ordered factor

@@ -5,7 +5,7 @@ display_activities <-
         {
           tabulation %>% 
             flextable() %>% 
-                fontsize( size = 20, part = "all" ) %>% 
-                 width( j = 1, 2 ) %>%
+                 fontsize( size = 20, part = "all" ) %>% 
+                 width( j = 1,1.75 ) %>%
                  bold( i = 3, bold = TRUE, part = "body" )
         }

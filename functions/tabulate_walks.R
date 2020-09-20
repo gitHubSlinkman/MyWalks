@@ -4,10 +4,17 @@
 # required packages
 ###############################################################################
 tabulate_walks <- 
-    function( tbbl )
+    function( day_routes )
     {
-       tbbl %>% 
-            group_by( Walked ) %>% 
-                summarise( Frequency = n(),
-                           .groups = "keep" )
+       ########################################################################
+       # Count the number of days where ther we no walks and walks
+       ########################################################################
+       
+        day_routes %>% 
+           mutate( walked = 
+                       ifelse( walked == 0,
+                               "No",
+                                "Yes")) %>% 
+            count( walked ) %>% 
+                rename( frequency = n )
     }

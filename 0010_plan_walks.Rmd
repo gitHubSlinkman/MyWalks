@@ -81,6 +81,7 @@ with the oldest walks being listed first.
 # Select the walks within each route that have the maximum (latest) walk
 # date.
 ###########################################################################
+
 schedule <- 
     active_route_walks %>% 
         group_by( route ) %>% 

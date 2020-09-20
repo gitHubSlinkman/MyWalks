@@ -64,10 +64,11 @@ We count the numnber walks in the file, the number of walks, the number of days 
 ###############################################################################
 
 tabulation <- tabulate_walks( all_day_routes )
-```
+  
   
   
 ### Display tabulation of walking activities for all days
+```
 
 ```{r display_activities_all}
 ###############################################################################
