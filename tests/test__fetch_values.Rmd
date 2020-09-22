@@ -1,0 +1,29 @@
+---
+title: "R NotebookTest find_column_pisition"
+output: html_notebook
+---
+
+## Load requred oackages
+
+```{r load_packages}
+require( tidyverse )                 # I love on the the tidyverse ...
+require( knitr )                     # Use to set working directory ... 
+getwd()
+```
+
+
+## Create test data 
+
+```{r build_test_data}
+set.seed( 1123581321 )
+
+identifier <- 1:10
+alphas <- sample( letters, size = 10, replace = TRUE)
+integer <- sample( 1000:1999, size = 10, replace = TRUE )
+numerics <- rnorm( 10, mean = 6 , sd = 2 )
+numerics <- round( numerics, 2 )
+numerics <- ifelse( numerics < 1, 1, numerics )
+
+test_tible <- tibble( id, aphas, integer, numerics )
+```
+

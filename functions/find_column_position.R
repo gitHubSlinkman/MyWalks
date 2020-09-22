@@ -1,4 +1,4 @@
-# find_column__position.R
+# find_column_position.R
 
 find_column_position <- 
     function( data, variable_name )
@@ -8,7 +8,6 @@ find_column_position <-
         #######################################################################
         
         vnames <- names( data )
-        
         
         #######################################################################
         # Find position column position.  If it does not match throw an error
