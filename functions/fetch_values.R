@@ -32,6 +32,5 @@ fetch_values <-
         
         data %>% 
             pull( position )
-
     }
 

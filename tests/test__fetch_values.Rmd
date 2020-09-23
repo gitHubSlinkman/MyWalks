@@ -1,29 +1,62 @@
 ---
-title: "R NotebookTest find_column_pisition"
+title: "Unit tests of fetch_values"
 output: html_notebook
 ---
 
-## Load requred oackages
+# Defining packages
 
-```{r load_packages}
-require( tidyverse )                 # I love on the the tidyverse ...
-require( knitr )                     # Use to set working directory ... 
-getwd()
+```{r}
+require( tidyverse )                    # I live in the tidyverse ...
+require( lubridate )                    # Foor tidyverse dates ...
 ```
 
+## Load functions
 
-## Create test data 
-
-```{r build_test_data}
-set.seed( 1123581321 )
-
-identifier <- 1:10
-alphas <- sample( letters, size = 10, replace = TRUE)
-integer <- sample( 1000:1999, size = 10, replace = TRUE )
-numerics <- rnorm( 10, mean = 6 , sd = 2 )
-numerics <- round( numerics, 2 )
-numerics <- ifelse( numerics < 1, 1, numerics )
-
-test_tible <- tibble( id, aphas, integer, numerics )
+```{r}
+source('D:/R-Projects/MyWalks/tests/make_test_data.R')
+source('D:/R-Projects/MyWalks/functions/fetch_values.R')
 ```
+
+## Create test_data
+
+```{r}
+test_walks <- make_test_data()
+```
+
+## Run tests
+
+pk_correct_answer <- test_walks$pk
+pk_test_answer = fetch_values( test_walks, "pk" )
+all( pk_test_answer == pk_correct_answer )
+
+```{r}
+pk_correct_answer <- test_walks$pk
+pk_test_answer = fetch_values( test_walks, "pk" )
+all( pk_test_answer == pk_correct_answer )
+```
+
+```{r}
+date_correct_answer <- test_walks$date
+date_test_answer    <- fetch_values( test_walks,
+                                     "date" )
+all( date_test_answer == date_test_answer )
+
+```
+```{r}
+route_correct_answer <- test_walks$route
+route_test_answer    <- fetch_values( test_walks, "route" )
+all( route_test_answer == route_correct_answer )
+```
+
+```{r}
+laps_correct_answer <- tests_walks$laps
+laps_test_answer    <- fetch_values( test_walks, "laps" )
+all( route_test_answer == route_correct_answer )
+```
+```{r}
+miles_correct_answer <- test_walks$miles
+miles_test_answer     <- fetch_values( test_walks, "miles" )
+all(miles_test_answer == miles_correct_answer )
+```
+
 

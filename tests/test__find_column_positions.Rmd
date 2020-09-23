@@ -1,0 +1,51 @@
+---
+title: "Test find_column_position"
+output: html_notebook
+---
+
+## Load required functions
+
+
+```{r}
+require( tidyverse )                    # I live in the tidyverse ...
+require( lubridate )                    # For tidyverse dates ...
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*
+
+Load required functions
+
+```{r}
+source('D:/R-Projects/MyWalks/functions/find_column_position.R')
+source('D:/R-Projects/MyWalks/tests/make_test_data.R')
+```
+
+## Generate test data
+
+```{r}
+test_walks <- make_test_data()
+head( test_walks, 14 )
+```
+
+## Test find_column_posotion
+
+```{r}
+vnames <- names( test_walks )
+
+nv <- length(vnames)
+
+correct_answer <- 1:nv
+test_answer    <- rep( NULL, nv)
+passed         <- rep( FALSE, nv )
+
+for( j in 1:nv )
+    {
+        test_answer[j] <- 
+                find_column_position( test_walks, vnames[j])
+    }
+
+passed <- test_answer == correct_answer
+
+all( passed )
+  
+```
