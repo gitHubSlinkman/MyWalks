@@ -9,7 +9,9 @@ library(readxl)                      # Tidyverse package to read Excel ...
 
 get_compass_factors <- 
     function(){
-        fp <- file.path( getwd(),
+        fp <- file.path( "D:",
+                         "R-Projects",
+                         "MyWalks",
                          "data",
                          "compass.xlsx") 
         read_xlsx(fp)

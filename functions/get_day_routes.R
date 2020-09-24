@@ -2,15 +2,15 @@
 ###############################################################################
 # Function get_day_routes
 ###############################################################################
-# This function reads the <Icrosoft Excel spread shets days.xlsx and 
+# This function reads the Microsoft Excel spread shets days.xlsx and 
 # routes xlsx and left joins the two tibbles on roues.  The date and time
-# are converted from Exceel format to POSIXct format.  The steps and kcal
+# are converted from Excel format to POSIXct format.  The steps and kcal
 # variables are divided by 1000 and rename to ksteps and kkcal.
 ###############################################################################
 
 
 ###############################################################################
-# We load the requiredpackages ...
+# We load the required packages ...
 ###############################################################################
 
 suppressMessages( require(tidyverse)) # I live in the tidyverse ...
@@ -55,9 +55,10 @@ get_day_routes <-
         # not change fromwa;l towalk.  We rera it now.
         #######################################################################
         
-        fp <-                                           # Build file path ...
+        fp <-                                   
             file.path( 'D:/R-Projects/MyWalks/data',
                        'routes.xlsx' )
+        
         routes <- read_excel( fp )
         
         #######################################################################

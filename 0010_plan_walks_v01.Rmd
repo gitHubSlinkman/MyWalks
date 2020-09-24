@@ -1,0 +1,203 @@
+---
+title: "0010_plan_walks"
+author: "adopted by Craig W. Slinkman"
+date: "6/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Purpose of this R-Markdown document
+
+The purpose of this document is to plan the next walk.  It is cone by sorting the active walks by the last date that a route was walked.
+
+```{r load_packages}
+
+###########################################################################
+# We load the packages used by MyWalks.  This is a source file in the 
+# MyWalks function sub-directory.
+###########################################################################
+
+suppressMessages( require(tidyverse)) # I live in the tidyverse ...
+suppressMessages( require(flextable)) # For professional tables ...
+```
+
+```{r specify working directory}
+
+###############################################################################
+# By default, the working directory for R code chunks is the directory 
+# contains the Rmd document. For example, if the path of an Rmd file is 
+# ~/Downloads/foo.Rmd, the working directory under which R code chunks are 
+# evaluated is ~/Downloads/.
+# 
+# Sometimes you may want to use another directory as the working directory. 
+# The usual way to change the working directory is setwd(), but please note
+# that setwd() is not persistent in R Markdown (or other types of knitr source 
+# documents), which means setwd() only works for the current code chunk, and 
+# the working directory will be restored after this code chunk has been 
+# evaluated.  
+#
+# The R-code below will set the global working directory for all code chunks.
+################################################################################
+
+wd <- file.path( "D:/",
+                 "R-Projects",
+                  "MyWalks" )
+
+knitr::opts_knit$set(root.dir =  wd )
+```
+
+
+
+```{r load_functions, echo=FALSE }
+###########################################################################
+# We load the functions we need to plan the walks.
+###########################################################################
+
+source("D:/R-Projects/MyWalks/functions/get_day_routes.R")
+```
+
+
+```{r}
+###########################################################################
+# We load the functions that are required for this R-Markdown document.
+
+all_day_routes <- get_day_routes()
+
+```
+
+
+```{r filyter_out_non_walking_days, echo=FALSE}
+
+###########################################################################
+# Keep only days when a walk occurred.
+###########################################################################
+
+only_walks <-
+    all_day_routes %>% 
+        filter( walked == 1 )
+```
+
+
+```{r keep_active_routes_only}
+###########################################################################
+# Filter out all walks that are not active.
+###########################################################################
+
+active_route_walks <- 
+    only_walks %>% 
+        filter( active == 1)
+
+```
+
+
+## Display walk schedule
+
+The walks schedule displays the desired walking schedule in reverse order]
+with the oldest walks being listed first.  
+
+```{r group_by_route_and find last_walk}
+
+###########################################################################
+# Select the walks within each route that have the maximum (latest) walk
+# date.
+###########################################################################
+
+schedule <- 
+    active_route_walks %>% 
+        group_by( route ) %>% 
+            arrange( route, date_time ) %>% 
+                slice_max( date_time )
+
+###############################################################################
+# For each active route compute then umber of walks, mean distance and the 
+# mean time to walk. 
+#
+# We start by left joining the schedule and the day_routes
+###############################################################################
+
+joined_tibbles <- left_join( x = schedule,
+                             y = all_day_routes,
+                             by = "route" )
+temp0 <- 
+    joined_tibbles %>% 
+        select( route,
+                date_time.x,
+                walked.x,
+                miles.y,
+                hours.y,
+                pace.y ) %>% 
+            rename( last_walked = date_time.x,
+                    miles = miles.y,
+                    hours = hours.y,
+                    pace  = pace.y )
+
+schedule <- 
+    temp0 %>% 
+        group_by( route, last_walked ) %>% 
+            summarise(  n  = n(),
+                        m_miles = mean( miles, na.rm = TRUE ),
+                        s_miles =   sd( miles, na.rm = TRUE ),
+                        se_miles = s_miles / sqrt( n ),
+                        pe_miles = qt(0.975, n - 1) * ( s_miles + se_miles),
+                        l_miles = max( 0, ( m_miles - pe_miles)),
+                        u_miles = m_miles + pe_miles,
+                        m_hours = mean( hours, na.rm = TRUE ),
+                        s_hours =   sd( hours, na.rm = TRUE ),
+                        se_hours = s_hours / sqrt( n ),
+                        pe_hours = qt( 0.975, n - 1 ) * ( s_hours + se_hours ),
+                        l_hours  = max( 0, ( m_hours - pe_hours )),
+                        u_hours  = m_hours + pe_hours,
+                        m_pace  = mean( pace,  na.rm = TRUE ),
+                        s_pace  =   sd( pace,  na.rm = TRUE ),
+                        se_pace = s_pace/ sqrt(n),
+                        pe_pace = qt( 0.975, n - 1) *(s_pace + se_pace ),
+                        l_pace  = max( 0, ( m_pace - pe_pace )),
+                        u_pace  = m_pace + pe_pace,
+                        .groups = "drop" )
+
+###########################################################################
+# Prepare the data for the flextable report.
+###########################################################################
+
+
+schedule %>%
+    mutate( date = as.Date( last_walked )) %>% 
+    arrange( date ) %>% 
+        select( route, 
+                date,
+                n,
+                m_miles,
+                l_miles,
+                u_miles,
+                m_hours,
+                l_hours,
+                u_hours, 
+                m_pace,
+                l_pace,
+                u_pace ) %>%
+            flextable() %>% 
+                width( j = 1, width = 2.25 ) %>% 
+                width( j = 2, width = 1.00 ) %>% 
+            colformat_num( j = 4:12,
+                           big.mark = ",",
+                           digits = 2,
+                           na_str = "" ) %>% 
+            set_header_labels( route   = "Route",
+                               date    = "Last\nwalked",
+                               n       = "Walks",
+                               m_miles = "Predicted\nmiles",
+                               l_miles = "Lower 95%\npredicted\nmiles",
+                               u_miles = "Upper 95%\npredicted\nmiles",
+                               m_hours = "Mean\nHours" ,
+                               l_hours = "Lower 95%\npredicted hours",
+                               u_hours = "Upper 95%\n predicted hours",
+                               m_pace  = "Predicted\npace",
+                               l_pace  =  "Lower 95%\npredicted pace",
+                               u_pace  =  "Upper 95%\npredicted pace" )
+                               
+            
+```
+
