@@ -74,3 +74,21 @@ last_years_walks
 plot_walk_frequency( last_007_days_walks )
 ```
 
+### Test last 30 days
+
+```{r test_last_30_days}
+plot_walk_frequency( last_030_days_walks ) 
+```
+
+### testl last 180 days
+
+```{r test_last_180_daus}
+plot_walk_frequency( last_180_days_walks ) 
+```
+
+### Test last 360 days  
+
+```{r test_last_360_days}
+plot_walk_frequency( last_years_walks ) 
+```
+

@@ -12,25 +12,28 @@ require( cowplot )                     # For more professional plots ...
 # Load functions.
 ###############################################################################
 
-source('D:/R-Projects/MyWalks/functions/fetch_values_01.R')
-source('D:/R-Projects/MyWalks/functions/tabulate_walks_v01.R')
 
+###############################################################################
+# Define function.
+################################################################################
 
 plot_walk_frequency <- 
     function( this_tibble )
     {   
         
-        n <-dim( this_tibble )[1]
-        
-        if ( n <= 7) {
-            y_scale <- seq( from = 0, to = 10, by = 2 )
-        } else if ( n <= 30 ) {
-            y_scale <- seq( from = 0, to = 35, by = 5 )
-        } else if ( n <= 180) {
-            y_scale <- seq( from = 0, to = 190, by = 10 )
+        walks <- sum( this_tibble$walked )
+     
+        if ( walks <= 7 ) {
+            y_expand <-  walks + 2
+        } else if ( walks <= 30 ) {
+           y_expand <- walks +3
+        } else if ( walks <- 180) {
+            y_expand <- walks + 5
         } else {
-            y_scale <- seq(from = 0, to = 370, by = 20 )
+            y_expand  <- walks + 10 
         }
+        
+        
         
         
         this_tibble %>% 
@@ -45,11 +48,9 @@ plot_walk_frequency <-
                     geom_text(stat='count', 
                               aes(label =..count.. ),
                               vjust=-1) +
-                    xlab( "Walked" ) +
-                    scale_y_continuous( name = "Frequency",
-                                        breaks = y_scale,
-                                        labels = y_scale ) +
-                    expand_limits( y = 10 ) +
+                    xlab( "Walked?" ) +
+                    scale_y_continuous( name = "Frequency" ) +
+                    expand_limits( y = y_expand ) +
                     ggtitle( "Walks taken during period" ) +
                     theme_cowplot()
     }
