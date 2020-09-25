@@ -1,4 +1,4 @@
-# fetch_variable_values.R
+# fetch_e_values_V01.R
 
 ###############################################################################
 # Load required packages.
@@ -10,11 +10,11 @@ require( tidyverse )                    # Live in the the tidyverse ....
 # Load required functions.
 ###############################################################################
 
-source('D:/R-Projects/MyWalks/functions/find_column_position.R')
+source('D:/R-Projects/MyWalks/functions/find_column_position_v01.R')
 
 
 #'fetch_values fetches the all the values of a variable in a dataframe or a
-#'             tibles.
+#'             tibbles.
 #'
 #'
 #'

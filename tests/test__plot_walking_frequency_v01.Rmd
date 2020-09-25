@@ -1,0 +1,76 @@
+---
+title: "Test function: plot_walking_frequency_v01"
+author: "by Craig Slinkman"
+date: "9/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This R-Markdown document is a test of the function **plot_walking_frequency.R**.
+
+## Set working directory to project default
+
+```{r set_working_directory}
+wd <- file.path( "D:/",
+                 "R-Projects",
+                 "MyWalks")
+knitr::opts_knit$set(root.dir = wd )
+```
+  
+  
+## Load required packages
+
+```{r load_required_packages}
+require( tidyverse )                     # I live in the tidyverse ...
+```
+  
+
+## Load required functions
+
+```{r load_required_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_walk_frequency_v01.R')
+```
+
+## Prepare test data
+
+Because we are testing a plot function we we test with thr real data.  We will test for all the
+possible plot dates that will be considered in the production system.
+
+```{r prepare_test_data}
+
+
+all_days_routes <- get_day_routes()
+all_days_routes
+
+last_007_days_walks <- filter_by_days( all_days_routes, 7 )
+last_007_days_walks
+
+
+last_030_days_walks <- filter_by_days( all_days_routes, 30 )
+last_030_days_walks
+
+last_090_days_walks <- filter_by_days( all_days_routes, 90 )
+last_090_days_walks
+
+last_180_days_walks <- filter_by_days( all_days_routes, 180 )
+last_180_days_walks
+
+last_years_walks <- filter_by_days( all_days_routes, 365 )
+last_years_walks
+```
+
+## Function tests
+
+### Last 7 days 
+
+```{r test_last_007_days}
+plot_walk_frequency( last_007_days_walks )
+```
+

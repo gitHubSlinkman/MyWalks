@@ -1,4 +1,4 @@
-# tabulate_walks.R
+# tabulate_walks_v01.R
 
 ###############################################################################
 # required packages
@@ -11,10 +11,10 @@ tabulate_walks <-
        ########################################################################
        
         day_routes %>% 
-           mutate( walked = 
-                       ifelse( walked == 0,
-                               "No",
-                                "Yes")) %>% 
             count( walked ) %>% 
-                rename( frequency = n )
+                rename( frequency = n ) %>% 
+                    mutate( walked = ifelse( walked == 0, "No", "Yes" )) %>% 
+                        rename( "Walked" = "walked",
+                                "Frequency" = "frequency" )
     }
+    
