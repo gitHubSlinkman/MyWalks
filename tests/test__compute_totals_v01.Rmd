@@ -1,0 +1,33 @@
+---
+title: 'Test: compute_total_v01.Rmd'
+author: "by Craig Slinkman"
+date: "9/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Set up working directory
+
+```{r set_up_working_directory}
+wd <- file.path( "D:/R-Projects",
+                 "MyWalks/")
+knitr::opts_knit$set(root.dir = wd )
+```
+
+## Load packages  
+
+```{r load_packages}
+require( tidyverse )                    # We live in the tidyverse.
+```
+
+## Define functions  
+
+```{r define_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+
+
+```
+
