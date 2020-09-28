@@ -7,7 +7,7 @@ filter_by_days <-
     function( walks, days )
     {
         current_date <- today()
-        filter_date  <- current_date - days + 1
+        filter_date  <- current_date - days - 1 
         walks %>% 
             filter( date_time > filter_date )
     }
