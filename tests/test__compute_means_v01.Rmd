@@ -50,7 +50,7 @@ last_007_day_routes
 
 ### Preare last_30_day_routes
 ```{r prepare_last_030_day_routes}
-last_030_day_routes <- filter_by_days( all_day_routes, 31 )
+last_030_day_routes <- filter_by_days( all_day_routes, 30 )
 dim( last_030_day_routes)[1]
 last_030_day_routes
 ```

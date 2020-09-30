@@ -57,7 +57,7 @@ last_030_day_routes
 
 ### Prepare_last_180_day_routes
 ```{r prepare_last_180_day_routes}
-last_180_day_routes <- filter_by_days( all_day_routes, 179 )
+last_180_day_routes <- filter_by_days( all_day_routes, 180 )
 dim( last_180_day_routes)[1]
 last_180_day_routes
 ```
