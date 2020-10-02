@@ -7,9 +7,9 @@
 ###############################################################################
 
 library( tidyverse )                            
-source('D:/R-Projects/MyWalks/functions/compute_totals.R')
-source('D:/R-Projects/MyWalks/functions/compute_means.R')
-source("D:/R-Projects/MyWalks/functions/compute_standard_deviations.R" )
+source('D:/R-Projects/MyWalks/functions/compute_totals_v01.R')
+source('D:/R-Projects/MyWalks/functions/compute_means_v01.R')
+source("D:/R-Projects/MyWalks/functions/compute_standard_deviations_v01.R" )
 
 
 compute_parametrics <- 

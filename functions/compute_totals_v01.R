@@ -12,7 +12,7 @@ compute_totals <-
                        steps    = sum( steps, na.rm = TRUE ),
                        hours    = sum( hours, na.rm = TRUE ),
                        mph      = NA,
-                       pace     = NA ,
+                       pace     = NA,
                        gain     = sum( gain, na.rm = TRUE),
                        kcal     = sum( kcal, na.rm = TRUE),
                        avg_hr   = NA,
