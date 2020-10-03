@@ -1,0 +1,99 @@
+---
+title: 'Test: compute_maximums_v01.Rmd'
+author: "by Craig Slinkman"
+date: "9/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Set up working directory
+
+```{r set_up_working_directory}
+wd <- file.path( "D:/R-Projects",
+                 "MyWalks/")
+knitr::opts_knit$set(root.dir = wd )
+```
+
+## Load packages  
+
+```{r load_packages}
+require( tidyverse )                    # We live in the tidyverse.
+require(flextable)                      # For better reports
+```
+
+## Define functions  
+
+```{r define_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+source('D:/R-Projects/MyWalks/functions/compute_maximums_v01.R')
+```
+
+## Prepare data
+
+```{r prepare_test_data}
+all_day_routes <- get_day_routes()
+all_day_routes
+```
+
+### Prepare last 7 days data
+
+```{r prepare_last_007_days}
+last_007_day_routes <- filter_by_days( all_day_routes, 7 )
+dim( last_007_day_routes)[1]
+last_007_day_routes
+```
+
+
+### Preare last_30_day_routes
+```{r prepare_last_030_day_routes}
+last_030_day_routes <- filter_by_days( all_day_routes, 30 )
+dim( last_030_day_routes)[1]
+last_030_day_routes
+```
+
+### Prepare_last_180_day_routes
+```{r prepare_last_180_day_routes}
+last_180_day_routes <- filter_by_days( all_day_routes, 180 )
+dim( last_180_day_routes)[1]
+last_180_day_routes
+```
+
+### Prepare_last_year_day_routes
+```{r prepare_last_year_day_routes}
+last_year_day_routes <- filter_by_days( all_day_routes, 365 )
+dim( last_year_day_routes)[1]
+last_year_day_routes
+```
+
+## Test compute_totals_v01.R
+
+### Last 7 days walks
+
+```{r test__last_007_day_routes}
+compute_maximums( last_007_day_routes ) %>% 
+    flextable()
+```
+
+### Last_030_day_routes 
+
+```{r test_last_030_days_routes}
+compute_maximums( last_030_day_routes ) %>% 
+    flextable()
+```
+
+### Last_180_day_routes
+```{r test_last_180_days_routes}
+compute_maximums( last_180_day_routes ) %>% 
+    flextable()
+```
+  
+### Last_year_day_routes
+```{r test_last_year_days_routes}
+compute_maximums( last_year_day_routes ) %>% 
+    flextable()
+```
+  
