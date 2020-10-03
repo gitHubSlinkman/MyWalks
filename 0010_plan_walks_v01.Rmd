@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Purpose of this R-Markdown document
 
-The purpose of this document is to plan the next walk.  It is cone by sorting the active walks by the last date that a route was walked.
+The purpose of this document is to plan the next walk.  It is done by sorting the active walks by the last date that a route was walked.
 
 ```{r load_packages}
 
@@ -69,7 +69,7 @@ all_day_routes <- get_day_routes()
 ```
 
 
-```{r filyter_out_non_walking_days, echo=FALSE}
+```{r filter_out_non_walking_days, echo=FALSE}
 
 ###########################################################################
 # Keep only days when a walk occurred.

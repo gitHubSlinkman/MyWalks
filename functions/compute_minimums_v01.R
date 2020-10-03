@@ -5,7 +5,7 @@ require(tidyverse)
 compute_minimums <- function( days )
 {
     days %>% 
-        summarise( label    = "Minimums",
+        summarise( label    = "Minimums:",
                    walked   = sum( walked,  na.rm = TRUE),
                    miles    = min( miles,   na.rm = TRUE),
                    steps    = min( steps,   na.rm = TRUE ),
