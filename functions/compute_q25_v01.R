@@ -5,7 +5,7 @@ require(tidyverse)
 compute_q25 <- function( days )
 {
     days %>% 
-        summarise( label    = "First Quartile:",
+        summarise( label    = "Q1:",
                    walked   = NA,
                    miles    = quantile( miles,  probs = 0.25,   na.rm = TRUE),
                    steps    = quantile( steps,  probs = 0.25,   na.rm = TRUE ),
