@@ -5,7 +5,7 @@ require(tidyverse)
 compute_maximums <- function( days )
 {
     days %>% 
-        summarise( label    = "Maximums:",
+        summarise( label    = "Max:",
                    walked   = NA,
                    miles    = max( miles,   na.rm = TRUE),
                    steps    = max( steps,   na.rm = TRUE ),

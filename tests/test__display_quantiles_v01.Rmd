@@ -76,26 +76,26 @@ last_year_day_routes
 
 ```{r test__last_007_day_routes}
 quantiles <- compute_quantiles( last_007_day_routes )
+display_quantiles( quantiles )
 ```
 
 ### Last_030_day_routes 
 
 ```{r test_last_030_days_routes}
-compute_quantiles( last_030_day_routes ) %>% 
-    flextable()
+quantiles <- compute_quantiles( last_030_day_routes ) 
+display_quantiles( quantiles )
+
 ```
 
 ### Last_180_day_routes  
 ```{r test_last_180_days_routes}
-compute_quantiles( last_180_day_routes ) %>% 
-    flextable()
+display_quantiles( compute_quantiles( last_180_day_routes ) )
 ```
 ```
   
 ### Last_year_day_routes
 ```{r test_last_year_days_routes}
-compute_quantiles( last_year_day_routes ) %>% 
-    flextable()
+display_quantiles( compute_quantiles( last_year_day_routes ))
 ```
   
   

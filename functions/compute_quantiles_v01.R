@@ -25,9 +25,9 @@ compute_quantiles <-
        q3         <- compute_q75( days )
        q4 <- compute_maximums( days )
                       
-        bind_rows( minimums, 
-                   q2, 
-                   medians,
-                   q3,
-                   maximimums)
+        bind_rows(q0,
+                  q1,
+                  q2, 
+                  q3,
+                   q4 )
     }
