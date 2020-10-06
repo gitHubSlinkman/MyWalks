@@ -1,0 +1,77 @@
+---
+title: "test_make_date_interval"
+author: "by Craig Slinkman"
+date: "10/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This R-Markdown document tesst the make_date_interval-function.
+
+## Set up working directory
+
+```{r set_up_working_directory}
+wd <- file.path( "D:/R-Projects",
+                 "MyWalks/")
+knitr::opts_knit$set(root.dir = wd )
+```
+
+## Load packages  
+
+```{r load_packages}
+require( tidyverse )                    # We live in the tidyverse.
+require(flextable)                      # For better reports
+```
+
+## Define functions  
+
+```{r define_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+source('D:/R-Projects/MyWalks/functions/date_interval_v01.R')
+```
+
+## Prepare data
+
+```{r prepare_test_data}
+all_day_routes <- get_day_routes()
+all_day_routes
+```
+
+### Prepare last 7 days data
+
+```{r prepare_last_007_days}
+last_007_day_routes <- filter_by_days( all_day_routes, 7 )
+dim( last_007_day_routes)[1]
+date_interval <- make_date_interval( last_007_day_routes )
+period <- display_date_interval( date_interval  )
+period
+```
+
+
+### Preare last_30_day_routes
+```{r prepare_last_030_day_routes}
+last_030_day_routes <- filter_by_days( all_day_routes, 30 )
+dim( last_030_day_routes)[1]
+last_030_day_routes
+
+```
+
+### Prepare_last_180_day_routes
+```{r prepare_last_180_day_routes}
+last_180_day_routes <- filter_by_days( all_day_routes, 180 )
+dim( last_180_day_routes)[1]
+last_180_day_routes
+date_interval <- make_date_interval( last_030_day_routes )
+period( date_interval )
+```
+
+### Prepare_last_year_day_routes
+```{r prepare_last_year_day_routes}
+last_year_day_routes <- filter_by_days( all_day_routes, 365 )
+dim( last_year_day_routes)[1]
+last_year_day_routes
+```
