@@ -1,0 +1,24 @@
+---
+title: 'Test: Reverse_by_date'
+author: "by Craig Slinkman"
+date: "10/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages
+
+```{r load_packages}
+require( tidyverse )
+require( lubridate )
+```
+
+## Load functions
+
+```{r load_functions}
+
+```
+
