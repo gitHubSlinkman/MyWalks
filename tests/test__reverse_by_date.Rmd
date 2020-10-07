@@ -19,6 +19,48 @@ require( lubridate )
 ## Load functions
 
 ```{r load_functions}
-
+source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+ source('D:/R-Projects/MyWalks/functions/reverse_by_date.R')
 ```
+
+## Load the data
+
+```{r get_data}
+all_day_routes <- get_day_routes()
+dim( all_day_routes )[1]
+```
+
+## Tests
+
+### Get last 7 days
+
+```{r test_last_007_days}
+last_007_day_routes <- filter_by_days( all_day_routes, 7 )
+dim( last_007_day_routes )[1]
+reverse_by_date( last_007_day_routes )
+```
+
+### Last 030 day_routes  
+
+```{r test_last_30_days}
+last_030_day_routes <- filter_by_days( all_day_routes, 30 )
+dim( last_030_day_routes )[1]
+reverse_by_date( last_030_day_routes )
+```
+
+### Last 180 day_routes
+
+```{r test_last_180_days}
+last_180_day_routes <- filter_by_days( all_day_routes, 180 )
+dim( last_180_day_routes )[1]
+reverse_by_date( last_180_day_routes )
+```
+### All day_routes
+
+```{r test_all_day_routes}
+dim( all_day_routes)[1]
+reverse_by_date( all_day_routes )
+```
+
 

@@ -32,32 +32,35 @@ require(flextable)                      # For better reports
 source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
 source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
 source('D:/R-Projects/MyWalks/functions/date_interval_v01.R')
+source('D:/R-Projects/MyWalks/functions/reverse_by_date.R')
 ```
 
 ## Prepare data
 
 ```{r prepare_test_data}
 all_day_routes <- get_day_routes()
-all_day_routes
+dim( all_day_routes )[1]
 ```
 
 ### Prepare last 7 days data
 
 ```{r prepare_last_007_days}
 last_007_day_routes <- filter_by_days( all_day_routes, 7 )
-dim( last_007_day_routes)[1]
 date_interval <- make_date_interval( last_007_day_routes )
-period <- display_date_interval( date_interval  )
-period
+
+reverse <- reverse_by_date( last_007_day_routes )
+text <- display_date_interval( date_interval  )
+text
 ```
 
 
 ### Preare last_30_day_routes
 ```{r prepare_last_030_day_routes}
 last_030_day_routes <- filter_by_days( all_day_routes, 30 )
-dim( last_030_day_routes)[1]
-last_030_day_routes
-
+date_interval <- make_date_interval( last_030_day_routes )
+reverse <- reverse_by_date( last_030_day_routes )
+text <- display_date_interval( date_interval  )
+text
 ```
 
 ### Prepare_last_180_day_routes
@@ -66,7 +69,7 @@ last_180_day_routes <- filter_by_days( all_day_routes, 180 )
 dim( last_180_day_routes)[1]
 last_180_day_routes
 date_interval <- make_date_interval( last_030_day_routes )
-period( date_interval )
+display_date_interval( date_interval )
 ```
 
 ### Prepare_last_year_day_routes
