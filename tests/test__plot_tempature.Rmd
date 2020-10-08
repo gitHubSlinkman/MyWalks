@@ -1,0 +1,55 @@
+---
+title: "test__plot_tempature"
+author: "by Craig Slinkman"
+date: "10/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages
+
+```{r load_packages}
+require( tidyverse )
+require( lubridate )
+require( cowplot )
+```
+## Load functiions
+
+```{r load_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+```
+## Get day_routes data
+
+```{r get+day_routes}
+all_day_routes <- get_day_routes()
+dim( all_day_routes )
+```
+
+## Test plot_all_day_routes
+Here we plot temperature at the time og the walk.  Note weather data was not recorded until the middle of the 2020.  
+
+```{r plot_all Temperatures}
+
+weather <- 
+    all_day_routes %>% 
+        filter( !is.na(temp)) %>% 
+            mutate( date = as_date( date_time )) %>% 
+                select( id,
+                        date_time,
+                        date,
+                        temp:walking_conditions )
+
+weather %>% 
+    ggplot( aes( x = date, y = temp)) +
+        geom_line() +
+        xlab( "Date" ) +
+        ylab( "Temperature (degrees Fahrenheit)" ) +
+        ggtitle("Temperature at time of walk" ) +
+        theme_cowplot()
+
+```
+
