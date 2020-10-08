@@ -1,0 +1,75 @@
+---
+title: "test__plot_missed_walk_reasons"
+author: "by Craig Slinkman"
+date: "10/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Load packages
+
+```{r load_packages}
+require( tidyverse )
+require( lubridate )
+```
+
+## Load functions
+
+```{r load_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_missed_walks_reasons.R')
+```
+
+## Get day_routes
+
+```{r get_day_routes}
+all_day_routes <- get_day_routes()
+dim( all_day_routes )
+```
+## Test plot_walk-midded_reasons
+
+```{r test_plot_missed_waks_reasons}
+plot_nmissed_walks_reasons( all_day_routes )
+```
+
+
+
+## Develope plot_walk_missed_reasons
+
+```{r develop_missed_walk_reasons}
+
+require( cowplot )
+tabulation <- 
+    all_day_routes %>%
+        filter( !is.na( missed_reason)) %>% 
+        group_by( missed_reason ) %>% 
+        count()
+
+max_count <- max( tabulation$n )
+
+all_day_routes %>% 
+    filter( !is.na( missed_reason )) %>% 
+        ggplot( aes( x = missed_reason)) +
+            geom_bar( na.rm = TRUE,
+                      color = "black",
+                      fill  = "green" ) +
+            geom_text( stat = 'count',
+                       aes( label =..count.., 
+                            vjust = -0.2)) +
+            xlab( "Reson for missing walk") +
+            ylab( "Frequency" ) + 
+            ggtitle( "Reasons that walks were missed") +
+            expand_limits( y = max_count + 3 ) +
+            theme_cowplot() +
+            theme(axis.text.x=element_text( angle = 45,
+                                            hjust =1 ))
+ 
+
+
+```
+

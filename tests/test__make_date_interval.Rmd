@@ -42,39 +42,44 @@ all_day_routes <- get_day_routes()
 dim( all_day_routes )[1]
 ```
 
-### Prepare last 7 days data
+## Test make_date_intervals
 
-```{r prepare_last_007_days}
-last_007_day_routes <- filter_by_days( all_day_routes, 7 )
-date_interval <- make_date_interval( last_007_day_routes )
+```{r test_for_one_year}
+analysis_interval <- make_date_interval( all_day_routes)
+analysis_interval
+display_date_interval( analysis_interval )
 
-reverse <- reverse_by_date( last_007_day_routes )
-text <- display_date_interval( date_interval  )
-text
 ```
 
+## Test date_interval for 180 days
 
-### Preare last_30_day_routes
-```{r prepare_last_030_day_routes}
+```{r test_180_day_routes}
+last_180_day_routes <- filter_by_days( all_day_routes, 30 )
+analysis_interval <- make_date_interval( last_180_day_routes )
+analysis_interval
+display_date_interval( analysis_interval ) 
+```
+
+## Test_030_day_routes  
+  
+```{r test_30_day_routes}
 last_030_day_routes <- filter_by_days( all_day_routes, 30 )
-date_interval <- make_date_interval( last_030_day_routes )
-reverse <- reverse_by_date( last_030_day_routes )
-text <- display_date_interval( date_interval  )
-text
+analysis_interval <- make_date_interval( last_180_day_routes )
+analysis_interval
+display_date_interval( analysis_interval )
+```  
+
+## Test_last_007_day_routes  
+
+```{r last_007+day_routes}
+last_007_day_routes <- filter_by_days( all_day_routes, 7 )
+analysis_interval <- make_date_interval( last_007_day_routes )
+analysis_interval
+display_date_interval( analysis_interval )
 ```
 
-### Prepare_last_180_day_routes
-```{r prepare_last_180_day_routes}
-last_180_day_routes <- filter_by_days( all_day_routes, 180 )
-dim( last_180_day_routes)[1]
-last_180_day_routes
-date_interval <- make_date_interval( last_030_day_routes )
-display_date_interval( date_interval )
-```
 
-### Prepare_last_year_day_routes
-```{r prepare_last_year_day_routes}
-last_year_day_routes <- filter_by_days( all_day_routes, 365 )
-dim( last_year_day_routes)[1]
-last_year_day_routes
-```
+
+
+
+
