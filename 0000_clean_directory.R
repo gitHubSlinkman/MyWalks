@@ -19,3 +19,10 @@ to_delete <- directories[grepl( pattern, directories )]
 
 unlink( to_delete, recursive=TRUE )
 
+before
+deltaafter
+
+delta
+
+after
+

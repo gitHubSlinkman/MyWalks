@@ -23,7 +23,7 @@ suppressMessages( require( lubridate )) # For date/time processing ...
 ###############################################################################
 
 source('D:/R-Projects/MyWalks/functions/get_sky_conditions_factors.R')
-source('D:/R-Projects/MyWalks/functions/get_compass_factors.R')
+
 
 ###############################################################################
 # get_days( ) function
@@ -52,7 +52,7 @@ get_day_routes <-
         
         #######################################################################
         # The routes file contains information contains route data that does
-        # not change fromwa;l towalk.  We rera it now.
+        # not change from walk to walk.  We read it now.
         #######################################################################
         
         fp <-                                   
@@ -66,11 +66,20 @@ get_day_routes <-
         # We perform a left join on the days and routes tibbles.
         #######################################################################
         
-        days <- 
-            left_join( days, routes, 
+        day_routes <- 
+           inner_join( days,
+                       routes, 
                        by = "route",
                        copies = FALSE,
                        keep = FALSE )
+        
+        #######################################################################
+        # Keep only days where a walked occired and where the route was active.
+        #######################################################################
+        
+        day_routes <- 
+            day_routes %>% 
+                filter( walked == 1 & active == 1 )
         
         #######################################################################
         # We add derived data fields to the days tibble.  We make the
@@ -99,15 +108,16 @@ get_day_routes <-
         
         compass_factors <- get_compass_factors()
         
-        days$direction_wind <- factor( days$direction_wind,
-                                       levels = compass_factors,
-                                       ordered = TRUE )
+        day_routes$wind <- 
+            factor( days$wind,
+                    levels  = compass_factors,
+                    ordered = TRUE )
         
-        days <- 
-            days %>% 
-            mutate( date_time =  ymd_hms( date_time ))
+        day_routes <- 
+            day_routes %>% 
+                mutate( date_time =  ymd_hms( date_time ))
         
-        tz( days$date_time ) <- Sys.timezone( location = TRUE )
+        tz( day_routes$date_time ) <- Sys.timezone( location = TRUE )
         
         
         
@@ -116,8 +126,8 @@ get_day_routes <-
         # each of this quantities by 1000.
         #######################################################################
         
-         days <- 
-            days %>% 
+         day_routes <- 
+            day_routes %>% 
                mutate( steps = steps / 1000,
                     kcal = cal / 1000 )
         
@@ -125,5 +135,7 @@ get_day_routes <-
         # We return the tibble to the calling programs'
         #######################################################################
         
-        days
+        day_routes
     }
+
+
