@@ -74,7 +74,7 @@ all_day_routes <- get_day_routes()
 ###########################################################################
 
 active_route_walks <- 
-    only_walks %>% 
+   all_day_routes %>% 
         filter( active == 1)
 
 ```
