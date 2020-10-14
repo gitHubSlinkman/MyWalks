@@ -87,7 +87,7 @@ get_day_routes <-
         #   1. We convert the numeric walked to an ordered factor.
         #   1. We convert the variable sky_conditions to a factor.
         #   2. We convert the widirection to an ordered factor.
-        #   1. Convert Excel data and time POSIXct data and tine.
+        #   1. Convert Excel data and time POSIXct data and ti
         #######################################################################  
         
         
@@ -106,11 +106,13 @@ get_day_routes <-
         # Change the direction_wind to an ordered factor.
         #######################################################################
         
-        compass_factors <- get_compass_factors()
-        
         day_routes$wind <- 
-            factor( days$wind,
-                    levels  = compass_factors,
+            factor( day_routes$wind,
+                    levels  = c( "CALM", "VAR",
+                                 "N", "NNE", "NE", "ENE",
+                                 "E", "ESE", "SE",  "SSE", 
+                                 "S", "SSW", "SW", "WSW",
+                                 "W", "WNW", "NW", "NNW" ),
                     ordered = TRUE )
         
         day_routes <- 
