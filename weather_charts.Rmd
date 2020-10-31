@@ -1,0 +1,63 @@
+---
+title: "Waether functionality develope"
+author: "Craig Slinkman"
+date: "10/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Wather functionality
+
+## Load pacckages
+
+```{r}
+require( tidyverse )                    # I live in the tidy verse ...
+require( lubridate )                    # For advanced date processing ...
+require( cowplot )                      # For advanced graphics ...
+```
+
+## Set default plot theme
+
+```{r}
+theme_set( theme_cowplot )
+```
+
+## Load required functions 
+```{r}
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+```
+
+## Get data and define date windows.
+
+```{r}
+all_day_routes <- get_day_routes()
+dim( all_day_routes )
+
+last_365_day_routes <- 
+    filter_by_days( all_day_routes, 365 )
+dim( last_365_day_routes )
+dim( last_365_day_routes )
+
+last_180_day_routes <- 
+    filter_by_days( all_day_routes, 180 )
+dim( last_180_day_routes )
+
+last_030_day_routes <- 
+    filter_by_days( all_day_routes, 30 )
+dim( last_030_day_routes )
+
+last_007_day_routes <- 
+    filter_by_days( all_day_routes, 7 )
+dim( last_007_day_routes )
+
+weather <- 
+    last_007_day_routes 
+
+
+
+```
+

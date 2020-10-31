@@ -61,8 +61,9 @@ source("D:/R-Projects/MyWalks/functions/get_day_routes_v01.R")
 
 
 ```{r}
-###########################################################################
+################################################################################
 # We load the functions that are required for this R-Markdown document.
+################################################################################
 
 all_day_routes <- get_day_routes()
 ```

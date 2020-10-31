@@ -1,0 +1,60 @@
+---
+title: "Development weather"
+author: "Craig Slinkman"
+date: "10/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This is the development platform for the waether functions.
+
+## Load packages
+
+```{r}
+require( tidyverse )                    # I live in the tidyverse.
+require( dplyr )
+require( lubridate )                    # For date processing.
+require( cowplot )                      # For more professional graphs.
+```
+
+## Set graphic theme
+
+```{r}
+theme_set( theme_cowplot )
+```
+
+
+
+## Load required functions
+
+```{r}
+source('D:/R-Projects/MyWalks/functions/get_weather_v01.r')
+source('D:/R-Projects/MyWalks/functions/plot_bar_chart.R')
+```
+
+## Function: get_weather()
+
+```{r}
+weather <- get_weather()                # Get weather data for walks.
+
+weather                                 # Verify.
+```
+## Draw bar char of sky conditions  
+
+```{r}
+plot_bar_chart( weather$sky_coditions )
+```
+
+
+
+
+
+
+
+
+
+
+
