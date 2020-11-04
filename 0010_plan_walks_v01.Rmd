@@ -1,6 +1,6 @@
 ---
-title: "0010_plan_walks"
-author: "adopted by Craig W. Slinkman"
+title: "Plan walks"
+author: "by Craig W. Slinkman"
 date: "6/13/2020"
 output: html_document
 ---

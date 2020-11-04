@@ -60,14 +60,6 @@ plot_bar_chart <-
               # Create a tibble and pass the tibble to ggplot ro create 
               # bar chart.
               ##############################################################
-        
-              temp_tibble <- tibble( variable )
-              
-              ggplot( temp_tibble,
-                      aes( x = Activity )) +
-                geom_bar( )
-               
-               
                
                       geom_text( stat = 'count',
                                  aes(label =..count.., 

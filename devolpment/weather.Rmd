@@ -45,9 +45,24 @@ weather                                 # Verify.
 ## Draw bar char of sky conditions  
 
 ```{r}
-plot_bar_chart( weather$sky_coditions )
-```
+################################################################################
+# Get sky_conditions from weather tibble.
+################################################################################
 
+sky_conditions <- 
+    weather %>% 
+        pull( sky_conditions )
+
+
+
+################################################################################
+# Plot sky_conditions
+################################################################################
+
+plot_bar_chart( sky_conditions,
+                variable_name = "Sky",
+                plot_title = "Sky conditions" )
+```
 
 
 
