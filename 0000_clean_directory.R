@@ -11,7 +11,7 @@ delta
 
 directories <- list.dirs( recursive=FALSE)
 
-pattern <- glob2rx( "*_files" )
+pattern <- glob2rx( pattern = "*_files" )
 
 library( stringr )
 
@@ -20,7 +20,6 @@ to_delete <- directories[grepl( pattern, directories )]
 unlink( to_delete, recursive=TRUE )
 
 before
-deltaafter
 
 delta
 

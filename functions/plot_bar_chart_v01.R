@@ -1,4 +1,4 @@
-# plot_bar_char.R
+# plot_bar_chart_v01.R
 
 ###############################################################################
 # Load required packages.
@@ -11,7 +11,7 @@ require(lubridate)                      # For advanced date processing ...
 # Load required functions
 ###############################################################################
 
-source('D:/R-Projects/MyWalks/functions/find_max_frequency.R')
+source('D:/R-Projects/MyWalks/functions/find_max_frequency_v01.R')
 
 
 #' This function draws a frequency bar-chart of a variable.  If there are
@@ -60,7 +60,11 @@ plot_bar_chart <-
               # Create a tibble and pass the tibble to ggplot ro create 
               # bar chart.
               ##############################################################
-               
+              
+               tibble( variable ) %>% 
+                   ggplot( aes( x = variable)) +
+                      geom_bar( color = "black",
+                                fill  = fill_color ) +    
                       geom_text( stat = 'count',
                                  aes(label =..count.., 
                                      vjust = -0.2)) +

@@ -32,9 +32,9 @@ require( cowplot )                        # For professional plots ...
 We need to load the function that are needed to draw the bar charts.  I have written a script to load mu most used packages.
 
 ```{r load_functions}
-source('D:/R-Projects/MyWalks/functions/get_day_routes.R') 
-source('D:/R-Projects/MyWalks/functions/find_max_frequency.R')
-source('D:/R-Projects/MyWalks/functions/plot_bar_chart.R')
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R') 
+source('D:/R-Projects/MyWalks/functions/find_max_frequency_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_bar_chart_v01.R')
 ```
 
 ## Load the data 
