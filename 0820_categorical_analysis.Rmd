@@ -56,13 +56,21 @@ theme_set( theme_cowplot())
 
 ```{r plot_walks}
 
-walked <-                              # Extract walked from
+days <-                              # Extract walked from
     day_routes %>%                     # day_routes
         select( walked )
 
-walked = ifelse( walked == 0,          # Convert walked codes from binary
-                 "Did not walk",      # to character for bar chart ...
-                 "Walked")
+days <- 
+  days %>% 
+    mutate( walked = ifelse( walked == 1,
+                            "Walked",
+                            "Missed walk" ))
+
+walked <- 
+  days %>% 
+    pull( walked )
+
+
 
 scale <- seq( from = 0,                # Create breaks and label scales ...
               to = 375, 
@@ -86,7 +94,8 @@ missed_reason <-
     plot_bar_chart( missed_reason, 
                     "Reasons",
                     "Distribution of reasons for missing walk" ) +
-                    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+                    theme(axis.text.x = 
+                            element_text(angle = 45, hjust = 1))
     
 ```
 
