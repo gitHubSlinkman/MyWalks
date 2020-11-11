@@ -67,29 +67,22 @@ get_day_routes <-
         #######################################################################
         
         day_routes <- 
-           inner_join( days,
+           left_join( days,
                        routes, 
                        by = "route",
                        copies = FALSE,
                        keep = FALSE )
         
-        #######################################################################
-        # Keep only days where a walked occired and where the route was active.
-        #######################################################################
-        
-        day_routes <- 
-            day_routes %>% 
-                filter( walked == 1 & active == 1 )
         
         #######################################################################
         # We add derived data fields to the days tibble.  We make the
         # following data conversions:
-        #   1. We convert the numeric walked to an ordered factor.
-        #   1. We convert the variable sky_conditions to a factor.
-        #   2. We convert the widirection to an ordered factor.
-        #   1. Convert Excel data and time POSIXct data and ti
+        #  1. Change the NA value of sky_conditions to "unrecorded."
+        #  2. We convert the numeric walked to an ordered factor.
+        #  3. We convert the variable sky_conditions to a factor.
+        #  4. We convert the wind direction to an ordered factor.
+        #  5. Convert Excel data and  POSIXct data and time.
         #######################################################################  
-        
         
         #######################################################################
         # Change sky_conditions to ordered factor
@@ -97,9 +90,10 @@ get_day_routes <-
         
         sky_factors <- get_sky_conditions_factors()
         
-        days$sky_conditions <- factor( days$sky_conditions,
-                                       levels = sky_factors,
-                                       ordered = TRUE )
+        day_routes$sky_conditions <-
+            factor( day_routes$sky_conditions,
+                    levels = sky_factors,
+                    ordered = TRUE )
         
         
         #######################################################################

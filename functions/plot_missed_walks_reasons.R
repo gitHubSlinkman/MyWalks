@@ -27,7 +27,7 @@ plot_nmissed_walks_reasons <-
                 ylab( "Frequency" ) + 
                 ggtitle( "Reasons that walks were missed") +
                 expand_limits( y = max_count + 3 ) +
-                 theme_cowplot() +
+                theme_cowplot() +
                 theme(axis.text.x=element_text( angle = 45,
                                                 hjust = 1 ))
         

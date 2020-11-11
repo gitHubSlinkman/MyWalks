@@ -34,7 +34,9 @@ We need to load the function that are needed to draw the bar charts.  I have wri
 ```{r load_functions}
 source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R') 
 source('D:/R-Projects/MyWalks/functions/find_max_frequency_v01.R')
-source('D:/R-Projects/MyWalks/functions/plot_bar_chart_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_walk_frequency_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_missed_reason_v01.R')
+# source('D:/R-Projects/MyWalks/functions/plot_sky_conditions_v01.R')
 ```
 
 ## Load the data 
@@ -54,49 +56,16 @@ theme_set( theme_cowplot())
 
 ## Plot number of days not walked and days walked
 
-```{r plot_walks}
+```{r plot_walk_freqiency}
 
-days <-                              # Extract walked from
-    day_routes %>%                     # day_routes
-        select( walked )
-
-days <- 
-  days %>% 
-    mutate( walked = ifelse( walked == 1,
-                            "Walked",
-                            "Missed walk" ))
-
-walked <- 
-  days %>% 
-    pull( walked )
-
-
-
-scale <- seq( from = 0,                # Create breaks and label scales ...
-              to = 375, 
-              by = 10 )
-            
-plot_bar_chart( walked,
-                variable_name = "Walked?",
-                plot_title = "Days walked and not walked",
-                frequency_scale = scale )
+plot_walk_frequency( day_routes )
 ```
 
 ## Plot of reasons for missing walks
 
-```{r plot_missed_reasons}
+```{r plot_missed_reason}
 
-missed_reason <- 
-    day_routes %>% 
-        filter( walked == 0 ) %>% 
-            pull( missed_reason )
-
-    plot_bar_chart( missed_reason, 
-                    "Reasons",
-                    "Distribution of reasons for missing walk" ) +
-                    theme(axis.text.x = 
-                            element_text(angle = 45, hjust = 1))
-    
+plot_missed_reasons( day_routes )
 ```
 
 ## Weather Conditions
@@ -107,9 +76,9 @@ sky_conditions <-
   day_routes %>% 
     pull( sky_conditions )
     
-plot_bar_chart( sky_conditions,
-                "sky conditions",
-                "Distribution of sky conditions") +
+plot_sky_conditions( sky_conditions,
+                    "Sky",
+                    "Distribution of sky conditions") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))                
                 
 direction_wind <- 
