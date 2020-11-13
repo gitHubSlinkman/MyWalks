@@ -1,5 +1,5 @@
 ---
-title: "Waether functionality develope"
+title: "Test: get_weather"
 author: "Craig Slinkman"
 date: "10/28/2020"
 output: html_document
@@ -54,8 +54,7 @@ last_007_day_routes <-
     filter_by_days( all_day_routes, 7 )
 dim( last_007_day_routes )
 
-weather <- 
-    last_007_day_routes 
+
 
 
 
