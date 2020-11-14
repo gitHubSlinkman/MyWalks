@@ -13,7 +13,7 @@ require(lubridate)                      # For advanced date processing ...
 
 source('D:/R-Projects/MyWalks/functions/find_max_frequency_v01.R')
 
-plot_bar_chart <- 
+plot_sky_conditions <- 
     function( sky_conditions,
               frequency_scale = NULL,
               bar_width       = NULL,
@@ -28,7 +28,6 @@ plot_bar_chart <-
         ###############################################################
         
         max_frequency <- find_max_frequency( sky_conditions )
-        
         
         
         ##############################################################
