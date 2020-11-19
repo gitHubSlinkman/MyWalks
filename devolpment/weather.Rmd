@@ -32,7 +32,7 @@ theme_set( theme_cowplot )
 
 ```{r}
 source('D:/R-Projects/MyWalks/functions/get_weather_v01.r')
-source('D:/R-Projects/MyWalks/functions/plot_bar_chart.R')
+source('D:/R-Projects/MyWalks/functions/plot_sky_conditions_v01.R')
 ```
 
 ## Function: get_weather()
@@ -42,27 +42,16 @@ weather <- get_weather()                # Get weather data for walks.
 
 weather                                 # Verify.
 ```
-## Draw bar char of sky conditions  
+
+## Get last 7 days weather
 
 ```{r}
-################################################################################
-# Get sky_conditions from weather tibble.
-################################################################################
+first_day = today() - 7
 
-sky_conditions <- 
-    weather %>% 
-        pull( sky_conditions )
-
-
-
-################################################################################
-# Plot sky_conditions
-################################################################################
-
-plot_bar_chart( sky_conditions,
-                variable_name = "Sky",
-                plot_title = "Sky conditions" )
 ```
+
+
+
 
 
 

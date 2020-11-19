@@ -18,9 +18,7 @@ get_weather <-
             select( id, 
                     date_time,
                     sky_conditions:walking_conditions ) %>% 
-            mutate( date = date( date_time )) %>% 
-            select( date,
+            select( date_time,
                     sky_conditions:walking_conditions )
-        
         weather
     }
