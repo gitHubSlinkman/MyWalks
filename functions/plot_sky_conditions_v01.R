@@ -14,7 +14,7 @@ require(lubridate)                      # For advanced date processing ...
 source('D:/R-Projects/MyWalks/functions/find_max_frequency_v01.R')
 
 plot_sky_conditions <- 
-    function( sky_conditions,
+    function( weather,
               frequency_scale = NULL,
               bar_width       = NULL,
               fill_color      = "blue" )
@@ -27,7 +27,8 @@ plot_sky_conditions <-
         # them being partially variable.
         ###############################################################
         
-        max_frequency <- find_max_frequency( sky_conditions )
+        max_frequency <- 
+            weather( summar)
         
         
         ##############################################################

@@ -37,7 +37,7 @@ weather                              # Display tibble.
 
 ## Partion weather data
 
-In this section we partition the data bt age in non-mutually ewxcksuve sets.  The sets are defined by age.  The sets are
+In this section we partition the data bt age in non-mutually exclusive sets.  The sets are defined by age.  The sets are
 
 * Last 7 days 
 
@@ -51,7 +51,7 @@ first_date <- today() - 7
 
 last_007_days_weather <-           # Keep only the last 7 days weather ...
     weather %>% 
-    filter( date >= first_date )
+    filter( date_time >= first_date )
 
 last_007_days_weather
 ```
@@ -68,6 +68,16 @@ last_030_days_weather
 ```
 
 * Last 90 days
+
+```{r}first_date <- today() - 90
+
+last_090_days_weather <-           # Keep only the last 30 days weather ...
+    weather %>% 
+    filter( date >= first_date )
+
+last_030_days_weather
+
+```
 
 
 * Last 180 days 
