@@ -1,0 +1,36 @@
+---
+title: "test__get_day_routes_v01"
+author: "Craig Slinkman"
+date: "11/23/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load required packages
+
+```{r}
+require( tidyverse )                    # I live in the tidyverse ...
+require (lubridate )                    # For advanced date processing ...
+```
+
+## Load required functions 
+
+```{r}
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+```
+
+## test__get_day_routes();
+
+```{r}
+day_routes <- get_day_routes()
+```
+
+## Display day_routes
+
+```{r}
+day_routes
+```
+

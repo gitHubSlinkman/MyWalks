@@ -22,7 +22,7 @@ suppressMessages( require( lubridate )) # For date/time processing ...
 # Load the required functions.
 ###############################################################################
 
-source('D:/R-Projects/MyWalks/functions/get_sky_conditions_factors.R')
+source('D:/R-Projects/MyWalks/functions/get_sky_factors_v01.R')
 
 
 ###############################################################################
@@ -88,10 +88,10 @@ get_day_routes <-
         # Change sky_conditions to ordered factor
         #######################################################################
         
-        sky_factors <- get_sky_conditions_factors()
+        sky_factors <- get_sky_factors()
         
-        day_routes$sky_conditions <-
-            factor( day_routes$sky_conditions,
+        day_routes$sky <-
+            factor( day_routes$sky,
                     levels = sky_factors,
                     ordered = TRUE )
         
