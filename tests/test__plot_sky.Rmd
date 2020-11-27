@@ -24,7 +24,7 @@ require( cowplot )                      # For more processional graphics ...
 ```{r}
 source('D:/R-Projects/MyWalks/functions/get_weather_v01.r')
 source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
-source('D:/R-Projects/MyWalks/functions/plot_sky_conditions_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_sky_v01.R')
 ```
 
 ### Read the data ...
@@ -39,46 +39,28 @@ weather                              # Display tibble.
 
 In this section we partition the data bt age in non-mutually exclusive sets.  The sets are defined by age.  The sets are
 
-* Last 7 days 
-
-
-```{r}
-################################################################################
-# Keep only last seven days
-################################################################################
-
-first_date <- today() - 7
-
-last_007_days_weather <-           # Keep only the last 7 days weather ...
-    weather %>% 
-    filter( date_time >= first_date )
-
-last_007_days_weather
-```
-* Last 30 days
+### Last 7 days 
 
 ```{r}
-first_date <- today() - 30
 
-last_030_days_weather <-           # Keep only the last 30 days weather ...
-    weather %>% 
-    filter( date >= first_date )
-
-last_030_days_weather
+plot_sky( weather, 7 )                  # Plot sky for last 7 days ...
 ```
 
-* Last 90 days
+###Last 30 days
 
-```{r}first_date <- today() - 90
-
-last_090_days_weather <-           # Keep only the last 30 days weather ...
-    weather %>% 
-    filter( date >= first_date )
-
-last_030_days_weather
-
+```{r}
+plot_sky( weather, 30 )
 ```
 
+###  Last 90 days
 
-* Last 180 days 
-* Last 365 days
+```{r}
+plot_sky( weather, 90 )
+```
+
+### Last 180 days
+
+```{r}
+plot_sky( weather, 365 )
+```
+

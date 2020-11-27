@@ -6,19 +6,20 @@ require( lubridate )                    # For date process.
 
 get_weather <- 
     function(){
-        fp <- 
+                                        
+        fp <-                            # Specify path to data ...
             file.path(  "D:",
                         "R-Projects",
                         "MyWalks",
                         "data",
                         "days.xlsx" )
         
-        weather <- 
+        weather <-                       # Specify weather columns ....
             readxl::read_xlsx( fp ) %>% 
             select( id, 
                     date_time,
-                    sky_conditions:walking_conditions ) %>% 
+                    sky:walking_conditions ) %>% 
             select( date_time,
-                    sky_conditions:walking_conditions )
+                    sky:walking_conditions )
         weather
     }
