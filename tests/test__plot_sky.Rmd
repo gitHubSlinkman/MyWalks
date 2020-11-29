@@ -61,6 +61,12 @@ plot_sky( weather, 90 )
 ### Last 180 days
 
 ```{r}
+plot_sky( weather, 180 )
+```
+
+### Last 364 days
+
+```{r}
 plot_sky( weather, 365 )
 ```
 

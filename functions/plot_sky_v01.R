@@ -13,6 +13,7 @@ require( cowplot )                        # For superior plots ...
 ###############################################################################
 
 source('D:/R-Projects/MyWalks/functions/find_max_frequency_v01.R')
+source('D:/R-Projects/MyWalks/functions/set_expansion_v01.R')
 
 
 ################################################################################
@@ -56,7 +57,11 @@ plot_sky <-
         # the plot.
         ########################################################################
         
-        expand <- ceiling( log2( n ) )
+        expansion <- set_expansion( y_max )
+        
+        ########################################################################
+        # plot sky cindiotions.
+        ########################################################################
          
             ggplot( tbl_temp,
                     aes( x = sky )) +
@@ -65,7 +70,7 @@ plot_sky <-
                 geom_text( stat='count', 
                            aes(label=..count..),
                            vjust=-1) +
-                expand_limits( y = y_max + expand + 4 ) +
+                expand_limits( y = expansion ) +
                 xlab( "Sky condition") +
                 ylab( "Frequency" ) +
                 ggtitle( paste( "Sky Conditions for the last", n, "days" )) +
