@@ -1,0 +1,48 @@
+---
+title: "Test plot_temperature"
+author: "Craig Slinkman"
+date: "11/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Test plot_temperature
+
+################################################################################
+# Load required packages.
+################################################################################
+
+```{r}
+library(tidyverse)                      # I live in the tidyverse ...
+library( lubridate )                    # For date processing ....
+library( cowplot )                      # For professional plotting ....
+```
+
+################################################################################
+# Define required functions. 
+################################################################################
+
+```{r}
+source('D:/R-Projects/MyWalks/functions/get_weather_v01.r')
+source('D:/R-Projects/MyWalks/functions/plot_temperature.R')
+```
+
+
+ 
+## Load weather data from MyWalks systems
+
+```{r}
+weather <- get_weather()                # Get weather data for all days ...
+
+weather                                 # Verify weather tibble.
+```
+
+## Test_plot_temperature
+
+```{r}
+plot_temperature( weather )
+```
+

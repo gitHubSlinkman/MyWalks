@@ -1,0 +1,97 @@
+---
+title: "test__plot_tempature"
+author: "by Craig Slinkman"
+date: "10/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages
+
+```{r load_packages}
+require( tidyverse )
+require( lubridate )
+require( cowplot )
+```
+## Load functiions
+
+```{r load_functions}
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_ts_v01.R')
+```
+
+## Get day_routes data
+
+```{r get+day_routes}
+all_day_routes <- get_day_routes()
+
+dim( all_day_routes )
+```
+
+
+## Create test data sets
+
+
+## Create 365 day data set
+
+Note that as of 12/1/202 I still don'r have 365 days of data.  So this first data set will be "short" until I do.  Also I am going back and adding weather data as I add new days to the data set.  
+
+### Create last_364_days tibble
+
+```{r}
+last_365_days <- filter_by_days( all_day_routes, 365 )
+
+dim( last_365_days )
+```
+
+### Last 180 days tibble
+
+```{r}
+last_180_days <- filter_by_days( all_day_routes, 180 )
+
+dim( last_180_days )
+```
+
+
+### Last_090_days
+
+```{r}
+last_090_days <- filter_by_days( all_day_routes, 90 )
+
+dim( last_090_days )
+
+```
+
+### Last 30 days tibble
+
+```{r}
+last_030_days <- filter_by_days( all_day_routes, 30 )
+
+dim( last_030_days )
+```
+
+
+### Last_007_day_routes
+
+```{r}
+last_007_days <- filter_by_days( all_day_routes, 7)
+
+dim( last_007_days )
+```
+
+## Test plot)temperature( waether )
+
+### 365 day test
+
+```{r}
+plot_ts( data =last_365_days,
+         variable = "temp",
+         variable_name = "Temperature(Farenheit)" )
+
+```
+
+

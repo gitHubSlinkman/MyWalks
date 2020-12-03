@@ -1,7 +1,7 @@
 # find_column_position.R
 
 find_column_position <- 
-    function( data, variable_name )
+    function( data, variable )
     {
         #######################################################################
         # Get the variable names of the data object.
@@ -13,7 +13,7 @@ find_column_position <-
         # Find position column position.  If it does not match throw an error
         #######################################################################
         
-        position <-match( variable_name, 
+        position <-match( variable, 
                           vnames,
                           nomatch = 0 )
         
