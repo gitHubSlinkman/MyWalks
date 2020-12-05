@@ -40,7 +40,7 @@ plot_temperature <-
       date_time <- 
        weather %>% 
          pull( date_time )
-      date <- date( date_time )
+      Date <- date( date_time )
        
       ##########################################################################
       # We  extract the temperature data from the input tibble so we can pass it
@@ -49,7 +49,7 @@ plot_temperature <-
       
       temp <- 
         weather %>% 
-        pull( temp )
+            pull( variable )
       
       ##########################################################################
       # We comput the loess smooth of the temperature data.  Since there are 

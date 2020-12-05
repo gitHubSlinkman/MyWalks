@@ -11,7 +11,8 @@ source('D:/R-Projects/MyWalks/functions/plot_ts_v01.R')
 
 day_routes <- get_day_routes()
 
-plot_ts( data = day_routes,
+plot_ts( data     = day_routes,
          variable = "temp",
-         variable_name = "Temperature" )
+         label    = "Temperature",
+         title    = "Special title" )
 

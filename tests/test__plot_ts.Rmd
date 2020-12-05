@@ -83,15 +83,25 @@ last_007_days <- filter_by_days( all_day_routes, 7)
 dim( last_007_days )
 ```
 
-## Test plot)temperature( waether )
 
 ### 365 day test
 
 ```{r}
+
 plot_ts( data =last_365_days,
          variable = "temp",
-         variable_name = "Temperature(Farenheit)" )
+         label    = "Temperature(Farenheit)",
+         title    = "365 day plot of Temperature" )
 
 ```
 
+### 180 day test plot of weather
+
+```{r}
+plot_ts( data =last_180_days,
+         variable = "temp",
+         label    = "Temperature(Farenheit)",
+         title    = "180 day time series plot of Temperature" )
+
+```
 

@@ -22,18 +22,6 @@ require( cowplot )                      # For professional graphics ...
 source('D:/R-Projects/MyWalks/functions/find_column_position_v01.R')
 
 
-################################################################################
-# Internal functions
-################################################################################
-
-make_title <- 
-    function( variable_name, length )
-    {
-        paste( "Time seies plot of", 
-                variable_name,
-                "\nLength of time series is", length ) 
-    }
-
 ###############################################################################
 # Function definition.
 ###############################################################################
@@ -41,10 +29,21 @@ make_title <-
 plot_ts <- 
     function( data,             # Data frame containing variable ...
               variable,         # variable to plot ...
-              variable_name,    # variable name for axis labeling ...
-              plot_title )       # Plot title ...
+              label,            # variable name for axis labeling ...
+              title             # Plot title ...
+                        )
     {
-        #######################################################################
+        ########################################################################
+        # If label and title are missing set them to default values.
+        ########################################################################
+        
+        if( is.null( label ))label <- variable
+        if( is.null( title ))title
+                paste("Time series plot of", variable )
+        
+        
+        
+        ########################################################################
         # Find position of desired variable in data source.
         #######################################################################
         
@@ -55,7 +54,7 @@ plot_ts <-
         # Extract variable and date from data frame.
         #######################################################################
         
-       Observation <- 
+       Observations <- 
             data %>% 
                 pull( position )
        
@@ -75,7 +74,7 @@ plot_ts <-
        # series index.
        #######################################################################
         
-       n <- length( values )
+       n <- length( Observations )
        t <- 1:n
        
        #######################################################################
@@ -83,14 +82,14 @@ plot_ts <-
        #######################################################################
        
        smooth <- 
-           lowess( Observation ~ t,
-                   f = 2/3 )
+           lowess( Observations ~ t, f = 2/3 )
+       
        
        ##########################################################################
        # We extract the soothed data from the smooth list.
        ##########################################################################
        
-       Smoothed <- smooth$y 
+       Smooths <- smooth$y 
        
        
        ##########################################################################
@@ -98,7 +97,7 @@ plot_ts <-
        ##########################################################################
        
        working_tibble <- 
-           tibble( Date, t, Observation, Smoothed )
+           tibble( Date, t, Observations, Smooths )
        
        
        ##########################################################################
@@ -106,34 +105,32 @@ plot_ts <-
        # plotted by on call to ggplot and allow a plot legended to be created.
        ##########################################################################
        
-       pivoted_table <- 
+       long_form <- 
            pivot_longer(  working_tibble,
-                         cols      = c( Observation, Smoothed ),
+                         cols      = c( Observations, Smooths ),
                          names_to  = "Source",
-                         values_to = "Value" )
+                         values_to = "Values" )
        
        
        #########################################################################
        # Define colors for ggplot scale_color_manual
        #########################################################################
        
-       colors = c(   "Observation" = "black",
-                     "Smoothed"    = "red"    )
-       
+       colors = c(   "Observations" = "black",
+                     "Smooths"      = "red"    )
+
        
        #########################################################################
        # Create the plot.
        #########################################################################  
        
-           ggplot( pivoted_table,
-                   aes( x = Date, y = Value, color = Source )) +
+           ggplot(long_form,
+                   aes( x = Date, y = Values, color = Source )) +
            geom_line()  +
+           scale_color_manual( values = colors ) +
            scale_x_date(date_labels = "%Y-%b") +
-           scale_color_manual(  values = colors ) + 
-           xlab( "Date" ) +
-           ylab( variable_name ) +
-           ggtitle( make_title( variable_name, n)) +
+           ylab( label ) +
+           ggtitle( title ) +
            theme_cowplot()
-       
     }
 
