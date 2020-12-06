@@ -128,7 +128,7 @@ plot_ts <-
                    aes( x = Date, y = Values, color = Source )) +
            geom_line()  +
            scale_color_manual( values = colors ) +
-           scale_x_date(date_labels = "%Y-%b") +
+           scale_x_date(date_labels = "%Y-%b-%d") +
            ylab( label ) +
            ggtitle( title ) +
            theme_cowplot()
