@@ -12,9 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Load packages
 
 ```{r load_packages}
-require( tidyverse )
-require( lubridate )
-require( cowplot )
+require( tidyverse )                    # I live in the tidyverse ...
+require( lubridate )                    # For consistent date processing ...
+require( cowplot )                      # For theme_cowplot() ...
 ```
 ## Load functiions
 
