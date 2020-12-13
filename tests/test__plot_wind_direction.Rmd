@@ -1,0 +1,78 @@
+---
+title: 'Test: plot_wind_direction'
+author: "Craig Slinkman"
+date: "12/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load required packages
+
+```{r}
+require( tidyverse )                    # MyWalks lives in the tidyverse ...
+require( lubridate )                    # For tidyverse date processing ...
+```
+
+
+## Loading required function definitions
+ 
+```{r}
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_wind_direction_v01.R')
+```
+
+## Loading the data 
+
+Note that there is less than one years data.  Therefore you get less than 365 days data.
+
+```{r}
+all_day_routes <- get_day_routes()      # Get joined data day_routes ...
+
+dim( all_day_routes )[1]                # Display length of all_day_routes ...
+```
+
+## Creating the last_days tibbles
+
+Noe do to recording errors and two walk on a givern day this number may not be exactly equal to 180 days walks.
+
+### Create last 265 days tibble 
+
+```{r}
+last_365_days <-                       # Keep only the last 365 days ...
+    filter_by_days( all_day_routes,
+                    365 )
+
+dim( last_365_days )[1]                # Verify number pof walks ...
+```
+
+### Last_180_days 
+
+```{r}
+last_180_days <-                       # Keep only the last 180 days ...
+    filter_by_days( all_day_routes,
+                    180 )
+
+dim( last_180_days )[1]               # Verify number of walks ...
+```  
+
+### Creating the last 90 days walks 
+
+```{r}
+last_090_days <-                        # Keep only the last 90 days ...
+    filter_by_days( all_day_routes,
+                    90 )  
+
+dim( last_090_days )[1]                  # Verify approximate number of walks ...
+
+```
+
+### Creating the last 30 days
+
+
+
+
+
