@@ -40,7 +40,7 @@ dim( all_day_routes )
 
 Note that as of 12/1/202 I still don'r have 365 days of data.  So this first data set will be "short" until I do.  Also I am going back and adding weather data as I add new days to the data set.  
 
-### Create last_364_days tibble
+### Create last_365_days tibble
 
 ```{r}
 last_365_days <- filter_by_days( all_day_routes, 365 )
@@ -109,6 +109,11 @@ plot_ts( data =last_180_days,
          label    = "Temperature(Farenheit)",
          title    = "180 day time series plot of Temperature" )
 
+plot_ts( data =last_180_days,
+         variable = "dp",
+         label    = "Temperature(Farenheit)",
+         title    = "180 day time series plot of dew point" )
+
 ```
 
 ### 90 day test of time series plots
@@ -118,6 +123,12 @@ plot_ts( data =last_090_days,
          variable = "temp",
          label    = "Temperature(Farenheit)",
          title    = "90 day time series plot of Temperature" )
+
+plot_ts( data =last_090_days,
+         variable = "dp",
+         label    = "Temperature(Farenheit)",
+         title    = "90 day time series plot of dew point" )
+
 ```
 
 
