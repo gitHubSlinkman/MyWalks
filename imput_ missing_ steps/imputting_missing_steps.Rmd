@@ -1,0 +1,69 @@
+---
+title: "Imputing missing steps"
+author: "Craig Slinkman"
+date: "12/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose of this document 
+
+In this document we are exploring for a model that can be used to fill in the number of steps when I forgot to record the data necessary to compute the number of steps.  Ma Gamin watch only collects the steps data for the entire day so I need to compute the step based on the count prior to my walks and after my walk.  The number of steps is the difference between these two numbers.  
+
+In this document we will use the the tidy models approach provided by the tidyverse.  The approach I am going to take is to parallel the book[Tidy Modeling with R](https://www.tmwr.org/index.html) by Max Kuhn and Juia Sledge.
+
+
+## The data
+
+After the successful remission of my colon cancer my oncologist told me, that in his opinion, exercise was as important as chemotherapy.  AS I started walking, being a retired statistician and a nerd, I begin recording the data.  At first, I just recorded the date, time, and distance, and steps using **Strava** and then **Map My Walks**.  Then my daughters gave me a **Garmin Vivo Active** watch for Christmas.  This multiplied the number of fields and added greatly to number of variables.
+
+In addition, I begin to record the Arlington Texas weather where I live and walk.
+
+I should have around 900 daily observation but I lost around 700 days observation due to data corruption.  I never found the cause of the data corruption.  So at the time I am writing this (December 15, 2020). I have roughly 300 observations.
+
+The relationship between the miles walked and the number of steps.  For ease of use I have divided the steps by 1000.  The predictor variable is $miles$ and the response variable is $Steps$;
+
+### Preliminaries
+
+Before we can get down to building and comparing models we must load our required packages and our required function.  We do both in the code chunk below.
+
+```{r}
+library( tidyverse )              # MyWalks lives in the tidyverse.
+library( tidymodels )             # Provides tidy models support.
+library( cowplot )                # For graphics ggplot theme_cowplot()
+
+ source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+```
+
+## Obtaing the data
+
+We will use my function to read the data.  The functionm can be found in the **functions** folder of this project.  It is in the file **get_day_routes_v01.R**. This function return a tibble that contains both data on the actual walk or no walks.  This includes weather data for every day.
+
+```{r}
+all_day_routes <-                       # Read and edit data ...
+    get_day_routes()
+
+all_day_routes                          # Verify tibble is correct ...
+```
+
+
+## Preliminary data analysis
+
+The variables we will use inthis analysis are $miles$ walked $steps$ takem, and $routes$ which is a categorical variable that describes the place where the walk occured.  Our first task is to create a new tibble of the day_routes when a walked was taken.  This resulting tibble will only have the variables $id$ variable, the $date_time$ variable, the $route$ walked variable, the $$Miles$ walked variable, the $steps$ walked variable.
+
+```{r}
+walks <-                                    # Keep all day_routes when a walk occured and
+    all_day_routes %>%                      # Limit variables to id, date_time, route,miles, and steps             filter( walked == 1) %>%        # walked.
+            select( id,
+                    date_time,
+                    route,
+                    miles,
+                    steps  )
+walks                                   # Verify  ...                                   
+
+```
+
+
