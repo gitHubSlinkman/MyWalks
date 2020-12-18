@@ -62,7 +62,7 @@ walks <-                                    # Keep all day_routes when a walk oc
                     route,
                     miles,
                     steps  )
-walks                                   # Verify  ...                                   
+walks                                       # Verify walks ...                                  
 
 ```
 

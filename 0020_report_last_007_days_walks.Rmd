@@ -37,8 +37,7 @@ theme_set( theme_cowplot )
 ```
 
 ```{r define_functions}
-source('D:/R-Projects/MyWalks/functions/get_day_routes_v_01.R')
-
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
 ```
 
 ## Waether
