@@ -185,7 +185,5 @@ schedule %>%
                                m_pace  = "Predicted\npace",
                                l_pace  =  "Lower 95%\npredicted pace",
                                u_pace  =  "Upper 95%\npredicted pace" )
-                               
-            
 ```
 

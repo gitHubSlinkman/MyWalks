@@ -31,11 +31,14 @@ My Garmin gives me daily steps.  I began to record the number of steps on my wal
 Before we can get down to building and comparing models we must load our required packages and our required function.  We do both in the code chunk below.
 
 ```{r}
-library( tidyverse )              # MyWalks lives in the tidyverse.
-library( tidymodels )             # Provides tidy models support.
+library( tidyverse )              # MyWalks lives in the tidyverse ...
+library( tidymodels )             # Provides tidy models support ...
+require( cowplot )                # I prefer the cowplot theme ...
+require( flextable )              # To produce professonal display tables ...
 
-
- source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+source('D:/R-Projects/MyWalks/functions/plot_distribution.R')
+source('D:/R-Projects/MyWalks/functions/plot_qq_norm.R')
 ```
 
 ## Other preliminary steps
@@ -91,18 +94,73 @@ walks <-
                 environment,
                 miles,
                 steps )
+walks
+```
+## Exploring the routes
+
+Some individuals find exploringg the categorical variables in our data set to see if thry can be potentiall useful in our analysis.
+
+### Route analysis
+
+We start with the outes analysis.
 
 
-
+```{r}
 walks %>% 
     group_by( route ) %>% 
         summarise( n = n(),
-                   mean_miles = mean( miles ))
-                     
+                   mean_miles = mean( miles ),
+                   mean_steps = mean( steps ),
+                   std_miles  =   sd( miles ),
+                   std_steps  =   sd( steps)) %>% 
+    flextable() %>% 
+        width( j = 1, 16 )
+
+```  
+
+Note that the  walks in Parks Mall have no recorded steps.  This is because most of these walks were taken before I started to record the steps.  Also beciause of the Covid 19 oandemic I have stoped walking in the Parks Mall because there ocassionaly individuals whe do not wear there masks.  Therefore, I am use outside walk to impute steps. 
+
+These means that I will not be able to impute for the inside walks as I know from observation that their is a difference between the walks inside and outside.
+
+```{r}
+outside_walks <- 
+    walks %>% 
+        filter( environment == "Outside" )  # Keep only outside walks ...
+
+dim( outside_walks)                         # Verify tibble ...
 ```
 
-                
 
+
+## Inspecting the predictor variable for required transformation
+
+We inspect the predictor variable to see if a transformation iss needed to make the distribution approximately normal.
+
+
+
+
+
+                
+## Splitting the data
+
+We are now going to define a plit of the data into two mutually subsets called **training** and **validation**.
+
+We do this as follows:
+
+```{r}
+steps <-                    
+    outside_walks %>% 
+        pull( steps )
+
+plot_distribution( steps,
+                   "Thousand steps walked",
+                   "Distribution of 1000 steps walked  ")
+
+```
+
+This is a mixture distribution and a data transformation will not fix the meixture.  Sine the miles walks is also a mixture we may be able to continue.  So let's try it.
+
+## Creating the 
 
 
 
