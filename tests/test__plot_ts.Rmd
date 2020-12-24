@@ -26,7 +26,7 @@ source('D:/R-Projects/MyWalks/functions/plot_ts_v01.R')
 
 ## Get day_routes data
 
-```{r get+day_routes}
+```{r get_day_routes}
 all_day_routes <- get_day_routes()
 
 dim( all_day_routes )
@@ -42,7 +42,7 @@ Note that as of 12/1/202 I still don'r have 365 days of data.  So this first dat
 
 ### Create last_365_days tibble
 
-```{r}
+```{r get_last_360}
 last_365_days <- filter_by_days( all_day_routes, 365 )
 
 dim( last_365_days )
@@ -50,7 +50,7 @@ dim( last_365_days )
 
 ### Last 180 days tibble
 
-```{r}
+```{r get_last_180}
 last_180_days <- filter_by_days( all_day_routes, 180 )
 
 dim( last_180_days )
@@ -59,7 +59,7 @@ dim( last_180_days )
 
 ### Last_090_days
 
-```{r}
+```{r get_last_90}
 last_090_days <- filter_by_days( all_day_routes, 90 )
 
 dim( last_090_days )
@@ -68,7 +68,7 @@ dim( last_090_days )
 
 ### Last 30 days tibble
 
-```{r}
+```{r get_last_30}
 last_030_days <- filter_by_days( all_day_routes, 30 )
 
 dim( last_030_days )
@@ -77,7 +77,7 @@ dim( last_030_days )
 
 ### Last_007_day_routes
 
-```{r}
+```{r get_last_7}
 last_007_days <- filter_by_days( all_day_routes, 7)
 
 dim( last_007_days )
@@ -86,7 +86,7 @@ dim( last_007_days )
 
 ### 365 day test of time series plot 
 
-```{r}
+```{r plot_360}
 
 plot_ts( data = last_365_days,
          variable = "temp",
@@ -103,7 +103,7 @@ plot_ts( data = last_365_days,
 
 ### 180 day test plot oftime series plot
 
-```{r}
+```{r plot_180}
 plot_ts( data =last_180_days,
          variable = "temp",
          label    = "Temperature(Farenheit)",
@@ -118,7 +118,7 @@ plot_ts( data =last_180_days,
 
 ### 90 day test of time series plots
 
-```{r}
+```{r plot_90}
 plot_ts( data =last_090_days,
          variable = "temp",
          label    = "Temperature(Farenheit)",
@@ -134,7 +134,7 @@ plot_ts( data =last_090_days,
 
 ### 30 day test of time series plot
 
-```{r}
+```{r plot_30}
 plot_ts( data =last_030_days,
          variable = "temp",
          label    = "Temperature(Farenheit)",
@@ -143,7 +143,7 @@ plot_ts( data =last_030_days,
 
 ### 7 day day test of time series plot
 
-```{r}
+```{r plot)7}
 plot_ts( data =last_007_days,
          variable = "temp",
          label    = "Temperature(Farenheit)",

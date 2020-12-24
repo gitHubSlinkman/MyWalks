@@ -168,7 +168,7 @@ schedule %>%
                 u_pace ) %>%
             flextable() %>% 
                 width( j = 1, width = 2.25 ) %>% 
-                width( j = 2, width = 1.00 ) %>% 
+                width( j = 2, width = 1.25 ) %>% 
             colformat_num( j = 4:12,
                            big.mark = ",",
                            digits = 2,

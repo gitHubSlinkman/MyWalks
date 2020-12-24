@@ -131,6 +131,10 @@ plot_ts <-
            scale_x_date(date_labels = "%Y-%b-%d") +
            ylab( label ) +
            ggtitle( title ) +
-           theme_cowplot()
+           theme_cowplot() +
+           theme( axis.text.x = 
+                      element_text( angle = 90, 
+                                    vjust = 0.5,
+                                    hjust=1 ))
     }
 
