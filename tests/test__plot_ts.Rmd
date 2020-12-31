@@ -33,61 +33,12 @@ dim( all_day_routes )
 ```
 
 
-## Create test data sets
+# Plot 365 days 
 
 
-## Create 365 day data set
-
-Note that as of 12/1/202 I still don'r have 365 days of data.  So this first data set will be "short" until I do.  Also I am going back and adding weather data as I add new days to the data set.  
-
-### Create last_365_days tibble
-
-```{r get_last_360}
+```{r plot_last_360_days}
 last_365_days <- filter_by_days( all_day_routes, 365 )
-
-dim( last_365_days )
-```
-
-### Last 180 days tibble
-
-```{r get_last_180}
-last_180_days <- filter_by_days( all_day_routes, 180 )
-
-dim( last_180_days )
-```
-
-
-### Last_090_days
-
-```{r get_last_90}
-last_090_days <- filter_by_days( all_day_routes, 90 )
-
-dim( last_090_days )
-
-```
-
-### Last 30 days tibble
-
-```{r get_last_30}
-last_030_days <- filter_by_days( all_day_routes, 30 )
-
-dim( last_030_days )
-```
-
-
-### Last_007_day_routes
-
-```{r get_last_7}
-last_007_days <- filter_by_days( all_day_routes, 7)
-
-dim( last_007_days )
-```
-
-
-### 365 day test of time series plot 
-
-```{r plot_360}
-
+ 
 plot_ts( data = last_365_days,
          variable = "temp",
          label    = "Temperature(Farenheit)",
@@ -98,55 +49,8 @@ plot_ts( data = last_365_days,
          label = "Dew point",
          title = "365 day plot of dew point" )
 
-
-```
-
-### 180 day test plot oftime series plot
-
-```{r plot_180}
-plot_ts( data =last_180_days,
-         variable = "temp",
-         label    = "Temperature(Farenheit)",
-         title    = "180 day time series plot of Temperature" )
-
-plot_ts( data =last_180_days,
-         variable = "dp",
-         label    = "Temperature(Farenheit)",
-         title    = "180 day time series plot of dew point" )
-
-```
-
-### 90 day test of time series plots
-
-```{r plot_90}
-plot_ts( data =last_090_days,
-         variable = "temp",
-         label    = "Temperature(Farenheit)",
-         title    = "90 day time series plot of Temperature" )
-
-plot_ts( data =last_090_days,
-         variable = "dp",
-         label    = "Temperature(Farenheit)",
-         title    = "90 day time series plot of dew point" )
-
-```
-
-
-### 30 day test of time series plot
-
-```{r plot_30}
-plot_ts( data =last_030_days,
-         variable = "temp",
-         label    = "Temperature(Farenheit)",
-         title    = "30 day time series plot of Temperature" )
-```
-
-### 7 day day test of time series plot
-
-```{r plot)7}
-plot_ts( data =last_007_days,
-         variable = "temp",
-         label    = "Temperature(Farenheit)",
-         title    = "7 day time series plot of Temperature" )
+last_365_days %>% 
+    filter( is.na(dp) ) %>% 
+        select( id, date_time, temp, dp )
 ```
 

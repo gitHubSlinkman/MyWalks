@@ -28,6 +28,7 @@ source('D:/R-Projects/MyWalks/functions/find_column_position_v01.R')
 
 plot_ts <- 
     function( data,             # Data frame containing variable ...
+              fraction = 2/3,   # Fraction of data used in fit  
               variable,         # variable to plot ...
               label,            # variable name for axis labeling ...
               title             # Plot title ...
@@ -38,8 +39,8 @@ plot_ts <-
         ########################################################################
         
         if( is.null( label ))label <- variable
-        if( is.null( title ))title
-                paste("Time series plot of", variable )
+        if( is.null( title ))title <-  paste("Time series plot of", 
+                                             lanel )
         
         
         

@@ -11,6 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## test__plot_walk_coditions
 
+## Set home directory
+
+```{r}
+"D:/R-Projects/MyWalks"
+knitr::opts_knit$set(root.dir = '"D:/R-Projects/MyWalks')
+```
+
+
 ### load required packages  
 
 ```{r}
@@ -22,7 +30,7 @@ require( cowplot )                      # For more processional graphics ...
 ### Get required functions
 
 ```{r}
-source('D:/R-Projects/MyWalks/functions/get_weather_v01.r')
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.r')
 source('D:/R-Projects/MyWalks/functions/filter_by_days_v01.R')
 source('D:/R-Projects/MyWalks/functions/plot_sky_v01.R')
 ```
@@ -30,9 +38,9 @@ source('D:/R-Projects/MyWalks/functions/plot_sky_v01.R')
 ### Read the data ...
 
 ```{r}
-weather <- get_weather()             # Get only weather data
+day_routes <- get_day_routes()          # Get only weather data
 
-weather                              # Display tibble.
+day_routes                              # Display tibble.
 ```
 
 ## Partion weather data
