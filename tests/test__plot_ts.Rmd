@@ -41,11 +41,13 @@ last_365_days <- filter_by_days( all_day_routes, 365 )
  
 plot_ts( data = last_365_days,
          variable = "temp",
+         span     =90/365,
          label    = "Temperature(Farenheit)",
          title    = "365 day plot of Temperature" )
 
 plot_ts( data = last_365_days,
          variable = "dp",
+         span = 90/365,
          label = "Dew point",
          title = "365 day plot of dew point" )
 
