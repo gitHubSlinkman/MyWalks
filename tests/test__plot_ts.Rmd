@@ -37,22 +37,45 @@ dim( all_day_routes )
 
 
 ```{r plot_last_360_days}
+```
+
+
+```{r plot_last_360_days}
 last_365_days <- filter_by_days( all_day_routes, 365 )
- 
+```
+
+
+```{r}
 plot_ts( data = last_365_days,
          variable = "temp",
-         span     =90/365,
+         span     = 90/365,
          label    = "Temperature(Farenheit)",
          title    = "365 day plot of Temperature" )
 
 plot_ts( data = last_365_days,
          variable = "dp",
-         span = 90/365,
-         label = "Dew point",
-         title = "365 day plot of dew point" )
+         span     = 90/365,
+         label    = "Temperature(Farenheit)",
+         title    = "365 day plot of dew point" )
+```
 
-last_365_days %>% 
-    filter( is.na(dp) ) %>% 
-        select( id, date_time, temp, dp )
+
+## Plot 180 days
+
+```{r}
+last_180_days <- filter_by_days( all_day_routes, 180 )
+
+plot_ts( data = last_180_days,
+         variable = "temp",
+         span     = 90/365,
+         label    = "Temperature(Farenheit)",
+         title    = "180 day plot of Temperature" )
+
+plot_ts( data = last_180_days,
+         variable = "dp",
+         span     = 90/365,
+         label    = "Temperature(Farenheit)",
+         title    = "180 day plot of dew point" )
+
 ```
 
