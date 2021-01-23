@@ -35,13 +35,9 @@ dim( all_day_routes )
 
 # Plot 365 days 
 
-
-```{r plot_last_360_days}
-```
-
-
 ```{r plot_last_360_days}
 last_365_days <- filter_by_days( all_day_routes, 365 )
+dim( last_365_days )
 ```
 
 
@@ -49,7 +45,7 @@ last_365_days <- filter_by_days( all_day_routes, 365 )
 plot_ts( data = last_365_days,
          variable = "temp",
          span     = 90/365,
-         label    = "Temperature(Farenheit)",
+         label = "Temparture",
          title    = "365 day plot of Temperature" )
 
 plot_ts( data = last_365_days,

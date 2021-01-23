@@ -28,7 +28,7 @@ source('D:/R-Projects/MyWalks/functions/find_column_position_v01.R')
 
 plot_ts <- 
     function( data,             # Data frame containing variable ...
-              span = 0.25,      # Fraction of data used in fit  
+              span = 90/260,    # Fraction of data used in fit  
               variable,         # variable to plot ...
               label,            # variable name for axis labeling ...
               title             # Plot title ...
@@ -40,7 +40,7 @@ plot_ts <-
         
         if( is.null( label ))label <- variable
         if( is.null( title ))title <-  paste("Time series plot of", 
-                                             lanel )
+                                             label )
         
         
         
@@ -67,6 +67,8 @@ plot_ts <-
        date_time <- 
            data %>% 
             pull( date_time )
+       
+       
        Date <- date( date_time )
        
        
@@ -78,26 +80,33 @@ plot_ts <-
        n <- length( Observations )
        t <- 1:n
        
+       loess_smooth <- 
+           tibble( Date, t, Observations )
+       
        #######################################################################
        # Apply the lowess smooth to the time seroes data.
        #######################################################################
        
-       smooth <- 
-           lowess( Observations ~ t, f = span )
+      fit <- 
+           loess( Observations ~ t,
+                  data = data,
+                  family = "sym",
+                  method = "loess" )
        
        
        ##########################################################################
        # We extract the soothed data from the smooth list.
        ##########################################################################
+       smoothed <-fit$fitted
+       residual <- fit$residuals
        
-       Smooths <- smooth$y 
        
        
        ##########################################################################
        # Create tibble to be used by ggplot to plot observarions.
        ##########################################################################
        
-       working_tibble <- 
+      loess_smooth <- 
            tibble( Date, t, Observations, Smooths )
        
        
@@ -108,7 +117,7 @@ plot_ts <-
        
        long_form <- 
            pivot_longer(  working_tibble,
-                         cols      = c( Observations, Smooths ),
+                         cols      = c( Observations, Smoothed ),
                          names_to  = "Source",
                          values_to = "Values" )
        

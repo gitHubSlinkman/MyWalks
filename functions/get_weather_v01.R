@@ -11,5 +11,7 @@ get_weather <- function()
                          "days.xlsx" )
         
         read_excel( fp ) %>%                       # Read day_routes and
-            select( id:walking_conditions )        # Andextract eather ...
+            select( id:walking_conditions )        # And extract weather.
+        
+        
 }
