@@ -109,7 +109,7 @@ schedule <-
 joined_tibbles <- left_join( x = schedule,
                              y = all_day_routes,
                              by = "route" )
-temp0 <- 
+temp <- 
     joined_tibbles %>% 
         select( route,
                 date_time.x,
@@ -123,7 +123,7 @@ temp0 <-
                     pace  = pace.y )
 
 schedule <- 
-    temp0 %>% 
+    temp %>% 
         group_by( route, last_walked ) %>% 
             summarise(  n  = n(),
                         m_miles = mean( miles, na.rm = TRUE ),
