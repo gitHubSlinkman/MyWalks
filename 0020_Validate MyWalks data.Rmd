@@ -1,0 +1,69 @@
+---
+title: "002_vaalidating MyWalks data"
+author: "Craig W. Slinkman"
+date: "5/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Validating MyWalks data
+
+##Load resources
+
+```{r}
+require( tidyverse )
+require( lubridate )
+require( flextable )
+
+source('D:/R-Projects/MyWalks/functions/get_day_routes_v01.R')
+```
+
+## Get MyWalks data
+
+```{r}
+day_routes<- get_day_routes()
+
+n <- dim( day_routes )[1]
+```
+
+## Validate id
+
+```{r}
+id <- day_routes$id
+sequence = rep( NA, n )
+
+for( r in 2:n )sequence[r] <- ifelse( id[r] == id[r-1] + 1, TRUE, FALSE ) 
+
+diagnostics <- 
+    tibble( id, sequence )
+```
+
+## Id sequence errors
+
+```{r}
+
+diagnostics %>% 
+    filter( !sequence ) %>% 
+     flextable()
+
+```
+
+## Date sequence errors
+
+```{r}
+id <- day_routes$id
+date <- date( day_routes$date_time)
+sequence = rep( NA, n )
+
+for( r in 2:n )sequence[r] <- ifelse( date[r] == date[r-1] + 1, TRUE, FALSE )
+
+tibble( id, date, sequence ) %>% 
+    filter( !sequence ) %>% 
+        flextable()
+
+```
+
+

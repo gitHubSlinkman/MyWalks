@@ -1,4 +1,4 @@
-## Finding missing temperature data
+# validating MyWalks data
 
 require( tidyverse )
 require( lubridate )
@@ -32,9 +32,7 @@ results <- rep(NA_character_, n)
 this_year$date
         
 
-daily_temp %>% 
-    filter( year(date) == 2021 ) %>% 
-    filter( is.na(temp))
+
 
 
 
