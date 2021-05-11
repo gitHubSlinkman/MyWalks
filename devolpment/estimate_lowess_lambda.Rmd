@@ -1,0 +1,81 @@
+---
+title: "Estimate  optimnal loess parameter"
+author: "Craig W. Slinkman"
+date: "5/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# ols_estimation.R
+
+# This routine determine the value of the smoothong parameter lambda that will
+# minimize the sum-of-squared-errors.
+#
+## Load packages  
+
+```{r load_packages}
+require( tidyverse )
+require( lubridate )
+require( latex2exp )
+require( cowplot )
+require( flextable )
+```
+## Load required functions  
+
+```{r}
+source('D:/R-Projects/MyWalks/functions/get_weather_v01.R' )
+```
+
+## Read data files and display tibbles
+
+```{r}
+weather <- get_weather()
+
+last_date <-ymd('2021-03-01')
+
+days <- 
+    weather %>% 
+        mutate( date = date( date_time) ) %>% 
+            select( id, walked, date, temp, dp, rh) %>% 
+                filter( id <=  931 )
+
+days$date
+
+```
+    
+### Keep only the  last 365 days
+
+```{r}
+n <- dim( days )[1]
+first_date <- days$date[n] - 365
+
+days <- 
+    days %>% 
+        filter( date >= first_date )
+dim( days )
+```
+
+## Plot time series
+
+```{r}
+ggplot( days,
+        aes( x = date,
+             y = temp )) +
+    geom_line() +
+    
+    theme_cowplot()
+```
+
+## Esimate lowess parameter
+
+```{r}
+lambdas <- seq( from = 0.01, to = 0.99, by = 0.01  )
+SS      <- NA
+
+```
+
+
+

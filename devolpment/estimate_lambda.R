@@ -1,7 +1,7 @@
 # ols_estimation.R
 
 # This routine determine the value of the smoothong parameter lambda that will
-# minimize the sum-sof-squared-error for onterpolation.
+# minimize the sum-of-squared-errors.
 #
 
 require( tidyverse )
