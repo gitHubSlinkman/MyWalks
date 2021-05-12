@@ -72,8 +72,8 @@ ggplot( days,
 ## Esimate lowess parameter
 
 ```{r}
-lambdas <- seq( from = 0.01, to = 0.99, by = 0.01  )
-SS      <- NA
+lambda <- seq( from = 0.01, to = 0.99, by = 0.01  )
+SS      <- rep( Inf, length(lambda))
 
 ```
 
